@@ -10,7 +10,7 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Repository
-public class MedicalRecordsRepositoryImpl {
+public class MedicalRecordsRepositoryImpl implements MedicalRecordsRepository {
     ObjectMapper mapper = new ObjectMapper();
 
     public ListMedicalRecords findAll() throws IOException {

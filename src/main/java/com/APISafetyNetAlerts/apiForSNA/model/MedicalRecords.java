@@ -8,14 +8,15 @@ public class MedicalRecords {
 
     private String birthdate;
 
-    private String medications;
+    private String[] medications;
 
-    private String allergies;
+    private String[] allergies;
 
     public MedicalRecords() {
     }
 
-    public MedicalRecords(String firstName, String lastName, String birthdate, String medications, String allergies) {
+    public MedicalRecords(String firstName, String lastName, String birthdate, String[] medications,
+	    String[] allergies) {
 	this.firstName = firstName;
 	this.lastName = lastName;
 	this.birthdate = birthdate;
@@ -47,19 +48,19 @@ public class MedicalRecords {
 	this.birthdate = birthdate;
     }
 
-    public String getMedications() {
+    public String[] getMedications() {
 	return medications;
     }
 
-    public void setMedications(String medications) {
+    public void setMedications(String[] medications) {
 	this.medications = medications;
     }
 
-    public String getAllergies() {
+    public String[] getAllergies() {
 	return allergies;
     }
 
-    public void setAllergies(String allergies) {
+    public void setAllergies(String[] allergies) {
 	this.allergies = allergies;
     }
 
