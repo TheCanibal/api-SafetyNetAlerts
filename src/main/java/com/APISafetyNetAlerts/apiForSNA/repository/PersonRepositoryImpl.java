@@ -18,7 +18,6 @@ public class PersonRepositoryImpl implements PersonRepository {
 	mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 	File file = new File("D:\\workspace\\dev\\apiSNA\\apiSNA\\src\\main\\resources\\data.json");
 	ListPersons persons = mapper.readValue(file, ListPersons.class);
-	mapper.writeValueAsString(persons);
 	return persons;
     }
 

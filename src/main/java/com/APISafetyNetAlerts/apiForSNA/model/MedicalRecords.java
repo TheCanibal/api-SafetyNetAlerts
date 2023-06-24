@@ -1,5 +1,9 @@
 package com.APISafetyNetAlerts.apiForSNA.model;
 
+import com.fasterxml.jackson.annotation.JsonFilter;
+
+@JsonFilter("filtreDynamiqueMedic")
+
 public class MedicalRecords {
 
     private String firstName;

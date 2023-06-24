@@ -14,7 +14,7 @@ public class FireStationService {
     @Autowired
     private FireStationRepository fireStationRepository;
 
-    public ListFireStations getPersons() throws IOException {
+    public ListFireStations getFireStations() throws IOException {
 	return fireStationRepository.findAll();
     }
 }

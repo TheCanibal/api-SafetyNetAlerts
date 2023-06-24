@@ -1,9 +1,16 @@
 package com.APISafetyNetAlerts.apiForSNA.model;
 
+import com.fasterxml.jackson.annotation.JsonFilter;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+@JsonFilter("filtreDynamique")
+
 public class FireStation {
 
+    @JsonProperty("address")
     private String address;
 
+    @JsonProperty("station")
     private String station;
 
     public FireStation() {
@@ -22,12 +29,12 @@ public class FireStation {
 	this.address = address;
     }
 
-    public String getStationNumber() {
+    public String getStation() {
 	return station;
     }
 
-    public void setStationNumber(String stationNumber) {
-	this.station = stationNumber;
+    public void setStation(String station) {
+	this.station = station;
     }
 
 }

@@ -14,7 +14,7 @@ public class MedicalRecordService {
     @Autowired
     private MedicalRecordsRepository medicalRecordRepository;
 
-    public ListMedicalRecords getPersons() throws IOException {
+    public ListMedicalRecords getMedicalRecords() throws IOException {
 	return medicalRecordRepository.findAll();
     }
 }
