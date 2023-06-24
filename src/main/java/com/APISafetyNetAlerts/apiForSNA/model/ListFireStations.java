@@ -2,14 +2,14 @@ package com.APISafetyNetAlerts.apiForSNA.model;
 
 import java.util.List;
 
-public class ListFireStation {
+public class ListFireStations {
 
     private List<FireStation> listFirestation;
 
-    public ListFireStation() {
+    public ListFireStations() {
     }
 
-    public ListFireStation(List<FireStation> listFirestation) {
+    public ListFireStations(List<FireStation> listFirestation) {
 	this.listFirestation = listFirestation;
     }
 
