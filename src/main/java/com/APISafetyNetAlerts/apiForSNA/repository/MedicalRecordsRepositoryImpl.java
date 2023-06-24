@@ -14,6 +14,7 @@ public class MedicalRecordsRepositoryImpl implements MedicalRecordsRepository {
     ObjectMapper mapper = new ObjectMapper();
 
     public ListMedicalRecords findAll() throws IOException {
+	mapper.findAndRegisterModules();
 	mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 	File file = new File("D:\\workspace\\dev\\apiSNA\\apiSNA\\src\\main\\resources\\data.json");
 	ListMedicalRecords persons = mapper.readValue(file, ListMedicalRecords.class);

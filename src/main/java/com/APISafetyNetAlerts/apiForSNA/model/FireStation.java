@@ -11,12 +11,12 @@ public class FireStation {
     private String address;
 
     @JsonProperty("station")
-    private String station;
+    private int station;
 
     public FireStation() {
     }
 
-    public FireStation(String address, String station) {
+    public FireStation(String address, int station) {
 	this.address = address;
 	this.station = station;
     }
@@ -29,11 +29,11 @@ public class FireStation {
 	this.address = address;
     }
 
-    public String getStation() {
+    public int getStation() {
 	return station;
     }
 
-    public void setStation(String station) {
+    public void setStation(int station) {
 	this.station = station;
     }
 

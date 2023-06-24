@@ -50,4 +50,5 @@ public class FireStationController {
 	fireStationsFiltres.setFilters(filtres);
 	return fireStationsFiltres;
     }
+
 }
