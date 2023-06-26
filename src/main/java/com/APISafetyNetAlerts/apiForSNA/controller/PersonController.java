@@ -78,7 +78,7 @@ public class PersonController {
 	// Date to calculate age of persons
 	LocalDate ld = LocalDate.now();
 	LocalDate bd;
-	long diff = 0;
+	long ageDiff = 0;
 	// Browse persons list and firestations list to compare the address of the two
 	// lists
 	// to add what we want to get
@@ -98,9 +98,9 @@ public class PersonController {
 	    for (MedicalRecords mr : listMedicalRecords) {
 		if (p.getFirstName().equals(mr.getFirstName()) && p.getLastName().equals(mr.getLastName())) {
 		    bd = mr.getBirthdate();
-		    diff = ChronoUnit.DAYS.between(bd, ld);
+		    ageDiff = ChronoUnit.DAYS.between(bd, ld);
 		    // 18 years is equal to 6570 days
-		    if (diff <= 6570) {
+		    if (ageDiff <= 6570) {
 			personnesMineurs++;
 		    } else {
 			personnesMajeurs++;
@@ -119,4 +119,54 @@ public class PersonController {
 	return personFiltres;
     }
 
+    /**
+     * Read - Get all child (under 18) who live at a certain address
+     * 
+     * @param address address where lives child or live children
+     * @return - A list of child with the other members of a house or an empty list
+     *         if no child
+     * @throws IOException
+     */
+    @GetMapping("/childAlert")
+    public MappingJacksonValue getChildByAddress(@RequestParam String address) throws IOException {
+	List<Object> listToSend = new ArrayList<Object>();
+	List<Person> listOtherPersons = new ArrayList<Person>();
+	List<Person> listPersons = personService.getPersonsByAdress(address).getListPersons();
+	List<MedicalRecords> listMedicalRecords = null;
+	HashMap<String, Long> childAge = new HashMap<String, Long>();
+	HashMap<String, List<Person>> otherPeopleInHouse = new HashMap<String, List<Person>>();
+	// Date to calculate age of persons
+	LocalDate ld = LocalDate.now();
+	LocalDate bd;
+	long ageDiffDays = 0;
+	long ageDiffYears = 0;
+	listMedicalRecords = medicalRecordService.getMedicalRecords().getListMedicalrecords();
+	for (Person p : listPersons) {
+	    for (MedicalRecords mr : listMedicalRecords) {
+		if (mr.getFirstName().equals(p.getFirstName())) {
+		    bd = mr.getBirthdate();
+		    ageDiffDays = ChronoUnit.DAYS.between(bd, ld);
+		    ageDiffYears = ChronoUnit.YEARS.between(bd, ld);
+		    if (ageDiffDays <= 6570) {
+			childAge.put("Âge du mineur " + p.getFirstName(), ageDiffYears);
+			listToSend.add(p);
+		    } else {
+			listOtherPersons.add(p);
+		    }
+		}
+
+	    }
+	}
+
+	if (listOtherPersons != null) {
+	    otherPeopleInHouse.put("Autre(s) membre(s) du foyer ", listOtherPersons);
+	}
+	listToSend.add(childAge);
+	listToSend.add(otherPeopleInHouse);
+	SimpleBeanPropertyFilter monFiltre = SimpleBeanPropertyFilter.filterOutAllExcept("firstName", "lastName");
+	FilterProvider filtres = new SimpleFilterProvider().addFilter("filtreDynamiquePerson", monFiltre);
+	MappingJacksonValue personFiltres = new MappingJacksonValue(listToSend);
+	personFiltres.setFilters(filtres);
+	return personFiltres;
+    }
 }

@@ -18,4 +18,8 @@ public class PersonService {
 	return personRepository.findAll();
     }
 
+    public ListPersons getPersonsByAdress(String address) throws IOException {
+	return personRepository.findByAddress(address);
+    }
+
 }

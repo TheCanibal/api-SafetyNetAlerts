@@ -9,4 +9,6 @@ import com.APISafetyNetAlerts.apiForSNA.model.ListPersons;
 @Repository
 public interface PersonRepository {
     ListPersons findAll() throws IOException;
+
+    ListPersons findByAddress(String address) throws IOException;
 }
