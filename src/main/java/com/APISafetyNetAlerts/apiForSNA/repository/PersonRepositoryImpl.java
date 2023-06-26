@@ -18,7 +18,6 @@ public class PersonRepositoryImpl implements PersonRepository {
     ObjectMapper mapper = new ObjectMapper();
     List<Person> listPersonsToFill;
 
-    @Override
     public ListPersons findAll() throws IOException {
 	mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 	File file = new File("D:\\workspace\\git\\apiForSNA\\src\\main\\resources\\data.json");
@@ -26,7 +25,6 @@ public class PersonRepositoryImpl implements PersonRepository {
 	return listPersons;
     }
 
-    @Override
     public ListPersons findByAddress(String address) throws IOException {
 	listPersonsToFill = new ArrayList<Person>();
 	mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);

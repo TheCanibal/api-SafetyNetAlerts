@@ -5,7 +5,9 @@ import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.converter.json.MappingJacksonValue;
@@ -63,11 +65,12 @@ public class PersonController {
 	// List of Object to be able to add information to JSON
 	List<Object> listToSend = new ArrayList<Object>();
 	// List of person to browse the filtered list
-	List<Person> listPersons = new ArrayList<Person>();
+	List<Person> listPersonsSorted = new ArrayList<Person>();
 	// Get the full list of persons
 	List<Person> listPersonsCompare = personService.getPersons().getListPersons();
 	// Get the full list of firestations
-	List<FireStation> listFireStationCompare = fireStationService.getFireStations().getListFirestation();
+	List<FireStation> listFireStationByNumber = fireStationService.getFirestationsByStationNumber(stationNumber)
+		.getListFirestation();
 	// Get the full list of medicalRecords
 	List<MedicalRecords> listMedicalRecords = medicalRecordService.getMedicalRecords().getListMedicalrecords();
 	// HashMap to be able to add key/value information like number of child (under
@@ -82,19 +85,17 @@ public class PersonController {
 	// Browse persons list and firestations list to compare the address of the two
 	// lists
 	// to add what we want to get
-	for (Person p : listPersonsCompare) {
-	    for (FireStation fs : listFireStationCompare) {
-		if (fs.getStation() == stationNumber) {
-		    if (p.getAddress().equals(fs.getAddress())) {
-			listToSend.add(p);
-			listPersons.add(p);
-		    }
+	for (FireStation fs : listFireStationByNumber) {
+	    for (Person p : listPersonsCompare) {
+		if (p.getAddress().equals(fs.getAddress())) {
+		    listToSend.add(p);
+		    listPersonsSorted.add(p);
 		}
 	    }
 	}
 	// Browse persons list and medical records list to get birthdate and calculate
 	// age
-	for (Person p : listPersons) {
+	for (Person p : listPersonsSorted) {
 	    for (MedicalRecords mr : listMedicalRecords) {
 		if (p.getFirstName().equals(mr.getFirstName()) && p.getLastName().equals(mr.getLastName())) {
 		    bd = mr.getBirthdate();
@@ -130,9 +131,9 @@ public class PersonController {
     @GetMapping("/childAlert")
     public MappingJacksonValue getChildByAddress(@RequestParam String address) throws IOException {
 	List<Object> listToSend = new ArrayList<Object>();
-	List<Person> listOtherPersons = new ArrayList<Person>();
-	List<Person> listPersons = personService.getPersonsByAdress(address).getListPersons();
-	List<MedicalRecords> listMedicalRecords = null;
+	List<Person> listOtherPersonsInHouse = new ArrayList<Person>();
+	List<Person> listPersonsByAddress = personService.getPersonsByAdress(address).getListPersons();
+	List<MedicalRecords> listMedicalRecords = medicalRecordService.getMedicalRecords().getListMedicalrecords();
 	HashMap<String, Long> childAge = new HashMap<String, Long>();
 	HashMap<String, List<Person>> otherPeopleInHouse = new HashMap<String, List<Person>>();
 	// Date to calculate age of persons
@@ -140,8 +141,7 @@ public class PersonController {
 	LocalDate bd;
 	long ageDiffDays = 0;
 	long ageDiffYears = 0;
-	listMedicalRecords = medicalRecordService.getMedicalRecords().getListMedicalrecords();
-	for (Person p : listPersons) {
+	for (Person p : listPersonsByAddress) {
 	    for (MedicalRecords mr : listMedicalRecords) {
 		if (mr.getFirstName().equals(p.getFirstName())) {
 		    bd = mr.getBirthdate();
@@ -151,21 +151,52 @@ public class PersonController {
 			childAge.put("Âge du mineur " + p.getFirstName(), ageDiffYears);
 			listToSend.add(p);
 		    } else {
-			listOtherPersons.add(p);
+			listOtherPersonsInHouse.add(p);
 		    }
 		}
 
 	    }
 	}
 
-	if (listOtherPersons != null) {
-	    otherPeopleInHouse.put("Autre(s) membre(s) du foyer ", listOtherPersons);
+	if (listOtherPersonsInHouse != null) {
+	    otherPeopleInHouse.put("Autre(s) membre(s) du foyer ", listOtherPersonsInHouse);
 	}
 	listToSend.add(childAge);
 	listToSend.add(otherPeopleInHouse);
 	SimpleBeanPropertyFilter monFiltre = SimpleBeanPropertyFilter.filterOutAllExcept("firstName", "lastName");
 	FilterProvider filtres = new SimpleFilterProvider().addFilter("filtreDynamiquePerson", monFiltre);
 	MappingJacksonValue personFiltres = new MappingJacksonValue(listToSend);
+	personFiltres.setFilters(filtres);
+	return personFiltres;
+    }
+
+    /**
+     * Read - Get all persons
+     * 
+     * @return - A list of persons full filled
+     * @throws IOException
+     */
+    @GetMapping("/phoneAlert")
+    public MappingJacksonValue getPhoneNumberDeservedByFirestations(@RequestParam int firestation) throws IOException {
+	List<Person> listPersonsCompare = personService.getPersons().getListPersons();
+	List<Person> listPhoneNumber = new ArrayList<Person>();
+	Set<String> setPhoneNumber = new HashSet<String>();
+	List<FireStation> listFireStationByNumber = fireStationService.getFirestationsByStationNumber(firestation)
+		.getListFirestation();
+	for (FireStation fs : listFireStationByNumber) {
+	    for (Person p : listPersonsCompare) {
+		if (fs.getAddress().equals(p.getAddress())) {
+		    listPhoneNumber.add(p);
+		}
+	    }
+	}
+	for (Person p : listPhoneNumber) {
+	    System.out.println(p.getFirstName());
+	    setPhoneNumber.add(p.getPhone());
+	}
+	SimpleBeanPropertyFilter monFiltre = SimpleBeanPropertyFilter.filterOutAllExcept("phone");
+	FilterProvider filtres = new SimpleFilterProvider().addFilter("filtreDynamiquePerson", monFiltre);
+	MappingJacksonValue personFiltres = new MappingJacksonValue(setPhoneNumber);
 	personFiltres.setFilters(filtres);
 	return personFiltres;
     }

@@ -17,4 +17,8 @@ public class FireStationService {
     public ListFireStations getFireStations() throws IOException {
 	return fireStationRepository.findAll();
     }
+
+    public ListFireStations getFirestationsByStationNumber(int station) throws IOException {
+	return fireStationRepository.findByStation(station);
+    }
 }

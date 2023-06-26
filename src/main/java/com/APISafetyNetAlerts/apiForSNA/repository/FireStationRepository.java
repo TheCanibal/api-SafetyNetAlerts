@@ -9,4 +9,6 @@ import com.APISafetyNetAlerts.apiForSNA.model.ListFireStations;
 @Repository
 public interface FireStationRepository {
     ListFireStations findAll() throws IOException;
+
+    public ListFireStations findByStation(int station) throws IOException;
 }
