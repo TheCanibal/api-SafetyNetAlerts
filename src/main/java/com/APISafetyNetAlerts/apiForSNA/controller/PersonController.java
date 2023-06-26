@@ -1,7 +1,10 @@
 package com.APISafetyNetAlerts.apiForSNA.controller;
 
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,8 +15,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.APISafetyNetAlerts.apiForSNA.model.FireStation;
 import com.APISafetyNetAlerts.apiForSNA.model.ListPersons;
+import com.APISafetyNetAlerts.apiForSNA.model.MedicalRecords;
 import com.APISafetyNetAlerts.apiForSNA.model.Person;
 import com.APISafetyNetAlerts.apiForSNA.service.FireStationService;
+import com.APISafetyNetAlerts.apiForSNA.service.MedicalRecordService;
 import com.APISafetyNetAlerts.apiForSNA.service.PersonService;
 import com.fasterxml.jackson.databind.ser.FilterProvider;
 import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
@@ -26,6 +31,9 @@ public class PersonController {
 
     @Autowired
     private FireStationService fireStationService;
+
+    @Autowired
+    private MedicalRecordService medicalRecordService;
 
     /**
      * Read - Get all persons
@@ -44,50 +52,69 @@ public class PersonController {
     }
 
     /**
-     * Read - Get all persons
+     * Read - Get all persons that are deserved at their address by a station
      * 
-     * @return - A list of persons full filled
-     * @throws IOException
-     */
-    @GetMapping("/personsFiltre")
-    public MappingJacksonValue getFilteredPersons() throws IOException {
-	ListPersons listPersons = personService.getPersons();
-	SimpleBeanPropertyFilter monFiltre = SimpleBeanPropertyFilter.serializeAllExcept("phone", "zip");
-	FilterProvider filtres = new SimpleFilterProvider().addFilter("filtreDynamiquePerson", monFiltre);
-	MappingJacksonValue personFiltres = new MappingJacksonValue(listPersons);
-	personFiltres.setFilters(filtres);
-	return personFiltres;
-    }
-
-    /**
-     * Read - Get all firestations
-     * 
-     * @return - A List of firestations full filled
+     * @param stationNumber number of a firestaion
+     * @return - A List of Persons that are deserved by a certain firestation
      * @throws IOException
      */
     @GetMapping("/firestation")
-    public MappingJacksonValue getPersonsCoveredByFireStation(@RequestParam int station) throws IOException {
+    public MappingJacksonValue getPersonsCoveredByFireStation(@RequestParam int stationNumber) throws IOException {
+	// List of Object to be able to add information to JSON
+	List<Object> listToSend = new ArrayList<Object>();
+	// List of person to browse the filtered list
 	List<Person> listPersons = new ArrayList<Person>();
+	// Get the full list of persons
 	List<Person> listPersonsCompare = personService.getPersons().getListPersons();
+	// Get the full list of firestations
 	List<FireStation> listFireStationCompare = fireStationService.getFireStations().getListFirestation();
+	// Get the full list of medicalRecords
+	List<MedicalRecords> listMedicalRecords = medicalRecordService.getMedicalRecords().getListMedicalrecords();
+	// HashMap to be able to add key/value information like number of child (under
+	// 18)
+	HashMap<String, Integer> hm = new HashMap<String, Integer>();
+	int personnesMajeurs = 0;
+	int personnesMineurs = 0;
+	// Date to calculate age of persons
+	LocalDate ld = LocalDate.now();
+	LocalDate bd;
+	long diff = 0;
+	// Browse persons list and firestations list to compare the address of the two
+	// lists
+	// to add what we want to get
 	for (Person p : listPersonsCompare) {
 	    for (FireStation fs : listFireStationCompare) {
-		if (fs.getStation() == station) {
+		if (fs.getStation() == stationNumber) {
 		    if (p.getAddress().equals(fs.getAddress())) {
+			listToSend.add(p);
 			listPersons.add(p);
 		    }
 		}
 	    }
 	}
-	ListPersons listPersonsToSend = new ListPersons(listPersons);
-	for (Person p : listPersonsToSend.getListPersons()) {
-	    System.out.println(p.getFirstName() + p.getLastName() + p.getAddress() + p.getCity() + p.getZip()
-		    + p.getPhone() + p.getEmail());
+	// Browse persons list and medical records list to get birthdate and calculate
+	// age
+	for (Person p : listPersons) {
+	    for (MedicalRecords mr : listMedicalRecords) {
+		if (p.getFirstName().equals(mr.getFirstName()) && p.getLastName().equals(mr.getLastName())) {
+		    bd = mr.getBirthdate();
+		    diff = ChronoUnit.DAYS.between(bd, ld);
+		    // 18 years is equal to 6570 days
+		    if (diff <= 6570) {
+			personnesMineurs++;
+		    } else {
+			personnesMajeurs++;
+		    }
+		}
+	    }
 	}
+	hm.put("Personne(s) majeur(s)", personnesMajeurs);
+	hm.put("Personne(s) mineur(s)", personnesMineurs);
+	listToSend.add(hm);
 	SimpleBeanPropertyFilter monFiltre = SimpleBeanPropertyFilter.filterOutAllExcept("firstName", "lastName",
 		"address", "phone");
 	FilterProvider filtres = new SimpleFilterProvider().addFilter("filtreDynamiquePerson", monFiltre);
-	MappingJacksonValue personFiltres = new MappingJacksonValue(listPersonsToSend);
+	MappingJacksonValue personFiltres = new MappingJacksonValue(listToSend);
 	personFiltres.setFilters(filtres);
 	return personFiltres;
     }

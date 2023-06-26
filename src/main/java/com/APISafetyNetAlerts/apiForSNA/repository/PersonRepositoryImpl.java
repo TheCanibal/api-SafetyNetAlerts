@@ -16,7 +16,7 @@ public class PersonRepositoryImpl implements PersonRepository {
 
     public ListPersons findAll() throws IOException {
 	mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-	File file = new File("D:\\workspace\\dev\\apiSNA\\apiSNA\\src\\main\\resources\\data.json");
+	File file = new File("D:\\workspace\\git\\apiForSNA\\src\\main\\resources\\data.json");
 	ListPersons persons = mapper.readValue(file, ListPersons.class);
 	return persons;
     }

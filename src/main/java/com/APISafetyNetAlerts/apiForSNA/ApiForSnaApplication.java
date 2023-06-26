@@ -66,19 +66,34 @@ public class ApiForSnaApplication implements CommandLineRunner {
 	List<Person> listPersons = new ArrayList<Person>();
 	List<Person> listPersonsCompare = personService.getPersons().getListPersons();
 	List<FireStation> listFireStationCompare = fireStationService.getFireStations().getListFirestation();
+	List<MedicalRecords> listMedicalRecords = mrs.getMedicalRecords().getListMedicalrecords();
+	int personnesMineurs = 0;
+	int personnesMajeurs = 0;
 	for (Person p : listPersonsCompare) {
 	    for (FireStation fs : listFireStationCompare) {
 		if (fs.getStation() == 1) {
-		    System.out.println("On y rentre");
 		    if (p.getAddress().equals(fs.getAddress())) {
 			listPersons.add(p);
+			System.out.println("Prénom : " + p.getFirstName() + " Nom : " + p.getLastName());
 		    }
 		}
 	    }
 	}
 	for (Person p : listPersons) {
-	    System.out.println(p.getFirstName());
+	    for (MedicalRecords mr : listMedicalRecords) {
+		if (p.getFirstName().equals(mr.getFirstName()) && p.getLastName().equals(mr.getLastName())) {
+		    bd = mr.getBirthdate();
+		    diff = ChronoUnit.DAYS.between(bd, ld);
+		    if (diff <= 6570) {
+			personnesMineurs++;
+		    } else {
+			personnesMajeurs++;
+		    }
+		}
+	    }
 	}
+	System.out.println("Nombre de personne(s) mineur(s) : " + personnesMineurs);
+	System.out.println("Nombre de personne(s) majeur(s) : " + personnesMajeurs);
     }
 
 }
