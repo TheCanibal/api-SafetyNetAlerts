@@ -15,7 +15,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @Repository
 public class MedicalRecordsRepositoryImpl implements MedicalRecordsRepository {
     ObjectMapper mapper = new ObjectMapper();
-    List<MedicalRecords> listMedicalToFill;
+    ListMedicalRecords listMedicalToFill;
+    List<MedicalRecords> listMedicalRecords;
 
     public ListMedicalRecords findAll() throws IOException {
 	mapper.findAndRegisterModules();
@@ -25,17 +26,18 @@ public class MedicalRecordsRepositoryImpl implements MedicalRecordsRepository {
 	return medicalRecords;
     }
 
-    public List<MedicalRecords> findByLastName(String lastName) throws IOException {
-	listMedicalToFill = new ArrayList<MedicalRecords>();
+    public ListMedicalRecords findByLastName(String lastName) throws IOException {
+	listMedicalToFill = new ListMedicalRecords();
+	listMedicalRecords = new ArrayList<MedicalRecords>();
 	mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 	File file = new File("D:\\workspace\\git\\apiForSNA\\src\\main\\resources\\data.json");
 	ListMedicalRecords medicalRecords = mapper.readValue(file, ListMedicalRecords.class);
 	for (MedicalRecords mr : medicalRecords.getListMedicalrecords()) {
 	    if (mr.getLastName().equals(lastName)) {
-		listMedicalToFill.add(mr);
+		listMedicalRecords.add(mr);
 	    }
-
 	}
+	listMedicalToFill.setListMedicalrecords(listMedicalRecords);
 	return listMedicalToFill;
     }
 

@@ -34,20 +34,4 @@ public class MedicalRecordController {
 	medicalRecordsFiltres.setFilters(filtres);
 	return medicalRecordsFiltres;
     }
-
-    /**
-     * Read - Get all persons
-     * 
-     * @return - A list of persons full filled
-     * @throws IOException
-     */
-    @GetMapping("/medicalrecordsFiltre")
-    public MappingJacksonValue getFilteredMedicalRecords() throws IOException {
-	ListMedicalRecords listMedicalRecords = medicalRecordService.getMedicalRecords();
-	SimpleBeanPropertyFilter monFiltre = SimpleBeanPropertyFilter.serializeAllExcept("firstName", "medications");
-	FilterProvider filtres = new SimpleFilterProvider().addFilter("filtreDynamiqueMedic", monFiltre);
-	MappingJacksonValue medicalRecordsFiltres = new MappingJacksonValue(listMedicalRecords);
-	medicalRecordsFiltres.setFilters(filtres);
-	return medicalRecordsFiltres;
-    }
 }

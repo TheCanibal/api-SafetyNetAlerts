@@ -1,7 +1,5 @@
 package com.APISafetyNetAlerts.apiForSNA.model;
 
-import java.util.Objects;
-
 import com.fasterxml.jackson.annotation.JsonFilter;
 import com.fasterxml.jackson.annotation.JsonRootName;
 
@@ -23,6 +21,8 @@ public class Person {
     private String phone;
 
     private String email;
+
+    private long age;
 
     public Person() {
 
@@ -95,23 +95,12 @@ public class Person {
 	this.email = email;
     }
 
-    @Override
-    public int hashCode() {
-	return Objects.hash(address, city, email, firstName, lastName, phone, zip);
+    public long getAge() {
+	return age;
     }
 
-    @Override
-    public boolean equals(Object obj) {
-	if (this == obj)
-	    return true;
-	if (obj == null)
-	    return false;
-	if (getClass() != obj.getClass())
-	    return false;
-	Person other = (Person) obj;
-	return Objects.equals(address, other.address) && Objects.equals(city, other.city)
-		&& Objects.equals(email, other.email) && Objects.equals(firstName, other.firstName)
-		&& Objects.equals(lastName, other.lastName) && Objects.equals(phone, other.phone) && zip == other.zip;
+    public void setAge(long age) {
+	this.age = age;
     }
 
 }
