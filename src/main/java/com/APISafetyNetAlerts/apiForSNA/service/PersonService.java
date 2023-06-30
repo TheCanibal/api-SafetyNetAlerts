@@ -7,9 +7,10 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.APISafetyNetAlerts.apiForSNA.model.ListPersons;
+import com.APISafetyNetAlerts.apiForSNA.model.ListPerson;
 import com.APISafetyNetAlerts.apiForSNA.model.Person;
 import com.APISafetyNetAlerts.apiForSNA.repository.PersonRepository;
+import com.APISafetyNetAlerts.apiForSNA.restModel.ListPersonAdaptative;
 
 @Service
 public class PersonService {
@@ -17,12 +18,20 @@ public class PersonService {
     @Autowired
     private PersonRepository personRepository;
 
-    public ListPersons getPersons() throws IOException {
-	return personRepository.findAll();
+    public ListPerson getPersons() throws IOException {
+	return personRepository.findAllPersons();
     }
 
-    public ListPersons getPersonsByAdress(String address) throws IOException {
-	return personRepository.findByAddress(address);
+    public ListPerson getPersonsByAdress(String address) throws IOException {
+	return personRepository.findByAddressPersons(address);
+    }
+
+    public ListPersonAdaptative getPersonsAdaptative() throws IOException {
+	return personRepository.findAllPersonAdaptative();
+    }
+
+    public ListPersonAdaptative getPersonsAdaptativeByAdress(String address) throws IOException {
+	return personRepository.findByAddressPersonAdaptative(address);
     }
 
     public List<String> getPhoneNumber(List<Person> listPersons) throws IOException {

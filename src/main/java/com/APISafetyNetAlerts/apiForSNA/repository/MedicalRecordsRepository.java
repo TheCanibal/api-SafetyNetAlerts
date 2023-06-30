@@ -8,7 +8,7 @@ import com.APISafetyNetAlerts.apiForSNA.model.ListMedicalRecords;
 
 @Repository
 public interface MedicalRecordsRepository {
-    ListMedicalRecords findAll() throws IOException;
+    public ListMedicalRecords findAll() throws IOException;
 
-    ListMedicalRecords findByLastName(String lastName) throws IOException;
+    public ListMedicalRecords findByLastName(String lastName) throws IOException;
 }

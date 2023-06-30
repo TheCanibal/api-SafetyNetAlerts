@@ -12,8 +12,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.APISafetyNetAlerts.apiForSNA.model.ListPersons;
+import com.APISafetyNetAlerts.apiForSNA.model.ListPerson;
 import com.APISafetyNetAlerts.apiForSNA.model.Person;
+import com.APISafetyNetAlerts.apiForSNA.restModel.PersonAdaptative;
 import com.APISafetyNetAlerts.apiForSNA.service.FireStationService;
 import com.APISafetyNetAlerts.apiForSNA.service.FirestationPersonService;
 import com.APISafetyNetAlerts.apiForSNA.service.MedicalRecordService;
@@ -44,7 +45,7 @@ public class PersonController {
      */
     @GetMapping("/persons")
     public MappingJacksonValue getPersons() throws IOException {
-	ListPersons listPersons = personService.getPersons();
+	ListPerson listPersons = personService.getPersons();
 	SimpleBeanPropertyFilter monFiltre = SimpleBeanPropertyFilter.serializeAllExcept("");
 	FilterProvider filtres = new SimpleFilterProvider().addFilter("filtreDynamiquePerson", monFiltre);
 	MappingJacksonValue personFiltres = new MappingJacksonValue(listPersons);
@@ -63,19 +64,20 @@ public class PersonController {
     @GetMapping("/childAlert")
     public MappingJacksonValue getChildByAddress(@RequestParam String address) throws IOException {
 	// a list of persons to send
-	List<Person> listToSend = new ArrayList<Person>();
+	List<PersonAdaptative> listToSend = new ArrayList<PersonAdaptative>();
 
 	// a list of persons who live at a certain address
-	List<Person> listPersonsByAddress = personService.getPersonsByAdress(address).getListPersons();
+	List<PersonAdaptative> listPersonsByAddress = personService.getPersonsAdaptativeByAdress(address)
+		.getListPersons();
 
 	// a list of minors persons (can be empty)
-	List<Person> minorsList = medicalRecordService.getListOfMinorsPersons(listPersonsByAddress);
+	List<PersonAdaptative> minorsList = medicalRecordService.getListOfMinorsPersons(listPersonsByAddress);
 
 	// a list of majors persons (can be empty)
-	List<Person> majorsList = medicalRecordService.getListOfMajorsPersons(listPersonsByAddress);
+	List<PersonAdaptative> majorsList = medicalRecordService.getListOfMajorsPersons(listPersonsByAddress);
 
 	// for each minors, add to the list
-	for (Person p : minorsList) {
+	for (PersonAdaptative p : minorsList) {
 	    listToSend.add(p);
 	}
 	// if there are minors, add other member of the house, else the list stay empty
@@ -103,8 +105,7 @@ public class PersonController {
     public MappingJacksonValue getPhoneNumberDeservedByFirestations(@RequestParam int firestation) throws IOException {
 
 	// list of persons covered by a firestation
-	List<Person> listPersonsCoveredByStation = firestationPersonService.getPersonsAtFireStationAddress(firestation)
-		.getListPersons();
+	List<Person> listPersonsCoveredByStation = firestationPersonService.getPersonsAtFireStationAddress(firestation);
 
 	// list of phone number without duplicates
 	Set<String> setPhoneNumber = new HashSet<String>();

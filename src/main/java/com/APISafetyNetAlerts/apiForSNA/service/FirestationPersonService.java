@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.APISafetyNetAlerts.apiForSNA.model.FireStation;
-import com.APISafetyNetAlerts.apiForSNA.model.ListPersons;
 import com.APISafetyNetAlerts.apiForSNA.model.Person;
 import com.APISafetyNetAlerts.apiForSNA.repository.FireStationRepository;
 import com.APISafetyNetAlerts.apiForSNA.repository.PersonRepository;
@@ -23,16 +22,14 @@ public class FirestationPersonService {
     @Autowired
     private FireStationRepository firestationRepository;
 
-    public ListPersons getPersonsAtFireStationAddress(int stationNumber) throws IOException {
+    public List<Person> getPersonsAtFireStationAddress(int stationNumber) throws IOException {
 	List<FireStation> listFireStations = firestationRepository.findByStation(stationNumber).getListFirestation();
-	List<Person> listPersons = personRepository.findAll().getListPersons();
+	List<Person> listPersons = personRepository.findAllPersons().getListPersons();
 	List<Person> emptyList = new ArrayList<Person>();
-	ListPersons listPersonsToReturn = new ListPersons();
 	emptyList.addAll(listPersons.stream()
 		.filter(p -> listFireStations.stream().anyMatch(fs -> p.getAddress().equals(fs.getAddress())))
 		.collect(Collectors.toList()));
-	listPersonsToReturn.setListPersons(emptyList);
-	return listPersonsToReturn;
+	return emptyList;
     }
 
 }

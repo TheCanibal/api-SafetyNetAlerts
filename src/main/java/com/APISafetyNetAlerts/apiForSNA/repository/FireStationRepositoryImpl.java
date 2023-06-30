@@ -38,4 +38,9 @@ public class FireStationRepositoryImpl implements FireStationRepository {
 	return listFirestations;
     }
 
+    public ListFireStations findByAddress(String address) throws IOException {
+
+	return null;
+    }
+
 }

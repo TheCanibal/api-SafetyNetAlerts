@@ -1,12 +1,10 @@
-package com.APISafetyNetAlerts.apiForSNA.model;
+package com.APISafetyNetAlerts.apiForSNA.restModel;
 
 import com.fasterxml.jackson.annotation.JsonFilter;
-import com.fasterxml.jackson.annotation.JsonRootName;
 
 @JsonFilter("filtreDynamiquePerson")
 
-@JsonRootName(value = "persons")
-public class Person {
+public class PersonAdaptative {
 
     private String firstName;
 
@@ -22,20 +20,13 @@ public class Person {
 
     private String email;
 
-    public Person() {
+    private long age;
 
-    }
+    private int firestationNumber;
 
-    public Person(String firstName, String lastName, String address, String city, int zip, String phone, String email,
-	    long age, int station) {
-	this.firstName = firstName;
-	this.lastName = lastName;
-	this.address = address;
-	this.city = city;
-	this.zip = zip;
-	this.phone = phone;
-	this.email = email;
-    }
+    private String[] medications;
+
+    private String[] allergies;
 
     public String getFirstName() {
 	return firstName;
@@ -92,4 +83,37 @@ public class Person {
     public void setEmail(String email) {
 	this.email = email;
     }
+
+    public long getAge() {
+	return age;
+    }
+
+    public void setAge(long age) {
+	this.age = age;
+    }
+
+    public int getFirestationNumber() {
+	return firestationNumber;
+    }
+
+    public void setFirestationNumber(int firestationNumber) {
+	this.firestationNumber = firestationNumber;
+    }
+
+    public String[] getMedications() {
+	return medications;
+    }
+
+    public void setMedications(String[] medications) {
+	this.medications = medications;
+    }
+
+    public String[] getAllergies() {
+	return allergies;
+    }
+
+    public void setAllergies(String[] allergies) {
+	this.allergies = allergies;
+    }
+
 }

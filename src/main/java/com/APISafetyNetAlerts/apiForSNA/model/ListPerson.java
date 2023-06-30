@@ -4,15 +4,17 @@ import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class ListPersons {
+public class ListPerson {
 
     @JsonProperty("persons")
-    private List<Person> listPersons;
+    List<Person> listPersons;
 
-    public ListPersons() {
+    public ListPerson() {
+	super();
     }
 
-    public ListPersons(List<Person> listPersons) {
+    public ListPerson(List<Person> listPersons) {
+	super();
 	this.listPersons = listPersons;
     }
 
