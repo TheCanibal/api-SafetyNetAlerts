@@ -13,11 +13,6 @@ public class ListPerson {
 	super();
     }
 
-    public ListPerson(List<Person> listPersons) {
-	super();
-	this.listPersons = listPersons;
-    }
-
     public List<Person> getListPersons() {
 	return listPersons;
     }

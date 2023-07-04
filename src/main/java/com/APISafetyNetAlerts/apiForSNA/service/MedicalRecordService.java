@@ -14,6 +14,13 @@ import com.APISafetyNetAlerts.apiForSNA.model.MedicalRecords;
 import com.APISafetyNetAlerts.apiForSNA.repository.MedicalRecordsRepository;
 import com.APISafetyNetAlerts.apiForSNA.restModel.PersonAdaptative;
 
+/**
+ * 
+ * Service medicalrecord that take data from repository to send it to the
+ * controller
+ *
+ */
+
 @Service
 public class MedicalRecordService {
 
@@ -21,11 +28,7 @@ public class MedicalRecordService {
     private MedicalRecordsRepository medicalRecordRepository;
 
     public ListMedicalRecords getMedicalRecords() throws IOException {
-	return medicalRecordRepository.findAll();
-    }
-
-    public ListMedicalRecords getMedicalRecordsByLastName(String lastName) throws IOException {
-	return medicalRecordRepository.findByLastName(lastName);
+	return medicalRecordRepository.findAllMedicalRecords();
     }
 
     public int getNumberOfMinorsPersons(List<PersonAdaptative> listPersons) throws IOException {
@@ -34,7 +37,8 @@ public class MedicalRecordService {
 	long ageDiff = 0;
 	int personnesMineures = 0;
 
-	List<MedicalRecords> listMedicalRecords = medicalRecordRepository.findAll().getListMedicalrecords();
+	List<MedicalRecords> listMedicalRecords = medicalRecordRepository.findAllMedicalRecords()
+		.getListMedicalrecords();
 	for (PersonAdaptative p : listPersons) {
 	    for (MedicalRecords mr : listMedicalRecords) {
 		if (p.getFirstName().equals(mr.getFirstName()) && p.getLastName().equals(mr.getLastName())) {
@@ -56,7 +60,8 @@ public class MedicalRecordService {
 	long ageDiff = 0;
 	int personnesMajeures = 0;
 
-	List<MedicalRecords> listMedicalRecords = medicalRecordRepository.findAll().getListMedicalrecords();
+	List<MedicalRecords> listMedicalRecords = medicalRecordRepository.findAllMedicalRecords()
+		.getListMedicalrecords();
 	for (PersonAdaptative p : listPersons) {
 	    for (MedicalRecords mr : listMedicalRecords) {
 		if (p.getFirstName().equals(mr.getFirstName()) && p.getLastName().equals(mr.getLastName())) {
@@ -78,7 +83,8 @@ public class MedicalRecordService {
 	long ageDiff = 0;
 	List<PersonAdaptative> minorsList = new ArrayList<PersonAdaptative>();
 
-	List<MedicalRecords> listMedicalRecords = medicalRecordRepository.findAll().getListMedicalrecords();
+	List<MedicalRecords> listMedicalRecords = medicalRecordRepository.findAllMedicalRecords()
+		.getListMedicalrecords();
 	for (PersonAdaptative p : listPersons) {
 	    for (MedicalRecords mr : listMedicalRecords) {
 		if (mr.getFirstName().equals(p.getFirstName())) {
@@ -101,7 +107,8 @@ public class MedicalRecordService {
 	long ageDiff = 0;
 	List<PersonAdaptative> majorsList = new ArrayList<PersonAdaptative>();
 
-	List<MedicalRecords> listMedicalRecords = medicalRecordRepository.findAll().getListMedicalrecords();
+	List<MedicalRecords> listMedicalRecords = medicalRecordRepository.findAllMedicalRecords()
+		.getListMedicalrecords();
 	for (PersonAdaptative p : listPersons) {
 	    for (MedicalRecords mr : listMedicalRecords) {
 		if (mr.getFirstName().equals(p.getFirstName())) {
@@ -125,7 +132,8 @@ public class MedicalRecordService {
 	long age = 0;
 	List<PersonAdaptative> ageList = new ArrayList<PersonAdaptative>();
 
-	List<MedicalRecords> listMedicalRecords = medicalRecordRepository.findAll().getListMedicalrecords();
+	List<MedicalRecords> listMedicalRecords = medicalRecordRepository.findAllMedicalRecords()
+		.getListMedicalrecords();
 
 	for (PersonAdaptative p : listPersons) {
 	    for (MedicalRecords mr : listMedicalRecords) {
@@ -147,7 +155,8 @@ public class MedicalRecordService {
 	    throws IOException {
 
 	List<PersonAdaptative> listToReturn = new ArrayList<PersonAdaptative>();
-	List<MedicalRecords> listMedicalRecord = medicalRecordRepository.findAll().getListMedicalrecords();
+	List<MedicalRecords> listMedicalRecord = medicalRecordRepository.findAllMedicalRecords()
+		.getListMedicalrecords();
 
 	for (PersonAdaptative p : listPersons) {
 	    for (MedicalRecords mr : listMedicalRecord) {

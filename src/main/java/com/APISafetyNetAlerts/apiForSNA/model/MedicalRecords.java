@@ -2,10 +2,7 @@ package com.APISafetyNetAlerts.apiForSNA.model;
 
 import java.time.LocalDate;
 
-import com.fasterxml.jackson.annotation.JsonFilter;
 import com.fasterxml.jackson.annotation.JsonFormat;
-
-@JsonFilter("filtreDynamiqueMedic")
 
 public class MedicalRecords {
 
@@ -21,15 +18,6 @@ public class MedicalRecords {
     private String[] allergies;
 
     public MedicalRecords() {
-    }
-
-    public MedicalRecords(String firstName, String lastName, LocalDate birthdate, String[] medications,
-	    String[] allergies) {
-	this.firstName = firstName;
-	this.lastName = lastName;
-	this.birthdate = birthdate;
-	this.medications = medications;
-	this.allergies = allergies;
     }
 
     public String getFirstName() {

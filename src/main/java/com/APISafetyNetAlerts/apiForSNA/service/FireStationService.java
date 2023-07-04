@@ -12,6 +12,13 @@ import com.APISafetyNetAlerts.apiForSNA.model.ListFireStations;
 import com.APISafetyNetAlerts.apiForSNA.repository.FireStationRepository;
 import com.APISafetyNetAlerts.apiForSNA.restModel.PersonAdaptative;
 
+/**
+ * 
+ * Service firestation that take data from repository to send it to the
+ * controller
+ *
+ */
+
 @Service
 public class FireStationService {
 
@@ -19,22 +26,18 @@ public class FireStationService {
     private FireStationRepository fireStationRepository;
 
     public ListFireStations getFireStations() throws IOException {
-	return fireStationRepository.findAll();
+	return fireStationRepository.findAllFirestation();
     }
 
     public ListFireStations getFirestationsByStationNumber(int station) throws IOException {
-	return fireStationRepository.findByStation(station);
-    }
-
-    public ListFireStations getFirestationsByStationAddress(String address) throws IOException {
-	return fireStationRepository.findByAddress(address);
+	return fireStationRepository.findFireStationByStationNumber(station);
     }
 
     public List<PersonAdaptative> getStationNumberByListPersons(List<PersonAdaptative> listPersons) throws IOException {
 
 	List<PersonAdaptative> listToReturn = new ArrayList<PersonAdaptative>();
 
-	List<FireStation> listFireStation = fireStationRepository.findAll().getListFirestation();
+	List<FireStation> listFireStation = fireStationRepository.findAllFirestation().getListFirestation();
 
 	for (PersonAdaptative p : listPersons) {
 	    for (FireStation fs : listFireStation) {
@@ -47,4 +50,5 @@ public class FireStationService {
 
 	return listToReturn;
     }
+
 }

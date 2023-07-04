@@ -12,10 +12,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.APISafetyNetAlerts.apiForSNA.model.ListPerson;
 import com.APISafetyNetAlerts.apiForSNA.model.Person;
 import com.APISafetyNetAlerts.apiForSNA.restModel.PersonAdaptative;
-import com.APISafetyNetAlerts.apiForSNA.service.FireStationService;
 import com.APISafetyNetAlerts.apiForSNA.service.FirestationPersonService;
 import com.APISafetyNetAlerts.apiForSNA.service.MedicalRecordService;
 import com.APISafetyNetAlerts.apiForSNA.service.PersonService;
@@ -29,32 +27,13 @@ public class PersonController {
     private PersonService personService;
 
     @Autowired
-    private FireStationService fireStationService;
-
-    @Autowired
     private MedicalRecordService medicalRecordService;
 
     @Autowired
     private FirestationPersonService firestationPersonService;
 
     /**
-     * Read - Get all persons
-     * 
-     * @return - A list of persons full filled
-     * @throws IOException
-     */
-    @GetMapping("/persons")
-    public MappingJacksonValue getPersons() throws IOException {
-	ListPerson listPersons = personService.getPersons();
-	SimpleBeanPropertyFilter monFiltre = SimpleBeanPropertyFilter.serializeAllExcept("");
-	FilterProvider filtres = new SimpleFilterProvider().addFilter("filtreDynamiquePerson", monFiltre);
-	MappingJacksonValue personFiltres = new MappingJacksonValue(listPersons);
-	personFiltres.setFilters(filtres);
-	return personFiltres;
-    }
-
-    /**
-     * Read - Get all child (under 18) who live at a certain address
+     * Read - Get all child (under 18) who live at an address
      * 
      * @param address address where live child or children
      * @return - A list of child with the other members of a house or an empty list
@@ -77,9 +56,8 @@ public class PersonController {
 	List<PersonAdaptative> majorsList = medicalRecordService.getListOfMajorsPersons(listPersonsByAddress);
 
 	// for each minors, add to the list
-	for (PersonAdaptative p : minorsList) {
-	    listToSend.add(p);
-	}
+	listToSend.addAll(minorsList);
+
 	// if there are minors, add other member of the house, else the list stay empty
 	if (!listToSend.isEmpty()) {
 	    listToSend.addAll(majorsList);
@@ -94,8 +72,7 @@ public class PersonController {
     }
 
     /**
-     * Read - Get all phone numbers of persons who are deserved by a certain
-     * firestation
+     * Read - Get all phone numbers of persons who are deserved by a firestation
      * 
      * @param firestation Firestation number
      * @return - A list of phone number
@@ -120,4 +97,70 @@ public class PersonController {
 	personFiltres.setFilters(filtres);
 	return personFiltres;
     }
+
+    /**
+     * Read - Get all persons info with first name and last name
+     *
+     * 
+     * @param firstName first name of person
+     * @param lastName  last name of person
+     * @return - A list of persons
+     * @throws IOException
+     */
+    @GetMapping("/personInfo")
+    public MappingJacksonValue getPersonInfoByFirstNameAndLastName(@RequestParam String firstName,
+	    @RequestParam String lastName) throws IOException {
+
+	// list of persons covered by a firestation
+	List<PersonAdaptative> listPersonsByLastName = personService.getPersonsAdaptativeByLastName(lastName)
+		.getListPersons();
+
+	List<PersonAdaptative> listToSend = new ArrayList<PersonAdaptative>();
+
+	for (PersonAdaptative p : listPersonsByLastName) {
+	    if (p.getFirstName().equals(firstName) && p.getLastName().equals(lastName)) {
+		listToSend.add(p);
+	    } else if (p.getLastName().equals(lastName) && !listToSend.contains(p)) {
+		listToSend.add(p);
+	    }
+	}
+
+	listToSend = medicalRecordService.getListOfPersonsWithAge(listToSend);
+	listToSend = medicalRecordService.getListPersonsWithTheirMedicalBackgrounds(listToSend);
+
+	SimpleBeanPropertyFilter monFiltre = SimpleBeanPropertyFilter.filterOutAllExcept("lastName", "address", "age",
+		"mail", "medications", "allergies");
+	FilterProvider filtres = new SimpleFilterProvider().addFilter("filtreDynamiquePerson", monFiltre);
+	MappingJacksonValue personFiltres = new MappingJacksonValue(listToSend);
+	personFiltres.setFilters(filtres);
+	return personFiltres;
+    }
+
+    /**
+     * Read - Get all email by city
+     * 
+     * 
+     * @param city city
+     * @return - A list of email
+     * @throws IOException
+     */
+    @GetMapping("/communityEmail")
+    public MappingJacksonValue getPersonsMailByCity(@RequestParam String city) throws IOException {
+
+	List<Person> listToSend = new ArrayList<Person>();
+	List<Person> listPersonsByCity = personService.getPersonsByCity(city).getListPersons();
+
+	for (Person p : listPersonsByCity) {
+	    if (p.getCity().equals(city)) {
+		listToSend.add(p);
+	    }
+	}
+
+	SimpleBeanPropertyFilter monFiltre = SimpleBeanPropertyFilter.filterOutAllExcept("email");
+	FilterProvider filtres = new SimpleFilterProvider().addFilter("filtreDynamiquePerson", monFiltre);
+	MappingJacksonValue personFiltres = new MappingJacksonValue(listToSend);
+	personFiltres.setFilters(filtres);
+	return personFiltres;
+    }
+
 }

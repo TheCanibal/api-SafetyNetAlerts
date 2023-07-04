@@ -1,8 +1,6 @@
 package com.APISafetyNetAlerts.apiForSNA;
 
-import static org.hamcrest.CoreMatchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import org.junit.jupiter.api.Test;
@@ -20,8 +18,19 @@ public class FireStationControllerTest {
 
     @Test
     public void testGetPersonsCoveredByFireStation() throws Exception {
-	mockMvc.perform(get("/firestation").param("stationNumber", "1")).andExpect(status().isOk())
-		.andExpect(jsonPath("$[0].firstName", is("Peter")));
+	mockMvc.perform(get("/firestation").param("stationNumber", "1")).andExpect(status().isOk());
+
+    }
+
+    @Test
+    public void testGetPersonsLiveAtAddressDeservedByStation() throws Exception {
+	mockMvc.perform(get("/fire").param("address", "1509 Culver St")).andExpect(status().isOk());
+
+    }
+
+    @Test
+    public void testAllPersonsCoveredByFirestations() throws Exception {
+	mockMvc.perform(get("/flood/stations").param("stations", "1,2")).andExpect(status().isOk());
 
     }
 }

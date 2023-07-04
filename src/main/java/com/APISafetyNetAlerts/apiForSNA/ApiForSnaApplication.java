@@ -13,9 +13,9 @@ import org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfigurat
 import com.APISafetyNetAlerts.apiForSNA.controller.FireStationController;
 import com.APISafetyNetAlerts.apiForSNA.controller.MedicalRecordController;
 import com.APISafetyNetAlerts.apiForSNA.controller.PersonController;
-import com.APISafetyNetAlerts.apiForSNA.model.MedicalRecords;
 import com.APISafetyNetAlerts.apiForSNA.restModel.PersonAdaptative;
 import com.APISafetyNetAlerts.apiForSNA.service.FireStationService;
+import com.APISafetyNetAlerts.apiForSNA.service.FirestationPersonService;
 import com.APISafetyNetAlerts.apiForSNA.service.MedicalRecordService;
 import com.APISafetyNetAlerts.apiForSNA.service.PersonService;
 
@@ -36,10 +36,13 @@ public class ApiForSnaApplication implements CommandLineRunner {
     FireStationController fsc;
 
     @Autowired
-    PersonService personService;
+    PersonService ps;
 
     @Autowired
-    FireStationService fireStationService;
+    FireStationService fss;
+
+    @Autowired
+    FirestationPersonService fps;
 
     public static void main(String[] args) {
 	SpringApplication.run(ApiForSnaApplication.class, args);
@@ -48,10 +51,11 @@ public class ApiForSnaApplication implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
 
-	List<MedicalRecords> lmr = mrs.getMedicalRecords().getListMedicalrecords();
-	List<PersonAdaptative> lp = personService.getPersonsAdaptative().getListPersons();
-	System.out.println(mrs.getNumberOfMinorsPersons(lp));
-	System.out.println(mrs.getNumberOfMajorsPersons(lp));
+	int[] stations = { 1, -6 };
+	List<PersonAdaptative> lpa = fps.getPersonsByListFireStations(stations);
+	for (PersonAdaptative lpaa : lpa) {
+	    System.out.println(lpaa.getFirstName());
+	}
 
     }
 

@@ -12,10 +12,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.APISafetyNetAlerts.apiForSNA.model.FireStation;
-import com.APISafetyNetAlerts.apiForSNA.model.ListFireStations;
 import com.APISafetyNetAlerts.apiForSNA.restModel.ListPersonAdaptative;
 import com.APISafetyNetAlerts.apiForSNA.restModel.PersonAdaptative;
 import com.APISafetyNetAlerts.apiForSNA.service.FireStationService;
+import com.APISafetyNetAlerts.apiForSNA.service.FirestationPersonService;
 import com.APISafetyNetAlerts.apiForSNA.service.MedicalRecordService;
 import com.APISafetyNetAlerts.apiForSNA.service.PersonService;
 import com.fasterxml.jackson.databind.ser.FilterProvider;
@@ -32,28 +32,15 @@ public class FireStationController {
     private PersonService personService;
 
     @Autowired
+    private FirestationPersonService firestationPersonService;
+
+    @Autowired
     private MedicalRecordService medicalRecordService;
 
     /**
-     * Read - Get all firestations
+     * Read - Get all persons that are deserved by a station
      * 
-     * @return - A List of firestations full filled
-     * @throws IOException
-     */
-    @GetMapping("/firestations")
-    public MappingJacksonValue getFireStations() throws IOException {
-	ListFireStations listFireStations = fireStationService.getFireStations();
-	SimpleBeanPropertyFilter monFiltre = SimpleBeanPropertyFilter.serializeAllExcept("");
-	FilterProvider filtres = new SimpleFilterProvider().addFilter("filtreDynamique", monFiltre);
-	MappingJacksonValue fireStationsFiltres = new MappingJacksonValue(listFireStations);
-	fireStationsFiltres.setFilters(filtres);
-	return fireStationsFiltres;
-    }
-
-    /**
-     * Read - Get all persons that are deserved at their address by a station
-     * 
-     * @param stationNumber number of a firestaion
+     * @param stationNumber firestation number
      * @return - A List of Persons that are deserved by a certain firestation and
      *         the number of minors and majors persons
      * @throws IOException
@@ -86,13 +73,15 @@ public class FireStationController {
 	personFiltres.setFilters(filtres);
 	return personFiltres;
     }
-    /*
-     * /** Read - Get all persons that are deserved at their address by a station
+
+    /**
+     * Read - Get all persons who live at an address and the firestation number that
+     * deserved the address
      * 
-     * @param stationNumber number of a firestaion
+     * @param address address of a person
      * 
-     * @return - A List of Persons that are deserved by a certain firestation and
-     * the number of minors and majors persons
+     * @return - A List of Persons who live at the address and the firestation
+     *         number that deserved the address
      * 
      * @throws IOException
      */
@@ -110,7 +99,34 @@ public class FireStationController {
 	listToSend = medicalRecordService.getListPersonsWithTheirMedicalBackgrounds(listToSend);
 	listToSend = fireStationService.getStationNumberByListPersons(listToSend);
 
-	SimpleBeanPropertyFilter monFiltre = SimpleBeanPropertyFilter.filterOutAllExcept("firstName", "phone",
+	SimpleBeanPropertyFilter monFiltre = SimpleBeanPropertyFilter.filterOutAllExcept("lastName", "phone",
+		"firestationNumber", "age", "medications", "allergies");
+	FilterProvider filtres = new SimpleFilterProvider().addFilter("filtreDynamiquePerson", monFiltre);
+	MappingJacksonValue personFiltres = new MappingJacksonValue(listToSend);
+	personFiltres.setFilters(filtres);
+	return personFiltres;
+    }
+
+    /**
+     * Read - Get all persons that are deserved by a firestation
+     * 
+     * @param stations array of stations
+     * 
+     * @return - A List of Persons that are deserved by a firestations
+     * 
+     * @throws IOException
+     */
+
+    @GetMapping("/flood/stations")
+    public MappingJacksonValue getAllPersonsCoveredByFirestations(@RequestParam int[] stations) throws IOException {
+
+	List<PersonAdaptative> listToSend = firestationPersonService.getPersonsByListFireStations(stations);
+
+	listToSend = medicalRecordService.getListOfPersonsWithAge(listToSend);
+	listToSend = medicalRecordService.getListPersonsWithTheirMedicalBackgrounds(listToSend);
+	listToSend = fireStationService.getStationNumberByListPersons(listToSend);
+
+	SimpleBeanPropertyFilter monFiltre = SimpleBeanPropertyFilter.filterOutAllExcept("lastName", "phone",
 		"firestationNumber", "age", "medications", "allergies");
 	FilterProvider filtres = new SimpleFilterProvider().addFilter("filtreDynamiquePerson", monFiltre);
 	MappingJacksonValue personFiltres = new MappingJacksonValue(listToSend);

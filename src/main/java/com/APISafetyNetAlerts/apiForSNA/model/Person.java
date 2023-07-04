@@ -1,11 +1,9 @@
 package com.APISafetyNetAlerts.apiForSNA.model;
 
 import com.fasterxml.jackson.annotation.JsonFilter;
-import com.fasterxml.jackson.annotation.JsonRootName;
 
 @JsonFilter("filtreDynamiquePerson")
 
-@JsonRootName(value = "persons")
 public class Person {
 
     private String firstName;
@@ -24,17 +22,6 @@ public class Person {
 
     public Person() {
 
-    }
-
-    public Person(String firstName, String lastName, String address, String city, int zip, String phone, String email,
-	    long age, int station) {
-	this.firstName = firstName;
-	this.lastName = lastName;
-	this.address = address;
-	this.city = city;
-	this.zip = zip;
-	this.phone = phone;
-	this.email = email;
     }
 
     public String getFirstName() {

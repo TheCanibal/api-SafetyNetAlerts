@@ -12,10 +12,6 @@ public class ListFireStations {
     public ListFireStations() {
     }
 
-    public ListFireStations(List<FireStation> listFirestation) {
-	this.listFirestation = listFirestation;
-    }
-
     public List<FireStation> getListFirestation() {
 	return listFirestation;
     }

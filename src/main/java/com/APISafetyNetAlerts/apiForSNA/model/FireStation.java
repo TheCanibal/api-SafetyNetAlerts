@@ -1,24 +1,12 @@
 package com.APISafetyNetAlerts.apiForSNA.model;
 
-import com.fasterxml.jackson.annotation.JsonFilter;
-import com.fasterxml.jackson.annotation.JsonProperty;
-
-@JsonFilter("filtreDynamique")
-
 public class FireStation {
 
-    @JsonProperty("address")
     private String address;
 
-    @JsonProperty("station")
     private int station;
 
     public FireStation() {
-    }
-
-    public FireStation(String address, int station) {
-	this.address = address;
-	this.station = station;
     }
 
     public String getAddress() {

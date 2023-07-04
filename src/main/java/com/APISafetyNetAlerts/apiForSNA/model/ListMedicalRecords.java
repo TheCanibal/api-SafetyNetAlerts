@@ -12,10 +12,6 @@ public class ListMedicalRecords {
     public ListMedicalRecords() {
     }
 
-    public ListMedicalRecords(List<MedicalRecords> listMedicalrecords) {
-	this.listMedicalrecords = listMedicalrecords;
-    }
-
     public List<MedicalRecords> getListMedicalrecords() {
 	return listMedicalrecords;
     }

@@ -22,7 +22,18 @@ public class PersonControllerTest {
     }
 
     @Test
-    public void getPhoneNumberDeservedByFirestations() throws Exception {
+    public void testGetPhoneNumberDeservedByFirestations() throws Exception {
 	mockMvc.perform(get("/phoneAlert").param("firestation", "1")).andExpect(status().isOk());
+    }
+
+    @Test
+    public void testgetPersonInfoByFirstNameAndLastName() throws Exception {
+	mockMvc.perform(get("/personInfo").param("firstName", "John").param("lastName", "Boyd"))
+		.andExpect(status().isOk());
+    }
+
+    @Test
+    public void testgetPersonsMailByCity() throws Exception {
+	mockMvc.perform(get("/communityEmail").param("city", "Culver")).andExpect(status().isOk());
     }
 }
