@@ -5,6 +5,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Repository;
 
 import com.APISafetyNetAlerts.apiForSNA.model.ListPerson;
@@ -23,22 +25,72 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @Repository
 public class PersonRepositoryImpl implements PersonRepository {
 
-    ObjectMapper mapper = new ObjectMapper();
-    List<Person> listPersonsToFill;
-    List<PersonAdaptative> listPersonsAdaptativeToFill;
+    // ObjectMapper to be able to deserialize JSON
+    private ObjectMapper mapper = new ObjectMapper();
+    // List persons to load only one time
+    private ListPerson loadListPersons;
+    // List person to send
+    private ListPerson listPersonsToSend = new ListPerson();
+    // List persons adaptative to load only one time
+    private ListPersonAdaptative loadListPersonsAdaptative;
+    // List persons adaptative to send
+    private ListPersonAdaptative listPersonsAdaptativeToSend = new ListPersonAdaptative();
+    // List person to sort and to set
+    private List<Person> listPersonsSorted;
+    // List persons adaptative to sort and to set
+    private List<PersonAdaptative> listPersonsAdaptativeSorted;
+    // Logger
+    private static Logger logger = LogManager.getLogger(PersonRepositoryImpl.class);
+
+    /**
+     * Read JSON file if it has not been read already and load it
+     * 
+     * @return list of persons from file
+     */
+    public ListPerson loadPersons() {
+	mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+	if (loadListPersons == null) {
+	    try {
+		File file = new File("D:\\workspace\\git\\apiForSNA\\src\\main\\resources\\data.json");
+		loadListPersons = mapper.readValue(file, ListPerson.class);
+		logger.info("Le fichier est lu !");
+		return loadListPersons;
+	    } catch (IOException e) {
+		logger.error("Fichier introuvable");
+	    }
+	}
+	return loadListPersons;
+    }
+
+    /**
+     * Read JSON file if it has not been read already
+     * 
+     * @return list of person adaptative from file
+     */
+    public ListPersonAdaptative loadPersonsAdaptative() {
+	mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+	if (loadListPersonsAdaptative == null) {
+	    try {
+		File file = new File("D:\\workspace\\git\\apiForSNA\\src\\main\\resources\\data.json");
+		loadListPersonsAdaptative = mapper.readValue(file, ListPersonAdaptative.class);
+		logger.info("Le fichier est lu !");
+		return loadListPersonsAdaptative;
+	    } catch (IOException e) {
+		logger.error("Fichier introuvable");
+	    }
+	}
+	return loadListPersonsAdaptative;
+    }
 
     /**
      * Get all persons
      * 
      * @return a list of all persons
-     * @throws IOException
      */
     @Override
-    public ListPerson findAllPersons() throws IOException {
-	mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-	File file = new File("D:\\workspace\\git\\apiForSNA\\src\\main\\resources\\data.json");
-	ListPerson listPersons = mapper.readValue(file, ListPerson.class);
-	return listPersons;
+    public ListPerson findAllPersons() {
+	loadListPersons = loadPersons();
+	return loadListPersons;
     }
 
     /**
@@ -46,34 +98,29 @@ public class PersonRepositoryImpl implements PersonRepository {
      * 
      * @param city city where lives the person
      * @return a list of persons who lives in the city
-     * @throws IOException
      */
     @Override
-    public ListPerson findPersonsByCity(String city) throws IOException {
-	listPersonsToFill = new ArrayList<Person>();
-	mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-	File file = new File("D:\\workspace\\git\\apiForSNA\\src\\main\\resources\\data.json");
-	ListPerson listPersons = mapper.readValue(file, ListPerson.class);
-	for (Person p : listPersons.getListPersons()) {
+    public ListPerson findPersonsByCity(String city) {
+	loadListPersons = loadPersons();
+	listPersonsSorted = new ArrayList<Person>();
+	for (Person p : loadListPersons.getListPersons()) {
 	    if (p.getCity().equals(city)) {
-		listPersonsToFill.add(p);
+		listPersonsSorted.add(p);
 	    }
 	}
-	return listPersons;
+	listPersonsToSend.setListPersons(listPersonsSorted);
+	return listPersonsToSend;
     }
 
     /**
      * Get all persons
      * 
      * @return a list of all persons
-     * @throws IOException
      */
     @Override
-    public ListPersonAdaptative findAllPersonAdaptative() throws IOException {
-	mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-	File file = new File("D:\\workspace\\git\\apiForSNA\\src\\main\\resources\\data.json");
-	ListPersonAdaptative listPersons = mapper.readValue(file, ListPersonAdaptative.class);
-	return listPersons;
+    public ListPersonAdaptative findAllPersonAdaptative() {
+	loadListPersonsAdaptative = loadPersonsAdaptative();
+	return loadListPersonsAdaptative;
     }
 
     /**
@@ -81,21 +128,18 @@ public class PersonRepositoryImpl implements PersonRepository {
      * 
      * @param address address of a person
      * @return a list of persons who live at an address
-     * @throws IOException
      */
     @Override
-    public ListPersonAdaptative findPersonAdaptativeByAddress(String address) throws IOException {
-	listPersonsAdaptativeToFill = new ArrayList<PersonAdaptative>();
-	mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-	File file = new File("D:\\workspace\\git\\apiForSNA\\src\\main\\resources\\data.json");
-	ListPersonAdaptative listPersons = mapper.readValue(file, ListPersonAdaptative.class);
-	for (PersonAdaptative p : listPersons.getListPersons()) {
+    public ListPersonAdaptative findPersonAdaptativeByAddress(String address) {
+	loadListPersonsAdaptative = loadPersonsAdaptative();
+	listPersonsAdaptativeSorted = new ArrayList<PersonAdaptative>();
+	for (PersonAdaptative p : loadListPersonsAdaptative.getListPersons()) {
 	    if (p.getAddress().equals(address)) {
-		listPersonsAdaptativeToFill.add(p);
+		listPersonsAdaptativeSorted.add(p);
 	    }
 	}
-	listPersons.setListPersons(listPersonsAdaptativeToFill);
-	return listPersons;
+	listPersonsAdaptativeToSend.setListPersons(listPersonsAdaptativeSorted);
+	return listPersonsAdaptativeToSend;
     }
 
     /**
@@ -103,21 +147,18 @@ public class PersonRepositoryImpl implements PersonRepository {
      * 
      * @param city city where lives the person
      * @return a list of persons who lives in the city
-     * @throws IOException
      */
     @Override
-    public ListPersonAdaptative findPersonsByLastName(String lastName) throws IOException {
-	listPersonsAdaptativeToFill = new ArrayList<PersonAdaptative>();
-	mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-	File file = new File("D:\\workspace\\git\\apiForSNA\\src\\main\\resources\\data.json");
-	ListPersonAdaptative listPersons = mapper.readValue(file, ListPersonAdaptative.class);
-	for (PersonAdaptative p : listPersons.getListPersons()) {
+    public ListPersonAdaptative findPersonsAdaptativeByLastName(String lastName) {
+	loadListPersonsAdaptative = loadPersonsAdaptative();
+	listPersonsAdaptativeSorted = new ArrayList<PersonAdaptative>();
+	for (PersonAdaptative p : loadListPersonsAdaptative.getListPersons()) {
 	    if (p.getLastName().equals(lastName)) {
-		listPersonsAdaptativeToFill.add(p);
+		listPersonsAdaptativeSorted.add(p);
 	    }
 	}
-	listPersons.setListPersons(listPersonsAdaptativeToFill);
-	return listPersons;
+	listPersonsAdaptativeToSend.setListPersons(listPersonsAdaptativeSorted);
+	return listPersonsAdaptativeToSend;
     }
 
 }

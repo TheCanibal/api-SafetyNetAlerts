@@ -31,7 +31,7 @@ public class MedicalRecordService {
 	return medicalRecordRepository.findAllMedicalRecords();
     }
 
-    public int getNumberOfMinorsPersons(List<PersonAdaptative> listPersons) throws IOException {
+    public int getNumberOfMinorsPersons(List<PersonAdaptative> listPersons) {
 	LocalDate ld = LocalDate.now();
 	LocalDate bd;
 	long ageDiff = 0;
@@ -54,7 +54,7 @@ public class MedicalRecordService {
 	return personnesMineures;
     }
 
-    public int getNumberOfMajorsPersons(List<PersonAdaptative> listPersons) throws IOException {
+    public int getNumberOfMajorsPersons(List<PersonAdaptative> listPersons) {
 	LocalDate ld = LocalDate.now();
 	LocalDate bd;
 	long ageDiff = 0;
@@ -73,11 +73,10 @@ public class MedicalRecordService {
 		}
 	    }
 	}
-
 	return personnesMajeures;
     }
 
-    public List<PersonAdaptative> getListOfMinorsPersons(List<PersonAdaptative> listPersons) throws IOException {
+    public List<PersonAdaptative> getListOfMinorsPersons(List<PersonAdaptative> listPersons) {
 	LocalDate ld = LocalDate.now();
 	LocalDate bd;
 	long ageDiff = 0;
@@ -101,7 +100,7 @@ public class MedicalRecordService {
 	return minorsList;
     }
 
-    public List<PersonAdaptative> getListOfMajorsPersons(List<PersonAdaptative> listPersons) throws IOException {
+    public List<PersonAdaptative> getListOfMajorsPersons(List<PersonAdaptative> listPersons) {
 	LocalDate ld = LocalDate.now();
 	LocalDate bd;
 	long ageDiff = 0;
@@ -126,7 +125,7 @@ public class MedicalRecordService {
 
     }
 
-    public List<PersonAdaptative> getListOfPersonsWithAge(List<PersonAdaptative> listPersons) throws IOException {
+    public List<PersonAdaptative> getListOfPersonsWithAge(List<PersonAdaptative> listPersons) {
 	LocalDate ld = LocalDate.now();
 	LocalDate bd;
 	long age = 0;
@@ -151,8 +150,7 @@ public class MedicalRecordService {
 
     }
 
-    public List<PersonAdaptative> getListPersonsWithTheirMedicalBackgrounds(List<PersonAdaptative> listPersons)
-	    throws IOException {
+    public List<PersonAdaptative> getListPersonsWithTheirMedicalBackgrounds(List<PersonAdaptative> listPersons) {
 
 	List<PersonAdaptative> listToReturn = new ArrayList<PersonAdaptative>();
 	List<MedicalRecords> listMedicalRecord = medicalRecordRepository.findAllMedicalRecords()

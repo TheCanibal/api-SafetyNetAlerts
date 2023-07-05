@@ -6,6 +6,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.converter.json.MappingJacksonValue;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -32,6 +34,8 @@ public class PersonController {
     @Autowired
     private FirestationPersonService firestationPersonService;
 
+    private static Logger logger = LogManager.getLogger(PersonController.class);
+
     /**
      * Read - Get all child (under 18) who live at an address
      * 
@@ -42,6 +46,7 @@ public class PersonController {
      */
     @GetMapping("/childAlert")
     public MappingJacksonValue getChildByAddress(@RequestParam String address) throws IOException {
+
 	// a list of persons to send
 	List<PersonAdaptative> listToSend = new ArrayList<PersonAdaptative>();
 
@@ -69,6 +74,7 @@ public class PersonController {
 	MappingJacksonValue personFiltres = new MappingJacksonValue(listToSend);
 	personFiltres.setFilters(filtres);
 	return personFiltres;
+
     }
 
     /**

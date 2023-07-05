@@ -1,6 +1,5 @@
 package com.APISafetyNetAlerts.apiForSNA.service;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,15 +24,15 @@ public class FireStationService {
     @Autowired
     private FireStationRepository fireStationRepository;
 
-    public ListFireStations getFireStations() throws IOException {
+    public ListFireStations getFireStations() {
 	return fireStationRepository.findAllFirestation();
     }
 
-    public ListFireStations getFirestationsByStationNumber(int station) throws IOException {
+    public ListFireStations getFirestationsByStationNumber(int station) {
 	return fireStationRepository.findFireStationByStationNumber(station);
     }
 
-    public List<PersonAdaptative> getStationNumberByListPersons(List<PersonAdaptative> listPersons) throws IOException {
+    public List<PersonAdaptative> getStationNumberByListPersons(List<PersonAdaptative> listPersons) {
 
 	List<PersonAdaptative> listToReturn = new ArrayList<PersonAdaptative>();
 

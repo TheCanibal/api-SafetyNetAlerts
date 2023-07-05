@@ -19,7 +19,7 @@ public interface FireStationRepository {
      * @return list of all firestations
      * @throws IOException
      */
-    public ListFireStations findAllFirestation() throws IOException;
+    public ListFireStations findAllFirestation();
 
     /**
      * Get firestations by number
@@ -28,7 +28,7 @@ public interface FireStationRepository {
      * @return list of firestations with the number
      * @throws IOException
      */
-    public ListFireStations findFireStationByStationNumber(int station) throws IOException;
+    public ListFireStations findFireStationByStationNumber(int station);
 
     /**
      * Get firestations by list of number
@@ -37,5 +37,5 @@ public interface FireStationRepository {
      * @return a list of firestations with the number
      * @throws IOException
      */
-    public ListFireStations findFireStationByListOfStationNumber(int[] stations) throws IOException;
+    public ListFireStations findFireStationByListOfStationNumber(int[] stations);
 }

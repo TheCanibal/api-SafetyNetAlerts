@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Repository;
 
 import com.APISafetyNetAlerts.apiForSNA.model.ListMedicalRecords;
@@ -19,22 +21,47 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Repository
 public class MedicalRecordsRepositoryImpl implements MedicalRecordsRepository {
+    // ObjectMapper to be able to deserialize JSON
     ObjectMapper mapper = new ObjectMapper();
+    // List medical records to load only one time
+    ListMedicalRecords loadListMedicalRecords;
+    // List medical records to send
+    ListMedicalRecords listMedicalRecordsToSend = new ListMedicalRecords();
+    // List medical records to sort and to set
     List<MedicalRecords> listMedicalRecords;
+    // Logger
+    private static Logger logger = LogManager.getLogger(MedicalRecordsRepositoryImpl.class);
+
+    /**
+     * Read JSON file if it has not been read already and load it
+     * 
+     * @return a list of medical records from file
+     */
+    public ListMedicalRecords loadMedicalRecords() {
+	mapper.findAndRegisterModules();
+	mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+	if (loadListMedicalRecords == null) {
+	    try {
+		File file = new File("D:\\workspace\\git\\apiForSNA\\src\\main\\resources\\data.json");
+		loadListMedicalRecords = mapper.readValue(file, ListMedicalRecords.class);
+		logger.info("Le fichier est lu !");
+		return loadListMedicalRecords;
+	    } catch (IOException e) {
+		logger.error("Fichier introuvable");
+	    }
+	}
+	return loadListMedicalRecords;
+    }
 
     /**
      * Get all the medical records
      * 
      * @return a list of all medical records
-     * @throws IOException
      */
     @Override
-    public ListMedicalRecords findAllMedicalRecords() throws IOException {
-	mapper.findAndRegisterModules();
-	mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-	File file = new File("D:\\workspace\\git\\apiForSNA\\src\\main\\resources\\data.json");
-	ListMedicalRecords medicalRecords = mapper.readValue(file, ListMedicalRecords.class);
-	return medicalRecords;
+    public ListMedicalRecords findAllMedicalRecords() {
+	listMedicalRecordsToSend = loadMedicalRecords();
+	return listMedicalRecordsToSend;
     }
 
 }

@@ -1,7 +1,5 @@
 package com.APISafetyNetAlerts.apiForSNA.service;
 
-import java.io.IOException;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,20 +19,20 @@ public class PersonService {
     @Autowired
     private PersonRepository personRepository;
 
-    public ListPerson getPersonsByCity(String city) throws IOException {
+    public ListPerson getPersonsByCity(String city) {
 	return personRepository.findPersonsByCity(city);
     }
 
-    public ListPersonAdaptative getPersonsAdaptative() throws IOException {
+    public ListPersonAdaptative getPersonsAdaptative() {
 	return personRepository.findAllPersonAdaptative();
     }
 
-    public ListPersonAdaptative getPersonsAdaptativeByAdress(String address) throws IOException {
+    public ListPersonAdaptative getPersonsAdaptativeByAdress(String address) {
 	return personRepository.findPersonAdaptativeByAddress(address);
     }
 
-    public ListPersonAdaptative getPersonsAdaptativeByLastName(String lastName) throws IOException {
-	return personRepository.findPersonsByLastName(lastName);
+    public ListPersonAdaptative getPersonsAdaptativeByLastName(String lastName) {
+	return personRepository.findPersonsAdaptativeByLastName(lastName);
     }
 
 }

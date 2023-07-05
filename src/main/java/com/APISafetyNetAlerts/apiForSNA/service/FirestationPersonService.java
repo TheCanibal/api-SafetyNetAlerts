@@ -1,6 +1,5 @@
 package com.APISafetyNetAlerts.apiForSNA.service;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -30,28 +29,28 @@ public class FirestationPersonService {
     @Autowired
     private FireStationRepository firestationRepository;
 
-    public List<Person> getPersonsAtFireStationAddress(int stationNumber) throws IOException {
+    public List<Person> getPersonsAtFireStationAddress(int stationNumber) {
 	List<FireStation> listFireStations = firestationRepository.findFireStationByStationNumber(stationNumber)
 		.getListFirestation();
 	List<Person> listPersons = personRepository.findAllPersons().getListPersons();
-	List<Person> emptyList = new ArrayList<Person>();
-	emptyList.addAll(listPersons.stream()
+	List<Person> listToFill = new ArrayList<Person>();
+	listToFill.addAll(listPersons.stream()
 		.filter(p -> listFireStations.stream().anyMatch(fs -> p.getAddress().equals(fs.getAddress())))
 		.collect(Collectors.toList()));
-	return emptyList;
+	return listToFill;
     }
 
-    public List<PersonAdaptative> getPersonsByListFireStations(int[] stations) throws IOException {
+    public List<PersonAdaptative> getPersonsByListFireStations(int[] stations) {
 
 	List<PersonAdaptative> listToReturn = new ArrayList<PersonAdaptative>();
 
 	List<PersonAdaptative> listAllPersons = personRepository.findAllPersonAdaptative().getListPersons();
 
-	List<FireStation> listFireStation = firestationRepository.findFireStationByListOfStationNumber(stations)
+	List<FireStation> listFireStations = firestationRepository.findFireStationByListOfStationNumber(stations)
 		.getListFirestation();
 
 	for (PersonAdaptative p : listAllPersons) {
-	    for (FireStation fs : listFireStation) {
+	    for (FireStation fs : listFireStations) {
 		if (p.getAddress().equals(fs.getAddress())) {
 		    listToReturn.add(p);
 		}

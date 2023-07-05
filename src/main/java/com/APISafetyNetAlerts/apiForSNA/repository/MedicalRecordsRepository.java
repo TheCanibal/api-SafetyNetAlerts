@@ -18,6 +18,6 @@ public interface MedicalRecordsRepository {
      * @return a list of all medical records
      * @throws IOException
      */
-    public ListMedicalRecords findAllMedicalRecords() throws IOException;
+    public ListMedicalRecords findAllMedicalRecords();
 
 }

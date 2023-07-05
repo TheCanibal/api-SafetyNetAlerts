@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.converter.json.MappingJacksonValue;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,6 +20,7 @@ import com.APISafetyNetAlerts.apiForSNA.service.FireStationService;
 import com.APISafetyNetAlerts.apiForSNA.service.FirestationPersonService;
 import com.APISafetyNetAlerts.apiForSNA.service.MedicalRecordService;
 import com.APISafetyNetAlerts.apiForSNA.service.PersonService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ser.FilterProvider;
 import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
 import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
@@ -37,6 +40,8 @@ public class FireStationController {
     @Autowired
     private MedicalRecordService medicalRecordService;
 
+    private static Logger logger = LogManager.getLogger(FireStationController.class);
+
     /**
      * Read - Get all persons that are deserved by a station
      * 
@@ -47,31 +52,57 @@ public class FireStationController {
      */
     @GetMapping("/firestation")
     public MappingJacksonValue getPersonsCoveredByFireStation(@RequestParam int stationNumber) throws IOException {
+
 	// List of Object to be able to add information to JSON
 	ListPersonAdaptative listToSend = new ListPersonAdaptative();
-	// List of person to browse the filtered list
-	List<PersonAdaptative> listPersonsSorted = new ArrayList<PersonAdaptative>();
-	// Get the full list of persons
-	List<PersonAdaptative> listAllPersons = personService.getPersonsAdaptative().getListPersons();
-	// Get the full list of firestations
-	List<FireStation> listFireStationByNumber = fireStationService.getFirestationsByStationNumber(stationNumber)
-		.getListFirestation();
-
-	listPersonsSorted.addAll(listAllPersons.stream()
-		.filter(e -> listFireStationByNumber.stream().anyMatch(s -> e.getAddress().equals(s.getAddress())))
-		.collect(Collectors.toList()));
-	listToSend.setListPersons(listPersonsSorted);
-
-	int personnesMajeures = medicalRecordService.getNumberOfMajorsPersons(listPersonsSorted);
-	int personnesMineures = medicalRecordService.getNumberOfMinorsPersons(listPersonsSorted);
-	listToSend.setPersonnesMineures(personnesMineures);
-	listToSend.setPersonnesMajeures(personnesMajeures);
-	SimpleBeanPropertyFilter monFiltre = SimpleBeanPropertyFilter.filterOutAllExcept("firstName", "lastName",
-		"address", "phone", "personnesMajeures", "personnesMineures");
-	FilterProvider filtres = new SimpleFilterProvider().addFilter("filtreDynamiquePerson", monFiltre);
+	SimpleBeanPropertyFilter monFiltre;
+	FilterProvider filtres;
 	MappingJacksonValue personFiltres = new MappingJacksonValue(listToSend);
-	personFiltres.setFilters(filtres);
-	return personFiltres;
+	try {
+	    if (stationNumber > 0) {
+
+		// List of person to browse the filtered list
+		List<PersonAdaptative> listPersonsSorted = new ArrayList<PersonAdaptative>();
+		// Get the full list of persons
+		List<PersonAdaptative> listAllPersons = personService.getPersonsAdaptative().getListPersons();
+		// Get the full list of firestations
+		List<FireStation> listFireStationByNumber = fireStationService
+			.getFirestationsByStationNumber(stationNumber).getListFirestation();
+
+		listPersonsSorted.addAll(listAllPersons.stream().filter(
+			e -> listFireStationByNumber.stream().anyMatch(s -> e.getAddress().equals(s.getAddress())))
+			.collect(Collectors.toList()));
+		listToSend.setListPersons(listPersonsSorted);
+
+		int personnesMajeures = medicalRecordService.getNumberOfMajorsPersons(listPersonsSorted);
+		int personnesMineures = medicalRecordService.getNumberOfMinorsPersons(listPersonsSorted);
+		listToSend.setPersonnesMineures(personnesMineures);
+		listToSend.setPersonnesMajeures(personnesMajeures);
+
+		monFiltre = SimpleBeanPropertyFilter.filterOutAllExcept("firstName", "lastName", "address", "phone",
+			"personnesMajeures", "personnesMineures");
+		filtres = new SimpleFilterProvider().addFilter("filtreDynamiquePerson", monFiltre);
+		personFiltres = new MappingJacksonValue(listToSend);
+		personFiltres.setFilters(filtres);
+		if (logger.isDebugEnabled()) {
+		    ObjectMapper objectMapper = new ObjectMapper();
+		    try {
+			String json = objectMapper.setFilterProvider(filtres).writerWithDefaultPrettyPrinter()
+				.writeValueAsString(listToSend);
+			logger.debug("La liste de personnes qui est renvoyée : {}", json);
+		    } catch (Exception e) {
+			logger.error("Mapping error");
+		    }
+		}
+		return personFiltres;
+	    } else {
+		throw new IllegalArgumentException("Numéro de station erroné : doit être supérieur à 0 !");
+	    }
+	} catch (IllegalArgumentException iae) {
+	    logger.error("Le numéro de station est erroné ! Il est égal à {}", stationNumber);
+	    return personFiltres;
+	}
+
     }
 
     /**
