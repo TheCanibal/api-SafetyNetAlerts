@@ -7,7 +7,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class ListPerson {
 
     @JsonProperty("persons")
-    List<Person> listPersons;
+    private List<Person> listPersons;
 
     public ListPerson() {
 	super();

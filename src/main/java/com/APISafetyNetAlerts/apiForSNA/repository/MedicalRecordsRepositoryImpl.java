@@ -22,13 +22,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @Repository
 public class MedicalRecordsRepositoryImpl implements MedicalRecordsRepository {
     // ObjectMapper to be able to deserialize JSON
-    ObjectMapper mapper = new ObjectMapper();
+    private ObjectMapper mapper = new ObjectMapper();
     // List medical records to load only one time
-    ListMedicalRecords loadListMedicalRecords;
+    private ListMedicalRecords loadListMedicalRecords;
     // List medical records to send
-    ListMedicalRecords listMedicalRecordsToSend = new ListMedicalRecords();
+    private ListMedicalRecords listMedicalRecordsToSend = new ListMedicalRecords();
     // List medical records to sort and to set
-    List<MedicalRecords> listMedicalRecords;
+    private List<MedicalRecords> listMedicalRecords;
     // Logger
     private static Logger logger = LogManager.getLogger(MedicalRecordsRepositoryImpl.class);
 
@@ -44,7 +44,7 @@ public class MedicalRecordsRepositoryImpl implements MedicalRecordsRepository {
 	    try {
 		File file = new File("D:\\workspace\\git\\apiForSNA\\src\\main\\resources\\data.json");
 		loadListMedicalRecords = mapper.readValue(file, ListMedicalRecords.class);
-		logger.info("Le fichier est lu !");
+		logger.info("Le fichier est lu pour récupérer les antécédents médicaux!");
 		return loadListMedicalRecords;
 	    } catch (IOException e) {
 		logger.error("Fichier introuvable");

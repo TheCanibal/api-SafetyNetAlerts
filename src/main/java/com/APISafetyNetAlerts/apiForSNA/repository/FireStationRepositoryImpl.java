@@ -44,7 +44,7 @@ public class FireStationRepositoryImpl implements FireStationRepository {
 	if (loadListFirestations == null) {
 	    try {
 		loadListFirestations = mapper.readValue(file, ListFireStations.class);
-		logger.info("Le fichier est lu !");
+		logger.info("Le fichier est lu pour récupérer les Firestations!");
 		return loadListFirestations;
 	    } catch (IOException e) {
 		logger.error("Fichier introuvable");

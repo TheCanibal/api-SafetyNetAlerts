@@ -53,7 +53,7 @@ public class PersonRepositoryImpl implements PersonRepository {
 	    try {
 		File file = new File("D:\\workspace\\git\\apiForSNA\\src\\main\\resources\\data.json");
 		loadListPersons = mapper.readValue(file, ListPerson.class);
-		logger.info("Le fichier est lu !");
+		logger.info("Le fichier est lu pour récupérer les personnes !");
 		return loadListPersons;
 	    } catch (IOException e) {
 		logger.error("Fichier introuvable");
@@ -73,7 +73,7 @@ public class PersonRepositoryImpl implements PersonRepository {
 	    try {
 		File file = new File("D:\\workspace\\git\\apiForSNA\\src\\main\\resources\\data.json");
 		loadListPersonsAdaptative = mapper.readValue(file, ListPersonAdaptative.class);
-		logger.info("Le fichier est lu !");
+		logger.info("Le fichier est lu pour récupérer les personnes dont on veut ajouter des informations!");
 		return loadListPersonsAdaptative;
 	    } catch (IOException e) {
 		logger.error("Fichier introuvable");
