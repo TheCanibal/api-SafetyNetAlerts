@@ -20,6 +20,16 @@ public class MedicalRecords {
     public MedicalRecords() {
     }
 
+    public MedicalRecords(String firstName, String lastName, LocalDate birthdate, String[] medications,
+	    String[] allergies) {
+	super();
+	this.firstName = firstName;
+	this.lastName = lastName;
+	this.birthdate = birthdate;
+	this.medications = medications;
+	this.allergies = allergies;
+    }
+
     public String getFirstName() {
 	return firstName;
     }

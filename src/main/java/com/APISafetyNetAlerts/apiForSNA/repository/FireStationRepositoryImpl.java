@@ -60,6 +60,7 @@ public class FireStationRepositoryImpl implements FireStationRepository {
      */
     @Override
     public ListFireStations findAllFirestation() {
+	// Read the file and fill the list if it's not
 	loadListFirestations = loadFireStations();
 	return loadListFirestations;
     }
@@ -72,6 +73,7 @@ public class FireStationRepositoryImpl implements FireStationRepository {
      */
     @Override
     public ListFireStations findFireStationByStationNumber(int station) {
+	// Read the file and fill the list if it's not
 	loadListFirestations = loadFireStations();
 	listFirestationsSorted = new ArrayList<FireStation>();
 	for (FireStation fs : loadListFirestations.getListFirestation()) {
@@ -79,7 +81,6 @@ public class FireStationRepositoryImpl implements FireStationRepository {
 		listFirestationsSorted.add(fs);
 	    }
 	}
-
 	listFirestationsToSend.setListFirestation(listFirestationsSorted);
 	return listFirestationsToSend;
 
@@ -93,6 +94,7 @@ public class FireStationRepositoryImpl implements FireStationRepository {
      */
     @Override
     public ListFireStations findFireStationByListOfStationNumber(int[] stations) {
+	// Read the file and fill the list if it's not
 	loadListFirestations = loadFireStations();
 	listFirestationsSorted = new ArrayList<FireStation>();
 	for (FireStation fs : loadListFirestations.getListFirestation()) {

@@ -10,6 +10,8 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.converter.json.MappingJacksonValue;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -39,6 +41,12 @@ public class PersonController {
     private PersonUtil personUtil;
 
     private static Logger logger = LogManager.getLogger(PersonController.class);
+
+    @GetMapping("/persons")
+    public List<Person> getAllPersons() {
+	List<Person> listAllPersons = personService.getAllPersons().getListPersons();
+	return listAllPersons;
+    }
 
     /**
      * Read - Get all child (under 18) who live at an address
@@ -297,6 +305,19 @@ public class PersonController {
 	    return personFiltres;
 
 	}
+    }
+
+    /**
+     * Add new person to the JSON File
+     * 
+     * @param person person to add
+     * @return created person
+     */
+    @PostMapping("/person")
+    public Person addPerson(@RequestBody Person person) {
+
+	Person createdPerson = personService.createPerson(person);
+	return createdPerson;
     }
 
 }

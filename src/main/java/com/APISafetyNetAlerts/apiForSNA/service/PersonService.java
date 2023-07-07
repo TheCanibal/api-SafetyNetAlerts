@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.APISafetyNetAlerts.apiForSNA.model.ListPerson;
+import com.APISafetyNetAlerts.apiForSNA.model.Person;
 import com.APISafetyNetAlerts.apiForSNA.repository.PersonRepository;
 import com.APISafetyNetAlerts.apiForSNA.restModel.ListPersonAdaptative;
 
@@ -65,6 +66,16 @@ public class PersonService {
      */
     public ListPersonAdaptative getPersonsAdaptativeByLastName(String lastName) {
 	return personRepository.findPersonsAdaptativeByLastName(lastName);
+    }
+
+    /**
+     * Add new person to the JSON File
+     * 
+     * @param person person to add
+     * @return created person
+     */
+    public Person createPerson(Person person) {
+	return personRepository.savePerson(person);
     }
 
 }

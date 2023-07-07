@@ -9,12 +9,18 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Repository;
 
+import com.APISafetyNetAlerts.apiForSNA.model.DynamicPerson;
 import com.APISafetyNetAlerts.apiForSNA.model.ListPerson;
 import com.APISafetyNetAlerts.apiForSNA.model.Person;
 import com.APISafetyNetAlerts.apiForSNA.restModel.ListPersonAdaptative;
 import com.APISafetyNetAlerts.apiForSNA.restModel.PersonAdaptative;
 import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
+import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
+import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
 
 /**
  * 
@@ -26,7 +32,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 public class PersonRepositoryImpl implements PersonRepository {
 
     // ObjectMapper to be able to deserialize JSON
-    private ObjectMapper mapper = new ObjectMapper();
+    private ObjectMapper mapper = new ObjectMapper().addMixIn(Person.class, DynamicPerson.class);
     // List persons to load only one time
     private ListPerson loadListPersons;
     // List person to send
@@ -89,6 +95,7 @@ public class PersonRepositoryImpl implements PersonRepository {
      */
     @Override
     public ListPerson findAllPersons() {
+	// Read the file and fill the list if it's not
 	loadListPersons = loadPersons();
 	return loadListPersons;
     }
@@ -101,6 +108,7 @@ public class PersonRepositoryImpl implements PersonRepository {
      */
     @Override
     public ListPerson findPersonsByCity(String city) {
+	// Read the file and fill the list if it's not
 	loadListPersons = loadPersons();
 	listPersonsSorted = new ArrayList<Person>();
 	for (Person p : loadListPersons.getListPersons()) {
@@ -119,6 +127,7 @@ public class PersonRepositoryImpl implements PersonRepository {
      */
     @Override
     public ListPersonAdaptative findAllPersonAdaptative() {
+	// Read the file and fill the list if it's not
 	loadListPersonsAdaptative = loadPersonsAdaptative();
 	return loadListPersonsAdaptative;
     }
@@ -131,6 +140,7 @@ public class PersonRepositoryImpl implements PersonRepository {
      */
     @Override
     public ListPersonAdaptative findPersonAdaptativeByAddress(String address) {
+	// Read the file and fill the list if it's not
 	loadListPersonsAdaptative = loadPersonsAdaptative();
 	listPersonsAdaptativeSorted = new ArrayList<PersonAdaptative>();
 	for (PersonAdaptative p : loadListPersonsAdaptative.getListPersons()) {
@@ -150,6 +160,7 @@ public class PersonRepositoryImpl implements PersonRepository {
      */
     @Override
     public ListPersonAdaptative findPersonsAdaptativeByLastName(String lastName) {
+	// Read the file and fill the list if it's not
 	loadListPersonsAdaptative = loadPersonsAdaptative();
 	listPersonsAdaptativeSorted = new ArrayList<PersonAdaptative>();
 	for (PersonAdaptative p : loadListPersonsAdaptative.getListPersons()) {
@@ -161,4 +172,50 @@ public class PersonRepositoryImpl implements PersonRepository {
 	return listPersonsAdaptativeToSend;
     }
 
+    /**
+     * Add new person to the JSON File
+     * 
+     * @param person person to add
+     * @return created person
+     */
+    @Override
+    public synchronized Person savePerson(Person person) {
+
+	Person newPerson = new Person(person.getFirstName(), person.getLastName(), person.getAddress(),
+		person.getCity(), person.getZip(), person.getPhone(), person.getEmail());
+	try {
+	    // Filter rules to apply to the bean
+	    SimpleBeanPropertyFilter monFiltre = SimpleBeanPropertyFilter.serializeAll();
+	    // This allow the filter to apply to all the beans with dynamic filters
+	    SimpleFilterProvider filtres = new SimpleFilterProvider().addFilter("filtreDynamiquePerson", monFiltre);
+	    // set filter
+	    mapper.setFilterProvider(filtres);
+	    // Log the result if debug mode is enabled
+	    if (logger.isDebugEnabled()) {
+		ObjectMapper objectMapper = new ObjectMapper();
+		try {
+		    String json = objectMapper.setFilterProvider(filtres).writerWithDefaultPrettyPrinter()
+			    .writeValueAsString(newPerson);
+		    logger.debug("Personn à ajouter : {}", json);
+		} catch (Exception e) {
+		    logger.error("Mapping error");
+		}
+	    }
+	    // Writer to write in Json
+	    ObjectWriter writer = mapper.writer();
+	    // Path file
+	    File file = new File("D:\\workspace\\git\\apiForSNA\\src\\main\\resources\\data.json");
+	    // read json file
+	    JsonNode parsedJson = mapper.readTree(file);
+	    // Get the array of persons
+	    ArrayNode personsArray = (ArrayNode) parsedJson.get("persons");
+	    // add person to the array
+	    personsArray.add(mapper.convertValue(newPerson, JsonNode.class));
+	    // write in the file
+	    writer.writeValue(file, parsedJson);
+	} catch (IOException e) {
+	    logger.error("file not found");
+	}
+	return newPerson;
+    }
 }

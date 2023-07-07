@@ -60,6 +60,7 @@ public class MedicalRecordsRepositoryImpl implements MedicalRecordsRepository {
      */
     @Override
     public ListMedicalRecords findAllMedicalRecords() {
+	// Read the file and fill the list if it's not
 	listMedicalRecordsToSend = loadMedicalRecords();
 	return listMedicalRecordsToSend;
     }

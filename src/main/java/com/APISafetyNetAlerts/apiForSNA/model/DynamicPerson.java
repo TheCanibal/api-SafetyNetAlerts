@@ -1,6 +1,9 @@
 package com.APISafetyNetAlerts.apiForSNA.model;
 
-public class Person {
+import com.fasterxml.jackson.annotation.JsonFilter;
+
+@JsonFilter("filtreDynamiquePerson")
+public class DynamicPerson {
 
     private String firstName;
 
@@ -16,11 +19,12 @@ public class Person {
 
     private String email;
 
-    public Person() {
+    public DynamicPerson() {
 
     }
 
-    public Person(String firstName, String lastName, String address, String city, int zip, String phone, String email) {
+    public DynamicPerson(String firstName, String lastName, String address, String city, int zip, String phone,
+	    String email) {
 	super();
 	this.firstName = firstName;
 	this.lastName = lastName;

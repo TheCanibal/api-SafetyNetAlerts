@@ -3,6 +3,7 @@ package com.APISafetyNetAlerts.apiForSNA.repository;
 import org.springframework.stereotype.Repository;
 
 import com.APISafetyNetAlerts.apiForSNA.model.ListPerson;
+import com.APISafetyNetAlerts.apiForSNA.model.Person;
 import com.APISafetyNetAlerts.apiForSNA.restModel.ListPersonAdaptative;
 
 /**
@@ -50,4 +51,11 @@ public interface PersonRepository {
      */
     public ListPersonAdaptative findPersonsAdaptativeByLastName(String lastName);
 
+    /**
+     * Add new person to the JSON File
+     * 
+     * @param person person to add
+     * @return created person
+     */
+    public Person savePerson(Person person);
 }
