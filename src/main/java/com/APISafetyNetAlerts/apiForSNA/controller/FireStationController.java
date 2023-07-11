@@ -11,11 +11,15 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.converter.json.MappingJacksonValue;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.APISafetyNetAlerts.apiForSNA.model.FireStation;
 import com.APISafetyNetAlerts.apiForSNA.restModel.ListPersonAdaptative;
 import com.APISafetyNetAlerts.apiForSNA.restModel.PersonAdaptative;
+import com.APISafetyNetAlerts.apiForSNA.service.FireStationService;
 import com.APISafetyNetAlerts.apiForSNA.service.PersonService;
 import com.APISafetyNetAlerts.apiForSNA.util.FirestationPersonUtil;
 import com.APISafetyNetAlerts.apiForSNA.util.FirestationUtil;
@@ -43,6 +47,9 @@ public class FireStationController {
 
     @Autowired
     private PersonUtil personUtil;
+
+    @Autowired
+    private FireStationService firestationService;
 
     private static Logger logger = LogManager.getLogger(FireStationController.class);
 
@@ -236,6 +243,17 @@ public class FireStationController {
 	    logger.error("La liste de numéros contient {}", Collections.min(listStationsNumbers));
 	    return personFiltres;
 	}
+    }
+
+    /**
+     * Add new firestation to the JSON File
+     * 
+     * @param firestation firestation to add
+     * @return created firestation
+     */
+    @PostMapping("/firestation")
+    public FireStation createFirestation(@RequestBody FireStation firestation) {
+	return firestationService.createFirestation(firestation);
     }
 
 }

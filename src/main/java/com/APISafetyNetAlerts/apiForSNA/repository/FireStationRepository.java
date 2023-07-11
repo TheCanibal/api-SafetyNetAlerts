@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import org.springframework.stereotype.Repository;
 
+import com.APISafetyNetAlerts.apiForSNA.model.FireStation;
 import com.APISafetyNetAlerts.apiForSNA.model.ListFireStations;
 
 /**
@@ -38,4 +39,12 @@ public interface FireStationRepository {
      * @throws IOException
      */
     public ListFireStations findFireStationByListOfStationNumber(int[] stations);
+
+    /**
+     * Add new person to the JSON File
+     * 
+     * @param person person to add
+     * @return created person
+     */
+    FireStation saveFirestation(FireStation firestation);
 }

@@ -316,8 +316,7 @@ public class PersonController {
     @PostMapping("/person")
     public Person addPerson(@RequestBody Person person) {
 
-	Person createdPerson = personService.createPerson(person);
-	return createdPerson;
+	return personService.createPerson(person);
     }
 
 }

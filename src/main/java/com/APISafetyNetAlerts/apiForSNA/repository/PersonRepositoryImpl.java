@@ -179,43 +179,67 @@ public class PersonRepositoryImpl implements PersonRepository {
      * @return created person
      */
     @Override
-    public synchronized Person savePerson(Person person) {
+    public Person savePerson(Person person) {
 
 	Person newPerson = new Person(person.getFirstName(), person.getLastName(), person.getAddress(),
 		person.getCity(), person.getZip(), person.getPhone(), person.getEmail());
 	try {
-	    // Filter rules to apply to the bean
-	    SimpleBeanPropertyFilter monFiltre = SimpleBeanPropertyFilter.serializeAll();
-	    // This allow the filter to apply to all the beans with dynamic filters
-	    SimpleFilterProvider filtres = new SimpleFilterProvider().addFilter("filtreDynamiquePerson", monFiltre);
-	    // set filter
-	    mapper.setFilterProvider(filtres);
-	    // Log the result if debug mode is enabled
-	    if (logger.isDebugEnabled()) {
-		ObjectMapper objectMapper = new ObjectMapper();
-		try {
-		    String json = objectMapper.setFilterProvider(filtres).writerWithDefaultPrettyPrinter()
-			    .writeValueAsString(newPerson);
-		    logger.debug("Personn à ajouter : {}", json);
-		} catch (Exception e) {
-		    logger.error("Mapping error");
+	    if (person.getFirstName() != null && person.getLastName() != null && person.getAddress() != null
+		    && person.getCity() != null && person.getZip() > 0 && person.getPhone() != null
+		    && person.getEmail() != null) {
+		// Filter rules to apply to the bean
+		SimpleBeanPropertyFilter monFiltre = SimpleBeanPropertyFilter.serializeAll();
+		// This allow the filter to apply to all the beans with dynamic filters
+		SimpleFilterProvider filtres = new SimpleFilterProvider().addFilter("filtreDynamiquePerson", monFiltre);
+		// set filter
+		mapper.setFilterProvider(filtres);
+		// Log the result if debug mode is enabled
+		if (logger.isDebugEnabled()) {
+		    ObjectMapper objectMapper = new ObjectMapper();
+		    try {
+			String json = objectMapper.setFilterProvider(filtres).writerWithDefaultPrettyPrinter()
+				.writeValueAsString(newPerson);
+			logger.debug("Personn à ajouter : {}", json);
+		    } catch (Exception e) {
+			logger.error("Mapping error");
+		    }
 		}
+		// Writer to write in Json
+		ObjectWriter writer = mapper.writer();
+		// Path file
+		File file = new File("D:\\workspace\\git\\apiForSNA\\src\\main\\resources\\data.json");
+		// read json file
+		JsonNode parsedJson = mapper.readTree(file);
+		// Get the array of persons
+		ArrayNode personsArray = (ArrayNode) parsedJson.get("persons");
+		// add person to the array
+		personsArray.add(mapper.convertValue(newPerson, JsonNode.class));
+		// write in the file
+		writer.writeValue(file, parsedJson);
+		return newPerson;
+	    } else {
+		throw new IllegalArgumentException("Un des champs est incorrect !");
 	    }
-	    // Writer to write in Json
-	    ObjectWriter writer = mapper.writer();
-	    // Path file
-	    File file = new File("D:\\workspace\\git\\apiForSNA\\src\\main\\resources\\data.json");
-	    // read json file
-	    JsonNode parsedJson = mapper.readTree(file);
-	    // Get the array of persons
-	    ArrayNode personsArray = (ArrayNode) parsedJson.get("persons");
-	    // add person to the array
-	    personsArray.add(mapper.convertValue(newPerson, JsonNode.class));
-	    // write in the file
-	    writer.writeValue(file, parsedJson);
 	} catch (IOException e) {
 	    logger.error("file not found");
+	    return null;
+	} catch (IllegalArgumentException e) {
+	    if (person.getFirstName() == null)
+		logger.error("Le champ prénom ne doit pas être vide !");
+	    if (person.getLastName() == null)
+		logger.error("Le champ nom ne doit pas être vide !");
+	    if (person.getAddress() == null)
+		logger.error("Le champ addresse ne doit pas être vide !");
+	    if (person.getCity() == null)
+		logger.error("Le champ ville ne doit pas être vide !");
+	    if (person.getZip() <= 0)
+		logger.error("Le champ code postal ne doit pas être vide !");
+	    if (person.getPhone() == null)
+		logger.error("Le champ numéro de téléphone ne doit pas être vide !");
+	    if (person.getEmail() == null)
+		logger.error("Le champ email ne doit pas être vide !");
+	    return null;
 	}
-	return newPerson;
+
     }
 }

@@ -3,6 +3,7 @@ package com.APISafetyNetAlerts.apiForSNA.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.APISafetyNetAlerts.apiForSNA.model.FireStation;
 import com.APISafetyNetAlerts.apiForSNA.model.ListFireStations;
 import com.APISafetyNetAlerts.apiForSNA.repository.FireStationRepository;
 
@@ -46,6 +47,16 @@ public class FireStationService {
      */
     public ListFireStations getFireStationByListOfStationNumber(int[] stations) {
 	return fireStationRepository.findFireStationByListOfStationNumber(stations);
+    }
+
+    /**
+     * Add new firestation to the JSON File
+     * 
+     * @param firestation firestation to add
+     * @return created firestation
+     */
+    public FireStation createFirestation(FireStation firestation) {
+	return fireStationRepository.saveFirestation(firestation);
     }
 
 }
