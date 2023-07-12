@@ -146,6 +146,7 @@ public class PersonRepositoryImpl implements PersonRepository {
 	for (PersonAdaptative p : loadListPersonsAdaptative.getListPersons()) {
 	    if (p.getAddress().equals(address)) {
 		listPersonsAdaptativeSorted.add(p);
+		logger.info("Prénom findPersonAdaptative {}", p.getFirstName());
 	    }
 	}
 	listPersonsAdaptativeToSend.setListPersons(listPersonsAdaptativeSorted);

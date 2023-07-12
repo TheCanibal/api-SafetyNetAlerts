@@ -65,10 +65,9 @@ public class PersonController {
 	List<PersonAdaptative> listPersonsByAddress = new ArrayList<PersonAdaptative>();
 
 	// a list of minors persons (can be empty)
-	List<PersonAdaptative> minorsList = medicalRecordUtil.getListOfMinorsPersons(listPersonsByAddress);
-
+	List<PersonAdaptative> minorsList = new ArrayList<PersonAdaptative>();
 	// a list of majors persons (can be empty)
-	List<PersonAdaptative> majorsList = medicalRecordUtil.getListOfMajorsPersons(listPersonsByAddress);
+	List<PersonAdaptative> majorsList = new ArrayList<PersonAdaptative>();
 
 	// list of all addresses in file
 	List<String> allAddresses = personUtil.getAddressFromListPersons();
@@ -82,6 +81,8 @@ public class PersonController {
 	try {
 	    if (address != "" && allAddresses.contains(address)) {
 		listPersonsByAddress = personService.getPersonsAdaptativeByAdress(address).getListPersons();
+		minorsList = medicalRecordUtil.getListOfMinorsPersons(listPersonsByAddress);
+		majorsList = medicalRecordUtil.getListOfMajorsPersons(listPersonsByAddress);
 		logger.info("L'adresse est {}", address);
 		// for each minors, add to the list
 		listToSend.addAll(minorsList);
@@ -260,7 +261,7 @@ public class PersonController {
     public MappingJacksonValue getPersonsMailByCity(@RequestParam String city) {
 
 	// list to return
-	List<Person> listToSend = new ArrayList<Person>();
+	List<String> listToSend = new ArrayList<String>();
 	// list of persons from city
 	List<Person> listPersonsByCity = new ArrayList<Person>();
 	// List of all cities
@@ -277,9 +278,10 @@ public class PersonController {
 		// for each person from city add it to the list
 		for (Person p : listPersonsByCity) {
 		    if (p.getCity().equals(city)) {
-			listToSend.add(p);
+			listToSend.add(p.getEmail());
 		    }
 		}
+		logger.info("Nombre de mail dans la liste : {}", listToSend.size());
 
 		monFiltre = SimpleBeanPropertyFilter.filterOutAllExcept("email");
 		filtres = new SimpleFilterProvider().addFilter("filtreDynamiquePerson", monFiltre);

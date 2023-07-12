@@ -1,10 +1,13 @@
 package com.APISafetyNetAlerts.apiForSNA.util;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -22,6 +25,14 @@ public class MedicalRecordUtil {
     @Autowired
     private MedicalRecordService medicalRecordService;
 
+    private static Logger logger = LogManager.getLogger(MedicalRecordUtil.class);
+
+    public LocalDate convertStringIntoDate(String date) {
+	DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
+	LocalDate dateToSend = LocalDate.parse(date, formatter);
+	return dateToSend;
+    }
+
     /**
      * get all the minors from the list
      * 
@@ -38,7 +49,7 @@ public class MedicalRecordUtil {
 	for (PersonAdaptative p : listPersons) {
 	    for (MedicalRecords mr : listMedicalRecords) {
 		if (p.getFirstName().equals(mr.getFirstName()) && p.getLastName().equals(mr.getLastName())) {
-		    bd = mr.getBirthdate();
+		    bd = convertStringIntoDate(mr.getBirthdate());
 		    ageDiff = ChronoUnit.YEARS.between(bd, ld);
 		    if (ageDiff <= 18) {
 			personnesMineures++;
@@ -66,7 +77,7 @@ public class MedicalRecordUtil {
 	for (PersonAdaptative p : listPersons) {
 	    for (MedicalRecords mr : listMedicalRecords) {
 		if (p.getFirstName().equals(mr.getFirstName()) && p.getLastName().equals(mr.getLastName())) {
-		    bd = mr.getBirthdate();
+		    bd = convertStringIntoDate(mr.getBirthdate());
 		    ageDiff = ChronoUnit.YEARS.between(bd, ld);
 		    if (ageDiff >= 18) {
 			personnesMajeures++;
@@ -93,7 +104,7 @@ public class MedicalRecordUtil {
 	for (PersonAdaptative p : listPersons) {
 	    for (MedicalRecords mr : listMedicalRecords) {
 		if (mr.getFirstName().equals(p.getFirstName())) {
-		    bd = mr.getBirthdate();
+		    bd = convertStringIntoDate(mr.getBirthdate());
 		    ageDiff = ChronoUnit.YEARS.between(bd, ld);
 		    if (ageDiff <= 18) {
 			p.setAge(ageDiff);
@@ -122,7 +133,7 @@ public class MedicalRecordUtil {
 	for (PersonAdaptative p : listPersons) {
 	    for (MedicalRecords mr : listMedicalRecords) {
 		if (mr.getFirstName().equals(p.getFirstName())) {
-		    bd = mr.getBirthdate();
+		    bd = convertStringIntoDate(mr.getBirthdate());
 		    ageDiff = ChronoUnit.YEARS.between(bd, ld);
 		    if (ageDiff >= 18) {
 			p.setAge(ageDiff);
@@ -153,7 +164,7 @@ public class MedicalRecordUtil {
 	for (PersonAdaptative p : listPersons) {
 	    for (MedicalRecords mr : listMedicalRecords) {
 		if (mr.getFirstName().equals(p.getFirstName())) {
-		    bd = mr.getBirthdate();
+		    bd = convertStringIntoDate(mr.getBirthdate());
 		    age = ChronoUnit.YEARS.between(bd, ld);
 		    p.setAge(age);
 		    ageList.add(p);

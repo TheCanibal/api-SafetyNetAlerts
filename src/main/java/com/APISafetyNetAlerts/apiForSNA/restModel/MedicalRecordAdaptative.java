@@ -1,24 +1,21 @@
-package com.APISafetyNetAlerts.apiForSNA.model;
+package com.APISafetyNetAlerts.apiForSNA.restModel;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-
-public class MedicalRecords {
-
+public class MedicalRecordAdaptative {
     private String firstName;
 
     private String lastName;
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "MM/dd/yyyy")
     private String birthdate;
 
     private String[] medications;
 
     private String[] allergies;
 
-    public MedicalRecords() {
+    public MedicalRecordAdaptative() {
+	super();
     }
 
-    public MedicalRecords(String firstName, String lastName, String birthdate, String[] medications,
+    public MedicalRecordAdaptative(String firstName, String lastName, String birthdate, String[] medications,
 	    String[] allergies) {
 	super();
 	this.firstName = firstName;
