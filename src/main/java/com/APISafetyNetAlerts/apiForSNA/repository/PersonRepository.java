@@ -20,6 +20,13 @@ public interface PersonRepository {
     public ListPerson findAllPersons();
 
     /**
+     * Get all persons adaptative
+     * 
+     * @return a list of all persons adaptative
+     */
+    public ListPersonAdaptative findAllPersonAdaptative();
+
+    /**
      * Get all persons who live in the city
      * 
      * @param city city where lives the person
@@ -33,21 +40,13 @@ public interface PersonRepository {
      * @param address address of a person
      * @return a list of persons who live at an address
      */
-    public ListPersonAdaptative findAllPersonAdaptative();
-
-    /**
-     * Get all persons who live at an address
-     * 
-     * @param address address of a person
-     * @return a list of persons who live at an address
-     */
     public ListPersonAdaptative findPersonAdaptativeByAddress(String address);
 
     /**
-     * Get all persons who live in the city
+     * Get all persons with the last name
      * 
-     * @param city city where lives the person
-     * @return a list of persons who lives in the city
+     * @param lastName last name of persons
+     * @return a list of persons with the last name
      */
     public ListPersonAdaptative findPersonsAdaptativeByLastName(String lastName);
 
@@ -58,4 +57,13 @@ public interface PersonRepository {
      * @return created person
      */
     public Person savePerson(Person person);
+
+    /**
+     * Get all persons with last name AND first name
+     * 
+     * @param lastName  last name of a person
+     * @param firstName first name of a person
+     * @return a list of persons with last name AND first name
+     */
+    public ListPersonAdaptative findPersonsAdaptativeByFirstNameAndLastName(String firstName, String lastName);
 }

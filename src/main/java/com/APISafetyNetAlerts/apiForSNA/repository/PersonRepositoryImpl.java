@@ -146,7 +146,6 @@ public class PersonRepositoryImpl implements PersonRepository {
 	for (PersonAdaptative p : loadListPersonsAdaptative.getListPersons()) {
 	    if (p.getAddress().equals(address)) {
 		listPersonsAdaptativeSorted.add(p);
-		logger.info("Prénom findPersonAdaptative {}", p.getFirstName());
 	    }
 	}
 	listPersonsAdaptativeToSend.setListPersons(listPersonsAdaptativeSorted);
@@ -154,10 +153,10 @@ public class PersonRepositoryImpl implements PersonRepository {
     }
 
     /**
-     * Get all persons who live in the city
+     * Get all persons with the last name
      * 
-     * @param city city where lives the person
-     * @return a list of persons who lives in the city
+     * @param lastName last name of persons
+     * @return a list of persons with the last name
      */
     @Override
     public ListPersonAdaptative findPersonsAdaptativeByLastName(String lastName) {
@@ -166,6 +165,27 @@ public class PersonRepositoryImpl implements PersonRepository {
 	listPersonsAdaptativeSorted = new ArrayList<PersonAdaptative>();
 	for (PersonAdaptative p : loadListPersonsAdaptative.getListPersons()) {
 	    if (p.getLastName().equals(lastName)) {
+		listPersonsAdaptativeSorted.add(p);
+	    }
+	}
+	listPersonsAdaptativeToSend.setListPersons(listPersonsAdaptativeSorted);
+	return listPersonsAdaptativeToSend;
+    }
+
+    /**
+     * Get all persons with last name AND first name
+     * 
+     * @param lastName  last name of a person
+     * @param firstName first name of a person
+     * @return a list of persons with last name AND first name
+     */
+    @Override
+    public ListPersonAdaptative findPersonsAdaptativeByFirstNameAndLastName(String firstName, String lastName) {
+	// Read the file and fill the list if it's not
+	loadListPersonsAdaptative = loadPersonsAdaptative();
+	listPersonsAdaptativeSorted = new ArrayList<PersonAdaptative>();
+	for (PersonAdaptative p : loadListPersonsAdaptative.getListPersons()) {
+	    if (p.getLastName().equals(lastName) && p.getFirstName().equals(firstName)) {
 		listPersonsAdaptativeSorted.add(p);
 	    }
 	}

@@ -2,7 +2,6 @@ package com.APISafetyNetAlerts.apiForSNA.controller;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -65,6 +64,8 @@ public class FireStationController {
 
 	// List to return
 	ListPersonAdaptative listToSend = new ListPersonAdaptative();
+	// Set of station numbers
+	List<Integer> stationNumbers = fireStationUtil.getAllStationNumber();
 	// Filter rules to apply to the bean
 	SimpleBeanPropertyFilter monFiltre;
 	// This allow the filter to apply to all the beans with dynamic filters
@@ -72,7 +73,7 @@ public class FireStationController {
 	// To be able to set the filters concretely
 	MappingJacksonValue personFiltres = new MappingJacksonValue(listToSend);
 	try {
-	    if (stationNumber > 0) {
+	    if (stationNumbers.contains(stationNumber)) {
 
 		// List of person to browse the filtered list
 		List<PersonAdaptative> listPersonsSorted = firestationPersonUtil
@@ -111,10 +112,10 @@ public class FireStationController {
 		}
 		return personFiltres;
 	    } else {
-		throw new IllegalArgumentException("Numéro de station erroné : doit être supérieur à 0 !");
+		throw new IllegalArgumentException("La station n'existe pas !");
 	    }
 	} catch (IllegalArgumentException iae) {
-	    logger.error("Le numéro de station est erroné ! Il est égal à {}", stationNumber);
+	    logger.error("La station numéro {} n'existe pas !", stationNumber);
 	    return personFiltres;
 	}
 
@@ -199,8 +200,13 @@ public class FireStationController {
 	List<PersonAdaptative> listToSend = new ArrayList<PersonAdaptative>();
 	// List to fill first before fill the list to return in case of wrong argument
 	List<PersonAdaptative> listPersonsByFireStation = new ArrayList<PersonAdaptative>();
-	// List to verify if argument are > 0
-	List<Integer> listStationsNumbers = Arrays.stream(stations).boxed().collect(Collectors.toList());
+	// list of all station number
+	List<Integer> listStationsNumbers = fireStationUtil.getAllStationNumber();
+	// change array param into a list
+	List<Integer> listStationsNumbersParam = Arrays.stream(stations).boxed().collect(Collectors.toList());
+	// List of station to compare
+	List<Integer> listStationsNumbersCompare = fireStationUtil
+		.compareElementsOfTwoListAndSendListWithSameElements(listStationsNumbersParam, listStationsNumbers);
 	// Filter rules to apply to the bean
 	SimpleBeanPropertyFilter monFiltre;
 	// This allow the filter to apply to all the beans with dynamic filters
@@ -208,7 +214,7 @@ public class FireStationController {
 	// To be able to set the filters concretely
 	MappingJacksonValue personFiltres = new MappingJacksonValue(listToSend);
 	try {
-	    if (Collections.min(listStationsNumbers) > 0) {
+	    if (!listStationsNumbersCompare.isEmpty()) {
 		listPersonsByFireStation = firestationPersonUtil.getPersonsByListFireStations(stations);
 		// Add the age of all persons in the list
 		listToSend = medicalRecordUtil.getListOfPersonsWithAge(listPersonsByFireStation);
@@ -235,12 +241,11 @@ public class FireStationController {
 		}
 		return personFiltres;
 	    } else {
-		throw new IllegalArgumentException(
-			"La liste de numéros de stations contient un ou plusieurs nombre inférieur à 1");
+		throw new IllegalArgumentException("La liste de numéros de stations est erronée");
 	    }
 
 	} catch (IllegalArgumentException e) {
-	    logger.error("La liste de numéros contient {}", Collections.min(listStationsNumbers));
+	    logger.error("La liste contient des numéros de stations qui sont incorrectes");
 	    return personFiltres;
 	}
     }

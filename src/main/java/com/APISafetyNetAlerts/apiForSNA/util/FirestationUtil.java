@@ -1,8 +1,11 @@
 package com.APISafetyNetAlerts.apiForSNA.util;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
+import org.codehaus.plexus.util.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -42,6 +45,24 @@ public class FirestationUtil {
 	}
 
 	return listToReturn;
+    }
+
+    public List<Integer> getAllStationNumber() {
+	Set<Integer> stationNumbers = new HashSet<Integer>();
+	List<FireStation> listFireStation = fireStationService.getAllFireStations().getListFirestation();
+	for (FireStation fs : listFireStation) {
+	    stationNumbers.add(fs.getStation());
+	}
+	List<Integer> listToSend = new ArrayList<Integer>();
+	listToSend.addAll(stationNumbers);
+	return listToSend;
+    }
+
+    public List<Integer> compareElementsOfTwoListAndSendListWithSameElements(List<Integer> listOne,
+	    List<Integer> listTwo) {
+	List<Integer> listToSend = new ArrayList<Integer>();
+	listToSend = (List<Integer>) CollectionUtils.intersection(listOne, listTwo);
+	return listToSend;
     }
 
 }

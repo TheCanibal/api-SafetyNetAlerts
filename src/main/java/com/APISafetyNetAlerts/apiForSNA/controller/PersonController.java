@@ -19,6 +19,7 @@ import com.APISafetyNetAlerts.apiForSNA.model.Person;
 import com.APISafetyNetAlerts.apiForSNA.restModel.PersonAdaptative;
 import com.APISafetyNetAlerts.apiForSNA.service.PersonService;
 import com.APISafetyNetAlerts.apiForSNA.util.FirestationPersonUtil;
+import com.APISafetyNetAlerts.apiForSNA.util.FirestationUtil;
 import com.APISafetyNetAlerts.apiForSNA.util.MedicalRecordUtil;
 import com.APISafetyNetAlerts.apiForSNA.util.PersonUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -36,6 +37,9 @@ public class PersonController {
 
     @Autowired
     private FirestationPersonUtil firestationPersonUtil;
+
+    @Autowired
+    private FirestationUtil fireStationUtil;
 
     @Autowired
     private PersonUtil personUtil;
@@ -134,6 +138,9 @@ public class PersonController {
 	// list of phone number without duplicates
 	Set<String> setPhoneNumber = new HashSet<String>();
 
+	// list of station numbers
+	List<Integer> stationNumbers = fireStationUtil.getAllStationNumber();
+
 	// Filter rules to apply to the bean
 	SimpleBeanPropertyFilter monFiltre;
 	// This allow the filter to apply to all the beans with dynamic filters
@@ -142,7 +149,7 @@ public class PersonController {
 	MappingJacksonValue personFiltres = new MappingJacksonValue(setPhoneNumber);
 
 	try {
-	    if (firestation > 0) {
+	    if (stationNumbers.contains(firestation)) {
 		listPersonsCoveredByStation = firestationPersonUtil.getPersonsByFireStationNumber(firestation);
 		logger.info("Le numéro de station est {}", firestation);
 		// for each person in the list, add the phone number in Set to remove duplicates
@@ -170,7 +177,7 @@ public class PersonController {
 		throw new IllegalArgumentException("Numéro de station erroné : doit être supérieur à 0 !");
 	    }
 	} catch (IllegalArgumentException e) {
-	    logger.error("Le numéro de station est erroné ! Il est égal à {}", firestation);
+	    logger.error("La station numéro {} n'existe pas !", firestation);
 	    return personFiltres;
 	}
     }
@@ -186,18 +193,8 @@ public class PersonController {
     @GetMapping("/personInfo")
     public MappingJacksonValue getPersonInfoByFirstNameAndLastName(@RequestParam String firstName,
 	    @RequestParam String lastName) {
-
-	// list of persons by last name
-	List<PersonAdaptative> listPersonsByLastName = new ArrayList<PersonAdaptative>();
-
 	// List to return
 	List<PersonAdaptative> listToSend = new ArrayList<PersonAdaptative>();
-
-	// List of all first name to compare with argument
-	List<String> allPersonsFirstName = personUtil.getFirstNameFromListPersons();
-
-	// List of all last name to compare with argument
-	List<String> allPersonsLastName = personUtil.getLastNameFromListPersons();
 
 	// Filter rules to apply to the bean
 	SimpleBeanPropertyFilter monFiltre;
@@ -206,19 +203,10 @@ public class PersonController {
 	// To be able to set the filters concretely
 	MappingJacksonValue personFiltres = new MappingJacksonValue(listToSend);
 	try {
-	    if (allPersonsFirstName.contains(firstName) || allPersonsLastName.contains(lastName)) {
-		listPersonsByLastName = personService.getPersonsAdaptativeByLastName(lastName).getListPersons();
 
-		// For each person, add to the list persons with the first name or the last name
-		// argument
-		for (PersonAdaptative p : listPersonsByLastName) {
-		    if (p.getFirstName().equals(firstName) && p.getLastName().equals(lastName)) {
-			listToSend.add(p);
-		    } else if (p.getLastName().equals(lastName) && !listToSend.contains(p)) {
-			listToSend.add(p);
-		    }
-		}
-
+	    listToSend = personUtil.getPersonWithFirstNameAndLastNameAndOthersPersonsWithSameLastName(firstName,
+		    lastName);
+	    if (!listToSend.isEmpty()) {
 		// Add the age of all persons in the list
 		listToSend = medicalRecordUtil.getListOfPersonsWithAge(listToSend);
 		// Add the medical backgrounds of all persons in the list
@@ -235,17 +223,18 @@ public class PersonController {
 		    try {
 			String json = objectMapper.setFilterProvider(filtres).writerWithDefaultPrettyPrinter()
 				.writeValueAsString(listToSend);
-			logger.debug("La liste de numéro de téléphone qui est renvoyée : {}", json);
+			logger.debug("La liste de personne qui est renvoyée : {}", json);
 		    } catch (Exception e) {
 			logger.error("Mapping error");
 		    }
 		}
 		return personFiltres;
 	    } else {
-		throw new IllegalArgumentException("Le prénom ou le nom ne fait pas partie de la liste");
+
+		throw new IllegalArgumentException("La combinaison de nom et prénom est erronée !");
 	    }
 	} catch (IllegalArgumentException e) {
-	    logger.error("Le nom {} ou le prénom {} est erroné", lastName, firstName);
+	    logger.error("Aucune personne ne s'appelle {} {} dans la liste !", firstName, lastName);
 	    return personFiltres;
 	}
     }

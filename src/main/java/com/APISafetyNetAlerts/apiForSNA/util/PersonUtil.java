@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.APISafetyNetAlerts.apiForSNA.model.Person;
+import com.APISafetyNetAlerts.apiForSNA.restModel.PersonAdaptative;
 import com.APISafetyNetAlerts.apiForSNA.service.PersonService;
 
 /**
@@ -85,5 +86,40 @@ public class PersonUtil {
 	    }
 	}
 	return allPersonsCities;
+    }
+
+    /**
+     * get a person or persons with first name and last name and all other persons
+     * with the same last name
+     * 
+     * @param firstName first name of a person
+     * @param lastName  last name of a persn
+     * @return list of persons
+     */
+    public List<PersonAdaptative> getPersonWithFirstNameAndLastNameAndOthersPersonsWithSameLastName(String firstName,
+	    String lastName) {
+	// list of persons with first name AND last name
+	List<PersonAdaptative> listPersonsByFirstNameAndLastName = personService
+		.getPersonsAdaptativeByFirstNameAndLastName(firstName, lastName).getListPersons();
+
+	// list of person with the same last name in param
+	List<PersonAdaptative> personsWithSameLastName = new ArrayList<PersonAdaptative>();
+
+	// List to return
+	List<PersonAdaptative> listToSend = new ArrayList<PersonAdaptative>();
+
+	if (!listPersonsByFirstNameAndLastName.isEmpty()) {
+	    personsWithSameLastName = personService.getPersonsAdaptativeByLastName(lastName).getListPersons();
+	    // For each person, add to the list persons with the first name or the last name
+	    // argument
+	    for (PersonAdaptative p : listPersonsByFirstNameAndLastName) {
+		for (PersonAdaptative p2 : personsWithSameLastName) {
+		    if (p.getFirstName().equals(firstName) || p.getLastName().equals(lastName)) {
+			listToSend.add(p2);
+		    }
+		}
+	    }
+	}
+	return listToSend;
     }
 }

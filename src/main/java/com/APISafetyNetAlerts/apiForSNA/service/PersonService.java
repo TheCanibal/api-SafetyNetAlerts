@@ -59,13 +59,24 @@ public class PersonService {
     }
 
     /**
-     * Get all persons who live in the city
+     * Get all persons with the last name
      * 
-     * @param city city where lives the person
-     * @return a list of persons who lives in the city
+     * @param lastName last name of persons
+     * @return a list of persons with the last name
      */
     public ListPersonAdaptative getPersonsAdaptativeByLastName(String lastName) {
 	return personRepository.findPersonsAdaptativeByLastName(lastName);
+    }
+
+    /**
+     * Get all persons with last name AND first name
+     * 
+     * @param lastName  last name of a person
+     * @param firstName first name of a person
+     * @return a list of persons with last name AND first name
+     */
+    public ListPersonAdaptative getPersonsAdaptativeByFirstNameAndLastName(String firstName, String lastName) {
+	return personRepository.findPersonsAdaptativeByFirstNameAndLastName(firstName, lastName);
     }
 
     /**
