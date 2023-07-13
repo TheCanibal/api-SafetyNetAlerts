@@ -46,9 +46,15 @@ public class PersonController {
 
     private static Logger logger = LogManager.getLogger(PersonController.class);
 
+    /**
+     * Read - Get all persons in the JSON file
+     * 
+     * @return list of all persons
+     */
     @GetMapping("/persons")
     public List<Person> getAllPersons() {
 	List<Person> listAllPersons = personService.getAllPersons().getListPersons();
+	logger.debug("Liste de toutes les personnes du fichier : {}", listAllPersons.toString());
 	return listAllPersons;
     }
 
@@ -86,7 +92,9 @@ public class PersonController {
 	    if (address != "" && allAddresses.contains(address)) {
 		listPersonsByAddress = personService.getPersonsAdaptativeByAdress(address).getListPersons();
 		minorsList = medicalRecordUtil.getListOfMinorsPersons(listPersonsByAddress);
+		logger.debug("La liste des mineurs : {}", minorsList.toString());
 		majorsList = medicalRecordUtil.getListOfMajorsPersons(listPersonsByAddress);
+		logger.debug("La liste des majeurs : {}", majorsList.toString());
 		logger.info("L'adresse est {}", address);
 		// for each minors, add to the list
 		listToSend.addAll(minorsList);
@@ -156,7 +164,7 @@ public class PersonController {
 		for (Person p : listPersonsCoveredByStation) {
 		    setPhoneNumber.add(p.getPhone());
 		}
-		logger.info("Nombre de personnes dans la liste : {}", setPhoneNumber.size());
+		logger.info("Nombre de numéros de téléphone dans la liste : {}", setPhoneNumber.size());
 		monFiltre = SimpleBeanPropertyFilter.filterOutAllExcept("phone");
 		filtres = new SimpleFilterProvider().addFilter("filtreDynamiquePerson", monFiltre);
 		personFiltres = new MappingJacksonValue(setPhoneNumber);
@@ -174,7 +182,7 @@ public class PersonController {
 		}
 		return personFiltres;
 	    } else {
-		throw new IllegalArgumentException("Numéro de station erroné : doit être supérieur à 0 !");
+		throw new IllegalArgumentException("Numéro de station erroné !");
 	    }
 	} catch (IllegalArgumentException e) {
 	    logger.error("La station numéro {} n'existe pas !", firestation);
@@ -203,7 +211,8 @@ public class PersonController {
 	// To be able to set the filters concretely
 	MappingJacksonValue personFiltres = new MappingJacksonValue(listToSend);
 	try {
-
+	    // Fill the list with the person with first name and last name and all others
+	    // persons with the same last name
 	    listToSend = personUtil.getPersonWithFirstNameAndLastNameAndOthersPersonsWithSameLastName(firstName,
 		    lastName);
 	    if (!listToSend.isEmpty()) {

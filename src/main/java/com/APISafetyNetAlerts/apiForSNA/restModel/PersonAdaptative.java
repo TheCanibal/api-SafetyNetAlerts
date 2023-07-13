@@ -2,6 +2,10 @@ package com.APISafetyNetAlerts.apiForSNA.restModel;
 
 import com.fasterxml.jackson.annotation.JsonFilter;
 
+/**
+ * Model represents the object persons adaptative in the JSON file
+ *
+ */
 @JsonFilter("filtreDynamiquePerson")
 
 public class PersonAdaptative {

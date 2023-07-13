@@ -4,6 +4,11 @@ import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+/**
+ * Model represents all the object persons adaptative in the JSON file
+ *
+ */
+
 public class ListPersonAdaptative {
 
     @JsonProperty("persons")

@@ -1,7 +1,9 @@
 package com.APISafetyNetAlerts.apiForSNA.util;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -27,14 +29,16 @@ public class PersonUtil {
      * @return a list with all the addresses
      */
     public List<String> getAddressFromListPersons() {
-	List<String> allPersonsAddress = new ArrayList<String>();
+	Set<String> allPersonsAddressSet = new HashSet<String>();
 	List<Person> listAllPersons = personService.getAllPersons().getListPersons();
+	List<String> allPersonsAddressList = new ArrayList<String>();
 	if (listAllPersons != null) {
 	    for (Person p : listAllPersons) {
-		allPersonsAddress.add(p.getAddress());
+		allPersonsAddressSet.add(p.getAddress());
 	    }
 	}
-	return allPersonsAddress;
+	allPersonsAddressList.addAll(allPersonsAddressSet);
+	return allPersonsAddressList;
     }
 
     /**
@@ -44,14 +48,16 @@ public class PersonUtil {
      * @return a list with all the first name
      */
     public List<String> getFirstNameFromListPersons() {
-	List<String> allPersonsFirstName = new ArrayList<String>();
+	Set<String> allPersonsFirstNameSet = new HashSet<String>();
 	List<Person> listAllPersons = personService.getAllPersons().getListPersons();
+	List<String> allPersonsFirstNameList = new ArrayList<String>();
 	if (listAllPersons != null) {
 	    for (Person p : listAllPersons) {
-		allPersonsFirstName.add(p.getFirstName());
+		allPersonsFirstNameSet.add(p.getFirstName());
 	    }
 	}
-	return allPersonsFirstName;
+	allPersonsFirstNameList.addAll(allPersonsFirstNameSet);
+	return allPersonsFirstNameList;
     }
 
     /**
@@ -61,14 +67,16 @@ public class PersonUtil {
      * @return a list with all the last name
      */
     public List<String> getLastNameFromListPersons() {
-	List<String> allPersonsLastName = new ArrayList<String>();
+	Set<String> allPersonsLastNameSet = new HashSet<String>();
 	List<Person> listAllPersons = personService.getAllPersons().getListPersons();
+	List<String> allPersonsLastNameList = new ArrayList<String>();
 	if (listAllPersons != null) {
 	    for (Person p : listAllPersons) {
-		allPersonsLastName.add(p.getLastName());
+		allPersonsLastNameSet.add(p.getLastName());
 	    }
 	}
-	return allPersonsLastName;
+	allPersonsLastNameList.addAll(allPersonsLastNameSet);
+	return allPersonsLastNameList;
     }
 
     /**
@@ -78,14 +86,17 @@ public class PersonUtil {
      * @return a list with all the cities
      */
     public List<String> getCityFromListPersons() {
-	List<String> allPersonsCities = new ArrayList<String>();
+	Set<String> allPersonsCitiesSet = new HashSet<String>();
 	List<Person> listAllPersons = personService.getAllPersons().getListPersons();
+	List<String> allPersonsCitiesList = new ArrayList<String>();
 	if (listAllPersons != null) {
 	    for (Person p : listAllPersons) {
-		allPersonsCities.add(p.getCity());
+		allPersonsCitiesSet.add(p.getCity());
 	    }
 	}
-	return allPersonsCities;
+
+	allPersonsCitiesList.addAll(allPersonsCitiesSet);
+	return allPersonsCitiesList;
     }
 
     /**

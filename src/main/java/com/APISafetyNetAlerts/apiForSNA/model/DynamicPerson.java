@@ -2,6 +2,10 @@ package com.APISafetyNetAlerts.apiForSNA.model;
 
 import com.fasterxml.jackson.annotation.JsonFilter;
 
+/**
+ * Model represents the object persons in the JSON file with a dynamic filter
+ *
+ */
 @JsonFilter("filtreDynamiquePerson")
 public class DynamicPerson {
 

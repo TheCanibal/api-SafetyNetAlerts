@@ -4,6 +4,10 @@ import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+/**
+ * Model represents all the object medicalrecords in the JSON file
+ *
+ */
 public class ListMedicalRecords {
 
     @JsonProperty("medicalrecords")

@@ -1,5 +1,10 @@
 package com.APISafetyNetAlerts.apiForSNA.model;
 
+/**
+ * Model represents the object firestations in the JSON file
+ *
+ */
+
 public class FireStation {
 
     private String address;

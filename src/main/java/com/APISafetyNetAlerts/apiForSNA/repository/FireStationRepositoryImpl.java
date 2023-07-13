@@ -31,7 +31,7 @@ public class FireStationRepositoryImpl implements FireStationRepository {
     private ObjectMapper mapper = new ObjectMapper();
     // List of firestations to sort and to set
     private List<FireStation> listFirestationsSorted;
-    // List of firestations to load only one time
+    // List of firestations to load
     private ListFireStations loadListFirestations;
     // List of firestations to send
     private ListFireStations listFirestationsToSend = new ListFireStations();
@@ -41,12 +41,14 @@ public class FireStationRepositoryImpl implements FireStationRepository {
     /**
      * Read JSON file if it has not been read already and load it
      * 
+     * @param force force to reload file
      * @return a list of firestations from file
      */
-    public ListFireStations loadFireStations() {
+    @Override
+    public ListFireStations loadFireStations(boolean force) {
 	mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 	File file = new File("D:\\workspace\\git\\apiForSNA\\src\\main\\resources\\data.json");
-	if (loadListFirestations == null) {
+	if (loadListFirestations == null || force) {
 	    try {
 		loadListFirestations = mapper.readValue(file, ListFireStations.class);
 		logger.info("Le fichier est lu pour récupérer les Firestations!");
@@ -66,7 +68,7 @@ public class FireStationRepositoryImpl implements FireStationRepository {
     @Override
     public ListFireStations findAllFirestation() {
 	// Read the file and fill the list if it's not
-	loadListFirestations = loadFireStations();
+	loadListFirestations = loadFireStations(false);
 	return loadListFirestations;
     }
 
@@ -79,7 +81,7 @@ public class FireStationRepositoryImpl implements FireStationRepository {
     @Override
     public ListFireStations findFireStationByStationNumber(int station) {
 	// Read the file and fill the list if it's not
-	loadListFirestations = loadFireStations();
+	loadListFirestations = loadFireStations(false);
 	listFirestationsSorted = new ArrayList<FireStation>();
 	for (FireStation fs : loadListFirestations.getListFirestation()) {
 	    if (fs.getStation() == station) {
@@ -100,7 +102,7 @@ public class FireStationRepositoryImpl implements FireStationRepository {
     @Override
     public ListFireStations findFireStationByListOfStationNumber(int[] stations) {
 	// Read the file and fill the list if it's not
-	loadListFirestations = loadFireStations();
+	loadListFirestations = loadFireStations(false);
 	listFirestationsSorted = new ArrayList<FireStation>();
 	for (FireStation fs : loadListFirestations.getListFirestation()) {
 	    for (int i : stations) {
@@ -123,6 +125,7 @@ public class FireStationRepositoryImpl implements FireStationRepository {
     public FireStation saveFirestation(FireStation firestation) {
 
 	FireStation newFirestation = new FireStation(firestation.getAddress(), firestation.getStation());
+	logger.debug("La station à ajouter : {}", firestation.toString());
 	try {
 	    if (firestation.getAddress() != null && firestation.getStation() > 0) {
 		logger.info("L'address est {}", firestation.getAddress());

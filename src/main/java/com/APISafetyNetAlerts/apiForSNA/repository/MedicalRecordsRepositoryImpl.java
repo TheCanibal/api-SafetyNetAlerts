@@ -2,7 +2,6 @@ package com.APISafetyNetAlerts.apiForSNA.repository;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -28,12 +27,10 @@ import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
 public class MedicalRecordsRepositoryImpl implements MedicalRecordsRepository {
     // ObjectMapper to be able to deserialize JSON
     private ObjectMapper mapper = new ObjectMapper();
-    // List medical records to load only one time
+    // List medical records to load
     private ListMedicalRecords loadListMedicalRecords;
     // List medical records to send
     private ListMedicalRecords listMedicalRecordsToSend = new ListMedicalRecords();
-    // List medical records to sort and to set
-    private List<MedicalRecords> listMedicalRecords;
     // Logger
     private static Logger logger = LogManager.getLogger(MedicalRecordsRepositoryImpl.class);
 
@@ -42,10 +39,11 @@ public class MedicalRecordsRepositoryImpl implements MedicalRecordsRepository {
      * 
      * @return a list of medical records from file
      */
-    public ListMedicalRecords loadMedicalRecords() {
+    @Override
+    public ListMedicalRecords loadMedicalRecords(boolean force) {
 	mapper.findAndRegisterModules();
 	mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-	if (loadListMedicalRecords == null) {
+	if (loadListMedicalRecords == null || force) {
 	    try {
 		File file = new File("D:\\workspace\\git\\apiForSNA\\src\\main\\resources\\data.json");
 		loadListMedicalRecords = mapper.readValue(file, ListMedicalRecords.class);
@@ -66,7 +64,7 @@ public class MedicalRecordsRepositoryImpl implements MedicalRecordsRepository {
     @Override
     public ListMedicalRecords findAllMedicalRecords() {
 	// Read the file and fill the list if it's not
-	listMedicalRecordsToSend = loadMedicalRecords();
+	listMedicalRecordsToSend = loadMedicalRecords(false);
 	return listMedicalRecordsToSend;
     }
 
@@ -81,6 +79,7 @@ public class MedicalRecordsRepositoryImpl implements MedicalRecordsRepository {
 
 	MedicalRecords newMedicalRecord = new MedicalRecords(medicalRecord.getFirstName(), medicalRecord.getLastName(),
 		medicalRecord.getBirthdate(), medicalRecord.getMedications(), medicalRecord.getAllergies());
+	logger.debug("Le dossier médical à ajouter : {}", medicalRecord.toString());
 	try {
 	    if (medicalRecord.getFirstName() != null && medicalRecord.getLastName() != null
 		    && medicalRecord.getBirthdate() != null && medicalRecord.getMedications() != null
@@ -125,16 +124,15 @@ public class MedicalRecordsRepositoryImpl implements MedicalRecordsRepository {
 	    return null;
 	} catch (IllegalArgumentException e) {
 	    if (medicalRecord.getFirstName() == null)
-		logger.error("Le champ ne doit pas être vide !");
+		logger.error("Le champ firstName ne doit pas être vide !");
 	    if (medicalRecord.getLastName() == null)
-		logger.error("Le champ ne doit pas être vide !");
+		logger.error("Le champ lastName ne doit pas être vide !");
 	    if (medicalRecord.getBirthdate() == null)
-		logger.error("Le champ ne doit pas être vide !");
+		logger.error("Le champ birthdate ne doit pas être vide !");
 	    if (medicalRecord.getMedications() == null)
-		logger.error("Le champ ne doit pas être vide !");
+		logger.error("Le champ medications ne doit pas être vide !");
 	    if (medicalRecord.getAllergies() == null)
-		logger.error("Le champ ne doit pas être vide !");
-	    logger.error("Aucune valeur");
+		logger.error("Le champ allergies ne doit pas être vide !");
 
 	    return null;
 	}

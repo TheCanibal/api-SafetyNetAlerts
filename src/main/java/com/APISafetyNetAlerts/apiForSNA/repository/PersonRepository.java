@@ -13,6 +13,20 @@ import com.APISafetyNetAlerts.apiForSNA.restModel.ListPersonAdaptative;
 public interface PersonRepository {
 
     /**
+     * Read JSON file if it has not been read already and load it
+     * 
+     * @return list of persons from file
+     */
+    public ListPerson loadPersons(boolean force);
+
+    /**
+     * Read JSON file if it has not been read already
+     * 
+     * @return list of person adaptative from file
+     */
+    public ListPersonAdaptative loadPersonsAdaptative(boolean force);
+
+    /**
      * Get all persons
      * 
      * @return a list of all persons

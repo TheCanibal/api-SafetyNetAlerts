@@ -22,9 +22,6 @@ public class MedicalRecordController {
      */
     @PostMapping("/medicalRecord")
     public MedicalRecords createMedicalRecord(@RequestBody MedicalRecords medicalRecord) {
-	MedicalRecords medicalRecordToSend = new MedicalRecords(medicalRecord.getFirstName(),
-		medicalRecord.getLastName(), medicalRecord.getBirthdate(), medicalRecord.getMedications(),
-		medicalRecord.getAllergies());
-	return medicalRecordService.createMedicalRecord(medicalRecordToSend);
+	return medicalRecordService.createMedicalRecord(medicalRecord);
     }
 }

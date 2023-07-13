@@ -53,7 +53,8 @@ public class PersonRepositoryImpl implements PersonRepository {
      * 
      * @return list of persons from file
      */
-    public ListPerson loadPersons() {
+    @Override
+    public ListPerson loadPersons(boolean force) {
 	mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 	if (loadListPersons == null) {
 	    try {
@@ -73,7 +74,8 @@ public class PersonRepositoryImpl implements PersonRepository {
      * 
      * @return list of person adaptative from file
      */
-    public ListPersonAdaptative loadPersonsAdaptative() {
+    @Override
+    public ListPersonAdaptative loadPersonsAdaptative(boolean force) {
 	mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 	if (loadListPersonsAdaptative == null) {
 	    try {
@@ -96,8 +98,20 @@ public class PersonRepositoryImpl implements PersonRepository {
     @Override
     public ListPerson findAllPersons() {
 	// Read the file and fill the list if it's not
-	loadListPersons = loadPersons();
+	loadListPersons = loadPersons(false);
 	return loadListPersons;
+    }
+
+    /**
+     * Get all persons
+     * 
+     * @return a list of all persons
+     */
+    @Override
+    public ListPersonAdaptative findAllPersonAdaptative() {
+	// Read the file and fill the list if it's not
+	loadListPersonsAdaptative = loadPersonsAdaptative(false);
+	return loadListPersonsAdaptative;
     }
 
     /**
@@ -109,7 +123,7 @@ public class PersonRepositoryImpl implements PersonRepository {
     @Override
     public ListPerson findPersonsByCity(String city) {
 	// Read the file and fill the list if it's not
-	loadListPersons = loadPersons();
+	loadListPersons = loadPersons(false);
 	listPersonsSorted = new ArrayList<Person>();
 	for (Person p : loadListPersons.getListPersons()) {
 	    if (p.getCity().equals(city)) {
@@ -121,18 +135,6 @@ public class PersonRepositoryImpl implements PersonRepository {
     }
 
     /**
-     * Get all persons
-     * 
-     * @return a list of all persons
-     */
-    @Override
-    public ListPersonAdaptative findAllPersonAdaptative() {
-	// Read the file and fill the list if it's not
-	loadListPersonsAdaptative = loadPersonsAdaptative();
-	return loadListPersonsAdaptative;
-    }
-
-    /**
      * Get all persons who live at an address
      * 
      * @param address address of a person
@@ -141,7 +143,7 @@ public class PersonRepositoryImpl implements PersonRepository {
     @Override
     public ListPersonAdaptative findPersonAdaptativeByAddress(String address) {
 	// Read the file and fill the list if it's not
-	loadListPersonsAdaptative = loadPersonsAdaptative();
+	loadListPersonsAdaptative = loadPersonsAdaptative(false);
 	listPersonsAdaptativeSorted = new ArrayList<PersonAdaptative>();
 	for (PersonAdaptative p : loadListPersonsAdaptative.getListPersons()) {
 	    if (p.getAddress().equals(address)) {
@@ -161,7 +163,7 @@ public class PersonRepositoryImpl implements PersonRepository {
     @Override
     public ListPersonAdaptative findPersonsAdaptativeByLastName(String lastName) {
 	// Read the file and fill the list if it's not
-	loadListPersonsAdaptative = loadPersonsAdaptative();
+	loadListPersonsAdaptative = loadPersonsAdaptative(false);
 	listPersonsAdaptativeSorted = new ArrayList<PersonAdaptative>();
 	for (PersonAdaptative p : loadListPersonsAdaptative.getListPersons()) {
 	    if (p.getLastName().equals(lastName)) {
@@ -182,7 +184,7 @@ public class PersonRepositoryImpl implements PersonRepository {
     @Override
     public ListPersonAdaptative findPersonsAdaptativeByFirstNameAndLastName(String firstName, String lastName) {
 	// Read the file and fill the list if it's not
-	loadListPersonsAdaptative = loadPersonsAdaptative();
+	loadListPersonsAdaptative = loadPersonsAdaptative(false);
 	listPersonsAdaptativeSorted = new ArrayList<PersonAdaptative>();
 	for (PersonAdaptative p : loadListPersonsAdaptative.getListPersons()) {
 	    if (p.getLastName().equals(lastName) && p.getFirstName().equals(firstName)) {
@@ -204,6 +206,7 @@ public class PersonRepositoryImpl implements PersonRepository {
 
 	Person newPerson = new Person(person.getFirstName(), person.getLastName(), person.getAddress(),
 		person.getCity(), person.getZip(), person.getPhone(), person.getEmail());
+	logger.debug("La personne à ajouter : {}", person.toString());
 	try {
 	    if (person.getFirstName() != null && person.getLastName() != null && person.getAddress() != null
 		    && person.getCity() != null && person.getZip() > 0 && person.getPhone() != null

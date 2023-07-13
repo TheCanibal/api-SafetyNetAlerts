@@ -6,8 +6,6 @@ import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -24,8 +22,6 @@ public class MedicalRecordUtil {
 
     @Autowired
     private MedicalRecordService medicalRecordService;
-
-    private static Logger logger = LogManager.getLogger(MedicalRecordUtil.class);
 
     public LocalDate convertStringIntoDate(String date) {
 	DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");

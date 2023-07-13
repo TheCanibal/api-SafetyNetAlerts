@@ -47,6 +47,11 @@ public class FirestationUtil {
 	return listToReturn;
     }
 
+    /**
+     * Get all Station number with no double
+     * 
+     * @return list of station number
+     */
     public List<Integer> getAllStationNumber() {
 	Set<Integer> stationNumbers = new HashSet<Integer>();
 	List<FireStation> listFireStation = fireStationService.getAllFireStations().getListFirestation();
@@ -58,6 +63,14 @@ public class FirestationUtil {
 	return listToSend;
     }
 
+    /**
+     * Compare two list and add common elements between the two lists in a third
+     * list
+     * 
+     * @param listOne first list to compare
+     * @param listTwo second list to compare
+     * @return a list with the common elements between the two param list
+     */
     public List<Integer> compareElementsOfTwoListAndSendListWithSameElements(List<Integer> listOne,
 	    List<Integer> listTwo) {
 	List<Integer> listToSend = new ArrayList<Integer>();

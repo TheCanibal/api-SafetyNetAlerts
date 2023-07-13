@@ -15,6 +15,13 @@ import com.APISafetyNetAlerts.apiForSNA.model.ListFireStations;
 public interface FireStationRepository {
 
     /**
+     * Read JSON file if it has not been read already and load it
+     * 
+     * @return a list of firestations from file
+     */
+    public ListFireStations loadFireStations(boolean force);
+
+    /**
      * Get all firestations
      * 
      * @return list of all firestations

@@ -14,6 +14,13 @@ import com.APISafetyNetAlerts.apiForSNA.model.MedicalRecords;
 public interface MedicalRecordsRepository {
 
     /**
+     * Read JSON file if it has not been read already and load it
+     * 
+     * @return a list of medical records from file
+     */
+    public ListMedicalRecords loadMedicalRecords(boolean force);
+
+    /**
      * Get all the medical records
      * 
      * @return a list of all medical records

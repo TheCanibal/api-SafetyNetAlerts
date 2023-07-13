@@ -1,5 +1,9 @@
 package com.APISafetyNetAlerts.apiForSNA.model;
 
+/**
+ * Model represents the object persons in the JSON file
+ *
+ */
 public class Person {
 
     private String firstName;

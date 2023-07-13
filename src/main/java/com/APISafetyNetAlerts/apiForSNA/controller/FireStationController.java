@@ -39,9 +39,6 @@ public class FireStationController {
     private MedicalRecordUtil medicalRecordUtil;
 
     @Autowired
-    private PersonService personService;
-
-    @Autowired
     private FirestationPersonUtil firestationPersonUtil;
 
     @Autowired
@@ -50,21 +47,24 @@ public class FireStationController {
     @Autowired
     private FireStationService firestationService;
 
+    @Autowired
+    private PersonService personService;
+
     private static Logger logger = LogManager.getLogger(FireStationController.class);
 
     /**
-     * Read - Get all persons that are deserved by a station
+     * Read - Get all persons that are covered by a station
      * 
      * @param stationNumber firestation number
-     * @return - A List of Persons that are deserved by firestation and the number
-     *         of minors and majors persons
+     * @return - A List of Persons that are covered by firestation and the number of
+     *         minors and majors persons
      */
     @GetMapping("/firestation")
     public MappingJacksonValue getPersonsCoveredByFireStation(@RequestParam int stationNumber) {
 
 	// List to return
 	ListPersonAdaptative listToSend = new ListPersonAdaptative();
-	// Set of station numbers
+	// List of station numbers
 	List<Integer> stationNumbers = fireStationUtil.getAllStationNumber();
 	// Filter rules to apply to the bean
 	SimpleBeanPropertyFilter monFiltre;
@@ -140,6 +140,7 @@ public class FireStationController {
 	List<PersonAdaptative> listPersonsAdaptative = new ArrayList<PersonAdaptative>();
 	// List to compare the argument to the list of addresses
 	List<String> allAddresses = personUtil.getAddressFromListPersons();
+	logger.debug("Liste de toutes les addresses : {}", allAddresses.toString());
 	// Filter rules to apply to the bean
 	SimpleBeanPropertyFilter monFiltre;
 	// This allow the filter to apply to all the beans with dynamic filters
@@ -202,11 +203,16 @@ public class FireStationController {
 	List<PersonAdaptative> listPersonsByFireStation = new ArrayList<PersonAdaptative>();
 	// list of all station number
 	List<Integer> listStationsNumbers = fireStationUtil.getAllStationNumber();
+	logger.debug("Contenu de la liste des numéros de stations : {}", listStationsNumbers.toString());
 	// change array param into a list
 	List<Integer> listStationsNumbersParam = Arrays.stream(stations).boxed().collect(Collectors.toList());
+	logger.debug("Contenu du paramètre \"tableau de numéros de stations\" : {}",
+		listStationsNumbersParam.toString());
 	// List of station to compare
 	List<Integer> listStationsNumbersCompare = fireStationUtil
 		.compareElementsOfTwoListAndSendListWithSameElements(listStationsNumbersParam, listStationsNumbers);
+	logger.debug("Contenu de la liste qui enlève les doublons et les mauvais numéros de stations : {}",
+		listStationsNumbersCompare.toString());
 	// Filter rules to apply to the bean
 	SimpleBeanPropertyFilter monFiltre;
 	// This allow the filter to apply to all the beans with dynamic filters

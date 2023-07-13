@@ -1,6 +1,9 @@
 package com.APISafetyNetAlerts.apiForSNA.model;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
+/**
+ * Model represents the object medicalrecords in the JSON file
+ *
+ */
 
 public class MedicalRecords {
 
@@ -8,7 +11,6 @@ public class MedicalRecords {
 
     private String lastName;
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "MM/dd/yyyy")
     private String birthdate;
 
     private String[] medications;
