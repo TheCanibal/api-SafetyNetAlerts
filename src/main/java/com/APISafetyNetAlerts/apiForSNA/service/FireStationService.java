@@ -59,4 +59,13 @@ public class FireStationService {
 	return fireStationRepository.saveFirestation(firestation);
     }
 
+    /**
+     * Update station number of a fireStation
+     * 
+     * @param fireStation fireStation to update
+     */
+    public void updateFirestation(FireStation fireStation) {
+	fireStationRepository.updateFirestation(fireStation);
+    }
+
 }

@@ -54,4 +54,11 @@ public interface FireStationRepository {
      * @return created person
      */
     FireStation saveFirestation(FireStation firestation);
+
+    /**
+     * Update station number of a fireStation
+     * 
+     * @param fireStation fireStation to update
+     */
+    public void updateFirestation(FireStation fireStation);
 }

@@ -16,6 +16,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
 import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
 
@@ -37,6 +38,8 @@ public class FireStationRepositoryImpl implements FireStationRepository {
     private ListFireStations listFirestationsToSend = new ListFireStations();
     // Logger
     private static Logger logger = LogManager.getLogger(FireStationRepositoryImpl.class);
+    // File path
+    File file = new File("D:\\workspace\\git\\apiForSNA\\src\\main\\resources\\data.json");
 
     /**
      * Read JSON file if it has not been read already and load it
@@ -149,8 +152,7 @@ public class FireStationRepositoryImpl implements FireStationRepository {
 		}
 		// Writer to write in Json
 		ObjectWriter writer = mapper.writer();
-		// Path file
-		File file = new File("D:\\workspace\\git\\apiForSNA\\src\\main\\resources\\data.json");
+
 		// read json file
 		JsonNode parsedJson = mapper.readTree(file);
 		// Get the array of persons
@@ -177,4 +179,50 @@ public class FireStationRepositoryImpl implements FireStationRepository {
 
     }
 
+    /**
+     * Update station number of a fireStation
+     * 
+     * @param fireStation fireStation to update
+     */
+    @Override
+    public void updateFirestation(FireStation fireStation) {
+	try {
+	    // Verify if the update is done
+	    boolean update = false;
+	    // JSON file
+	    JsonNode parsedJson = mapper.readTree(file);
+	    // Array to read in JSON file
+	    ArrayNode firestationsArray = (ArrayNode) parsedJson.get("firestations");
+	    // Object to get
+	    ObjectNode object;
+	    // Browse the array
+	    for (int firestation = 0; firestation < firestationsArray.size(); firestation++) {
+		// verify If the address in the file is equal to the address of the firestation
+		// to mosify
+		if (firestationsArray.get(firestation).get("address").toString()
+			.equals("\"" + fireStation.getAddress() + "\"")) {
+		    object = (ObjectNode) firestationsArray.get(firestation);
+		    logger.debug("Station à modifier : {}", object.toString());
+		    if (fireStation.getStation() != object.get("station").asInt()) {
+			object.put("station", fireStation.getStation());
+			logger.debug("Station qui a été modifiée : {}", object.toString());
+			mapper.writeValue(file, parsedJson);
+			update = true;
+		    } else {
+			logger.info("Le numéro de station {} est le même que celui à modifier !",
+				fireStation.getStation());
+			update = true;
+		    }
+
+		}
+	    }
+	    if (!update) {
+		throw new IllegalArgumentException("Il n'y a aucune station avec cette addresse dans la liste !");
+	    }
+	} catch (IOException e) {
+	    logger.error("Le fichier n'a pas pu être lu");
+	} catch (IllegalArgumentException e) {
+	    logger.error("L'addresse est erronée !");
+	}
+    }
 }

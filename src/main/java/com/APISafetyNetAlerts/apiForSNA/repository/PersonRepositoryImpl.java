@@ -19,6 +19,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
 import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
 
@@ -277,18 +278,34 @@ public class PersonRepositoryImpl implements PersonRepository {
     @Override
     public Person updatePerson(Person person) {
 	try {
+	    // Verify if the update is done
 	    boolean update = false;
+	    // JSON file
 	    JsonNode parsedJson = mapper.readTree(file);
+	    // Array to read in JSON file
 	    ArrayNode personsArray = (ArrayNode) parsedJson.get("persons");
+	    // Object to get
+	    ObjectNode object;
+	    // Browse the array
 	    for (int prsn = 0; prsn < personsArray.size(); prsn++) {
+		// verify If the couple of First Name and Last Name is in the list
 		if (personsArray.get(prsn).get("firstName").toString().equals("\"" + person.getFirstName() + "\"")
 			&& personsArray.get(prsn).get("lastName").toString()
 				.equals("\"" + person.getLastName() + "\"")) {
-		    person.setAddress(person.getAddress());
-		    person.setCity(person.getCity());
-		    person.setZip(person.getZip());
-		    person.setPhone(person.getPhone());
-		    person.setEmail(person.getEmail());
+		    object = (ObjectNode) personsArray.get(prsn);
+		    logger.debug("Personne à modifier : {}", object.toString());
+		    if (person.getAddress() != null)
+			object.put("address", person.getAddress());
+		    if (person.getCity() != null)
+			object.put("city", person.getCity());
+		    if (person.getZip() > 0)
+			object.put("zip", person.getZip());
+		    if (person.getPhone() != null)
+			object.put("phone", person.getPhone());
+		    if (person.getEmail() != null)
+			object.put("email", person.getEmail());
+		    mapper.writeValue(file, parsedJson);
+		    logger.debug("Personne qui a été modifiée : {}", object.toString());
 		    update = true;
 		}
 	    }
