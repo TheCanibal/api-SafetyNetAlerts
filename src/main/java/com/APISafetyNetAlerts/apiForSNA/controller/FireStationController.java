@@ -9,6 +9,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.converter.json.MappingJacksonValue;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -287,5 +288,15 @@ public class FireStationController {
     @PutMapping("/firestation")
     public void updateFirestation(@RequestBody FireStation fireStation) {
 	firestationService.updateFirestation(fireStation);
+    }
+
+    /**
+     * Delete a firestation
+     * 
+     * @param firestation firestation to delete
+     */
+    @DeleteMapping("/firestation")
+    public void deleteFirestation(@RequestBody FireStation fireStation) {
+	firestationService.deleteFirestation(fireStation);
     }
 }

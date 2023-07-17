@@ -68,4 +68,12 @@ public class FireStationService {
 	fireStationRepository.updateFirestation(fireStation);
     }
 
+    /**
+     * Delete a firestation
+     * 
+     * @param firestation firestation to delete
+     */
+    public void deleteFirestation(FireStation fireStation) {
+	fireStationRepository.deleteFirestation(fireStation);
+    }
 }

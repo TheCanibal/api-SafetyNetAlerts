@@ -376,8 +376,14 @@
   }, {
     "firstName" : "Kevin",
     "lastName" : "Jovanovic",
-    "birthdate" : "12/06/1997",
-    "medications" : [ "doliprane" ],
+    "birthdate" : "12/06/1996",
+    "medications" : [ "doliprane", "xanax" ],
+    "allergies" : [ "" ]
+  }, {
+    "firstName" : "Kevin",
+    "lastName" : "Jovanovic",
+    "birthdate" : "12/06/1996",
+    "medications" : [ "doliprane", "xanax" ],
     "allergies" : [ ]
   } ]
 }

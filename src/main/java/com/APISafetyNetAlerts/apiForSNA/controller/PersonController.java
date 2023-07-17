@@ -319,7 +319,6 @@ public class PersonController {
      */
     @PostMapping("/person")
     public void addPerson(@RequestBody Person person) {
-
 	personService.createPerson(person);
     }
 

@@ -61,4 +61,11 @@ public interface FireStationRepository {
      * @param fireStation fireStation to update
      */
     public void updateFirestation(FireStation fireStation);
+
+    /**
+     * Delete a firestation
+     * 
+     * @param firestation firestation to delete
+     */
+    public void deleteFirestation(FireStation fireStation);
 }

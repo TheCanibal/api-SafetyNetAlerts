@@ -145,7 +145,7 @@ public class FireStationRepositoryImpl implements FireStationRepository {
 		    try {
 			String json = objectMapper.setFilterProvider(filtres).writerWithDefaultPrettyPrinter()
 				.writeValueAsString(newFirestation);
-			logger.debug("Personn à ajouter : {}", json);
+			logger.debug("Station à ajouter : {}", json);
 		    } catch (Exception e) {
 			logger.error("Mapping error");
 		    }
@@ -231,6 +231,46 @@ public class FireStationRepositoryImpl implements FireStationRepository {
 	    logger.error("Le fichier n'a pas pu être lu");
 	} catch (IllegalArgumentException e) {
 	    logger.error("L'addresse est vide ou erronée !");
+	}
+    }
+
+    /**
+     * Delete a firestation
+     * 
+     * @param firestation firestation to delete
+     */
+    @Override
+    public void deleteFirestation(FireStation fireStation) {
+	try {
+	    // Verify if the update is done
+	    boolean delete = false;
+	    // JSON file
+	    JsonNode parsedJson = mapper.readTree(file);
+	    // Array to read in JSON file
+	    ArrayNode firestationsArray = (ArrayNode) parsedJson.get("firestations");
+	    // if adress not null
+	    if (fireStation.getAddress() == null && fireStation.getStation() <= 0) {
+		throw new NullPointerException("Addresse et numéro vide !");
+	    }
+	    // Browse the array
+	    for (int firestation = 0; firestation < firestationsArray.size(); firestation++) {
+		if (fireStation.getStation() == firestationsArray.get(firestation).get("station").asInt()
+			|| firestationsArray.get(firestation).get("address").toString()
+				.equals("\"" + fireStation.getAddress() + "\"")) {
+		    firestationsArray.remove(firestation);
+		    mapper.writeValue(file, parsedJson);
+		    delete = true;
+		}
+	    }
+	    if (!delete) {
+		throw new IllegalArgumentException("Il n'y a aucune station ou addresse mentionée dans cette liste !");
+	    }
+	} catch (IOException e) {
+	    logger.error("Le fichier n'a pas pu être lu");
+	} catch (IllegalArgumentException e) {
+	    logger.error("Le numéro et/ou l'addresse sont erronnées !");
+	} catch (NullPointerException e) {
+	    logger.error("L'adresse et le numéro sont vides !");
 	}
     }
 }
