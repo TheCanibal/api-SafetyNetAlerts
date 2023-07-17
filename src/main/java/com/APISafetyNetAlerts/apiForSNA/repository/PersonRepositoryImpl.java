@@ -205,7 +205,7 @@ public class PersonRepositoryImpl implements PersonRepository {
      * @return created person
      */
     @Override
-    public Person savePerson(Person person) {
+    public void savePerson(Person person) {
 
 	Person newPerson = new Person(person.getFirstName(), person.getLastName(), person.getAddress(),
 		person.getCity(), person.getZip(), person.getPhone(), person.getEmail());
@@ -242,13 +242,11 @@ public class PersonRepositoryImpl implements PersonRepository {
 		// write in the file
 		writer.writeValue(file, parsedJson);
 		loadPersons(true);
-		return newPerson;
 	    } else {
 		throw new IllegalArgumentException("Un des champs est incorrect !");
 	    }
 	} catch (IOException e) {
 	    logger.error("file not found");
-	    return null;
 	} catch (IllegalArgumentException e) {
 	    if (person.getFirstName() == null)
 		logger.error("Le champ prénom ne doit pas être vide !");
@@ -264,7 +262,6 @@ public class PersonRepositoryImpl implements PersonRepository {
 		logger.error("Le champ numéro de téléphone ne doit pas être vide !");
 	    if (person.getEmail() == null)
 		logger.error("Le champ email ne doit pas être vide !");
-	    return null;
 	}
 
     }
@@ -276,7 +273,7 @@ public class PersonRepositoryImpl implements PersonRepository {
      * @return updated person
      */
     @Override
-    public Person updatePerson(Person person) {
+    public void updatePerson(Person person) {
 	try {
 	    // Verify if the update is done
 	    boolean update = false;
@@ -312,14 +309,54 @@ public class PersonRepositoryImpl implements PersonRepository {
 	    if (!update) {
 		throw new IllegalArgumentException("Il n'y a aucune personne avec ce nom et prénom dans la liste !");
 	    }
-	    return person;
 	} catch (IOException e) {
 	    logger.error("Le fichier n'a pas pu être lu");
-	    return null;
 	} catch (IllegalArgumentException e) {
 	    logger.error("La personne {} {} n'apparaît pas dans la liste.", person.getFirstName(),
 		    person.getLastName());
-	    return null;
+	}
+    }
+
+    /**
+     * Delete person in the JSON file
+     * 
+     * @param person person to delete
+     * @return person deleted
+     */
+    public void deletePerson(Person person) {
+	try {
+	    // Verify if the update is done
+	    boolean delete = false;
+	    // JSON file
+	    JsonNode parsedJson = mapper.readTree(file);
+	    // Array to read in JSON file
+	    ArrayNode personsArray = (ArrayNode) parsedJson.get("persons");
+	    if (person.getFirstName() != null && person.getLastName() != null) {
+		// Browse the array
+		for (int prsn = 0; prsn < personsArray.size(); prsn++) {
+		    // verify If the couple of First Name and Last Name is in the list
+		    if (personsArray.get(prsn).get("firstName").toString().equals("\"" + person.getFirstName() + "\"")
+			    && personsArray.get(prsn).get("lastName").toString()
+				    .equals("\"" + person.getLastName() + "\"")) {
+			logger.debug("Personne à supprimer : {}", personsArray.get(prsn).toString());
+			personsArray.remove(prsn);
+			mapper.writeValue(file, parsedJson);
+			delete = true;
+		    }
+		}
+	    } else {
+		throw new IllegalArgumentException("Il faut un nom et un prénom !");
+	    }
+	    if (!delete) {
+		throw new NullPointerException("Aucune personne avec ce nom et prénom dans la liste !");
+	    }
+	} catch (IOException e) {
+	    logger.error("Le fichier n'a pas pu être lu");
+	} catch (IllegalArgumentException e) {
+	    logger.error("La personne {} {} n'apparaît pas dans la liste.", person.getFirstName(),
+		    person.getLastName());
+	} catch (NullPointerException e) {
+	    logger.error("Il faut un nom et un prénom pour pouvoir supprimer un objet !");
 	}
     }
 }

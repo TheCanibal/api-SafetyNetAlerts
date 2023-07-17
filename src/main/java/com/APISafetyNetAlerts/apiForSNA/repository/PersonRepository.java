@@ -65,14 +65,6 @@ public interface PersonRepository {
     public ListPersonAdaptative findPersonsAdaptativeByLastName(String lastName);
 
     /**
-     * Add new person to the JSON File
-     * 
-     * @param person person to add
-     * @return created person
-     */
-    public Person savePerson(Person person);
-
-    /**
      * Get all persons with last name AND first name
      * 
      * @param lastName  last name of a person
@@ -82,10 +74,26 @@ public interface PersonRepository {
     public ListPersonAdaptative findPersonsAdaptativeByFirstNameAndLastName(String firstName, String lastName);
 
     /**
+     * Add new person to the JSON File
+     * 
+     * @param person person to add
+     * @return created person
+     */
+    public void savePerson(Person person);
+
+    /**
      * Update person in the JSON File
      * 
      * @param person person to update
      * @return updated person
      */
-    public Person updatePerson(Person person);
+    public void updatePerson(Person person);
+
+    /**
+     * Delete person in the JSON file
+     * 
+     * @param person person to delete
+     * @return person deleted
+     */
+    public void deletePerson(Person person);
 }

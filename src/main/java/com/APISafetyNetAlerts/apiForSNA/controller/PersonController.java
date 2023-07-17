@@ -9,6 +9,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.converter.json.MappingJacksonValue;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -317,9 +318,9 @@ public class PersonController {
      * @return created person
      */
     @PostMapping("/person")
-    public Person addPerson(@RequestBody Person person) {
+    public void addPerson(@RequestBody Person person) {
 
-	return personService.createPerson(person);
+	personService.createPerson(person);
     }
 
     /**
@@ -329,8 +330,19 @@ public class PersonController {
      * @return updated person
      */
     @PutMapping("/person")
-    public Person updatePerson(@RequestBody Person person) {
-	return personService.updatePerson(person);
+    public void updatePerson(@RequestBody Person person) {
+	personService.updatePerson(person);
+    }
+
+    /**
+     * Delete - Delete person in the JSON file
+     * 
+     * @param person person to delete
+     * @return person deleted
+     */
+    @DeleteMapping("/person")
+    public void deletePerson(@RequestBody Person person) {
+	personService.deletePerson(person);
     }
 
 }

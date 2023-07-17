@@ -85,8 +85,8 @@ public class PersonService {
      * @param person person to add
      * @return created person
      */
-    public Person createPerson(Person person) {
-	return personRepository.savePerson(person);
+    public void createPerson(Person person) {
+	personRepository.savePerson(person);
     }
 
     /**
@@ -95,8 +95,18 @@ public class PersonService {
      * @param person person to update
      * @return updated person
      */
-    public Person updatePerson(Person person) {
-	return personRepository.updatePerson(person);
+    public void updatePerson(Person person) {
+	personRepository.updatePerson(person);
+    }
+
+    /**
+     * Delete person in the JSON file
+     * 
+     * @param person person to delete
+     * @return person deleted
+     */
+    public void deletePerson(Person person) {
+	personRepository.deletePerson(person);
     }
 
 }
