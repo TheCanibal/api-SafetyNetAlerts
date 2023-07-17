@@ -14,6 +14,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
 import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
 
@@ -33,6 +34,8 @@ public class MedicalRecordsRepositoryImpl implements MedicalRecordsRepository {
     private ListMedicalRecords listMedicalRecordsToSend = new ListMedicalRecords();
     // Logger
     private static Logger logger = LogManager.getLogger(MedicalRecordsRepositoryImpl.class);
+    // Path file
+    File file = new File("D:\\workspace\\git\\apiForSNA\\src\\main\\resources\\data.json");
 
     /**
      * Read JSON file if it has not been read already and load it
@@ -105,8 +108,7 @@ public class MedicalRecordsRepositoryImpl implements MedicalRecordsRepository {
 
 		// Writer to write in Json
 		ObjectWriter writer = mapper.writer();
-		// Path file
-		File file = new File("D:\\workspace\\git\\apiForSNA\\src\\main\\resources\\data.json");
+
 		// read json file
 		JsonNode parsedJson = mapper.readTree(file);
 		// Get the array of persons
@@ -138,6 +140,58 @@ public class MedicalRecordsRepositoryImpl implements MedicalRecordsRepository {
 	    return null;
 	}
 
+    }
+
+    /**
+     * Update medicalrecords in the JSON File
+     * 
+     * @param medicalRecord medical record to update
+     * @return updated medical record
+     */
+    @Override
+    public MedicalRecords updateMedicalRecord(MedicalRecords medicalRecord) {
+	try {
+	    // Verify if the update is done
+	    boolean update = false;
+	    // JSON file
+	    JsonNode parsedJson = mapper.readTree(file);
+	    // Array to read in JSON file
+	    ArrayNode medicalRecordsArray = (ArrayNode) parsedJson.get("medicalrecords");
+	    // Object to get
+	    ObjectNode object;
+	    // Browse the array
+	    for (int medciRec = 0; medciRec < medicalRecordsArray.size(); medciRec++) {
+		// verify If the couple of First Name and Last Name is in the list
+		if (medicalRecordsArray.get(medciRec).get("firstName").toString()
+			.equals("\"" + medicalRecord.getFirstName() + "\"")
+			&& medicalRecordsArray.get(medciRec).get("lastName").toString()
+				.equals("\"" + medicalRecord.getLastName() + "\"")) {
+		    object = (ObjectNode) medicalRecordsArray.get(medciRec);
+		    logger.debug("Dossier médical à modifier : {}", object.toString());
+		    if (medicalRecord.getBirthdate() != null
+			    && medicalRecord.getBirthdate().matches("\\d{2}/\\d{2}/\\d{4}"))
+			object.put("birthdate", medicalRecord.getBirthdate());
+		    if (medicalRecord.getMedications() != null)
+			object.putPOJO("medications", medicalRecord.getMedications());
+		    if (medicalRecord.getAllergies() != null)
+			object.putPOJO("allergies", medicalRecord.getAllergies());
+		    mapper.writeValue(file, parsedJson);
+		    logger.debug("Personne qui a été modifiée : {}", object.toString());
+		    update = true;
+		}
+	    }
+	    if (!update) {
+		throw new IllegalArgumentException("Il n'y a aucune personne avec ce nom et prénom dans la liste !");
+	    }
+	    return medicalRecord;
+	} catch (IOException e) {
+	    logger.error("Le fichier n'a pas pu être lu");
+	    return null;
+	} catch (IllegalArgumentException e) {
+	    logger.error("La personne {} {} n'apparaît pas dans la liste.", medicalRecord.getFirstName(),
+		    medicalRecord.getLastName());
+	    return null;
+	}
     }
 
 }

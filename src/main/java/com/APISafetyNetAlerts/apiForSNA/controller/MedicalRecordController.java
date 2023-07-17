@@ -3,6 +3,7 @@ package com.APISafetyNetAlerts.apiForSNA.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -35,5 +36,16 @@ public class MedicalRecordController {
     @PostMapping("/medicalRecord")
     public MedicalRecords createMedicalRecord(@RequestBody MedicalRecords medicalRecord) {
 	return medicalRecordService.createMedicalRecord(medicalRecord);
+    }
+
+    /**
+     * Update medicalrecords in the JSON File
+     * 
+     * @param medicalRecord medical record to update
+     * @return updated medical record
+     */
+    @PutMapping("/medicalRecord")
+    public MedicalRecords updateMedicalRecord(@RequestBody MedicalRecords medicalRecord) {
+	return medicalRecordService.updateMedicalRecord(medicalRecord);
     }
 }

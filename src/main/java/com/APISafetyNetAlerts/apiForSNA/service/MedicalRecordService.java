@@ -39,4 +39,14 @@ public class MedicalRecordService {
 	return medicalRecordRepository.saveMedicalRecord(medicalRecord);
     }
 
+    /**
+     * Update medicalrecords in the JSON File
+     * 
+     * @param medicalRecord medical record to update
+     * @return updated medical record
+     */
+    public MedicalRecords updateMedicalRecord(MedicalRecords medicalRecord) {
+	return medicalRecordRepository.updateMedicalRecord(medicalRecord);
+    }
+
 }

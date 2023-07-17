@@ -195,26 +195,34 @@ public class FireStationRepositoryImpl implements FireStationRepository {
 	    ArrayNode firestationsArray = (ArrayNode) parsedJson.get("firestations");
 	    // Object to get
 	    ObjectNode object;
-	    // Browse the array
-	    for (int firestation = 0; firestation < firestationsArray.size(); firestation++) {
-		// verify If the address in the file is equal to the address of the firestation
-		// to mosify
-		if (firestationsArray.get(firestation).get("address").toString()
-			.equals("\"" + fireStation.getAddress() + "\"")) {
-		    object = (ObjectNode) firestationsArray.get(firestation);
-		    logger.debug("Station à modifier : {}", object.toString());
-		    if (fireStation.getStation() != object.get("station").asInt()) {
-			object.put("station", fireStation.getStation());
-			logger.debug("Station qui a été modifiée : {}", object.toString());
-			mapper.writeValue(file, parsedJson);
-			update = true;
-		    } else {
-			logger.info("Le numéro de station {} est le même que celui à modifier !",
-				fireStation.getStation());
-			update = true;
-		    }
+	    // if adress not null
+	    if (fireStation.getAddress() != null) {
+		// Browse the array
+		for (int firestation = 0; firestation < firestationsArray.size(); firestation++) {
+		    // verify If the address in the file is equal to the address of the firestation
+		    // to modify
+		    if (firestationsArray.get(firestation).get("address").toString()
+			    .equals("\"" + fireStation.getAddress() + "\"")) {
+			// get object to modify
+			object = (ObjectNode) firestationsArray.get(firestation);
+			logger.debug("Station à modifier : {}", object.toString());
+			logger.debug("Addresse : {}", fireStation.getAddress());
+			// station number different compare to the object and > 0
+			if (fireStation.getStation() != object.get("station").asInt() && fireStation.getStation() > 0) {
+			    object.put("station", fireStation.getStation());
+			    logger.debug("Station qui a été modifiée : {}", object.toString());
+			    mapper.writeValue(file, parsedJson);
+			    update = true;
+			} else {
+			    logger.info("Le numéro de station {} est le même que celui à modifier ou <= 0 !",
+				    fireStation.getStation());
+			    update = true;
+			}
 
+		    }
 		}
+	    } else {
+		throw new IllegalArgumentException("Addresse vide !");
 	    }
 	    if (!update) {
 		throw new IllegalArgumentException("Il n'y a aucune station avec cette addresse dans la liste !");
@@ -222,7 +230,7 @@ public class FireStationRepositoryImpl implements FireStationRepository {
 	} catch (IOException e) {
 	    logger.error("Le fichier n'a pas pu être lu");
 	} catch (IllegalArgumentException e) {
-	    logger.error("L'addresse est erronée !");
+	    logger.error("L'addresse est vide ou erronée !");
 	}
     }
 }

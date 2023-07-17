@@ -34,6 +34,13 @@ public interface MedicalRecordsRepository {
      * @param medicalRecord medical record to add
      * @return created medical record
      */
-    MedicalRecords saveMedicalRecord(MedicalRecords medicalRecord);
+    public MedicalRecords saveMedicalRecord(MedicalRecords medicalRecord);
 
+    /**
+     * Update medicalrecords in the JSON File
+     * 
+     * @param medicalRecord medical record to update
+     * @return updated medical record
+     */
+    public MedicalRecords updateMedicalRecord(MedicalRecords medicalRecord);
 }
