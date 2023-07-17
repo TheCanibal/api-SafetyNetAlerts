@@ -115,6 +115,7 @@ public class MedicalRecordsRepositoryImpl implements MedicalRecordsRepository {
 		personsArray.add(mapper.convertValue(newMedicalRecord, JsonNode.class));
 		// write in the file
 		writer.writeValue(file, parsedJson);
+		loadMedicalRecords(true);
 		return newMedicalRecord;
 	    } else {
 		throw new IllegalArgumentException("Un des champs est incorrect !");

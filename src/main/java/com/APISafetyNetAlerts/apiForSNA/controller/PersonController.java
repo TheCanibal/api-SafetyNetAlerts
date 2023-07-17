@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.converter.json.MappingJacksonValue;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -54,7 +55,6 @@ public class PersonController {
     @GetMapping("/persons")
     public List<Person> getAllPersons() {
 	List<Person> listAllPersons = personService.getAllPersons().getListPersons();
-	logger.debug("Liste de toutes les personnes du fichier : {}", listAllPersons.toString());
 	return listAllPersons;
     }
 
@@ -92,9 +92,11 @@ public class PersonController {
 	    if (address != "" && allAddresses.contains(address)) {
 		listPersonsByAddress = personService.getPersonsAdaptativeByAdress(address).getListPersons();
 		minorsList = medicalRecordUtil.getListOfMinorsPersons(listPersonsByAddress);
-		logger.debug("La liste des mineurs : {}", minorsList.toString());
-		majorsList = medicalRecordUtil.getListOfMajorsPersons(listPersonsByAddress);
-		logger.debug("La liste des majeurs : {}", majorsList.toString());
+		logger.debug("Il y a {} enfant(s) à cette addresse", minorsList.size());
+		if (!minorsList.isEmpty()) {
+		    majorsList = medicalRecordUtil.getListOfMajorsPersons(listPersonsByAddress);
+		    logger.debug("Il y a {} adulte(s) à cette addresse", majorsList.size());
+		}
 		logger.info("L'adresse est {}", address);
 		// for each minors, add to the list
 		listToSend.addAll(minorsList);
@@ -264,6 +266,7 @@ public class PersonController {
 	List<Person> listPersonsByCity = new ArrayList<Person>();
 	// List of all cities
 	List<String> listCities = personUtil.getCityFromListPersons();
+	logger.info("Liste des villes : {}", listCities.toString());
 	// Filter rules to apply to the bean
 	SimpleBeanPropertyFilter monFiltre;
 	// This allow the filter to apply to all the beans with dynamic filters
@@ -308,7 +311,7 @@ public class PersonController {
     }
 
     /**
-     * Add new person to the JSON File
+     * Create - Add new person to the JSON File
      * 
      * @param person person to add
      * @return created person
@@ -317,6 +320,17 @@ public class PersonController {
     public Person addPerson(@RequestBody Person person) {
 
 	return personService.createPerson(person);
+    }
+
+    /**
+     * Update - Update person in the JSON File
+     * 
+     * @param person person to update
+     * @return updated person
+     */
+    @PutMapping("/person")
+    public Person updatePerson(@RequestBody Person person) {
+	return personService.updatePerson(person);
     }
 
 }

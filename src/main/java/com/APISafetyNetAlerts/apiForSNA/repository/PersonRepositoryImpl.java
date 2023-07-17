@@ -47,6 +47,8 @@ public class PersonRepositoryImpl implements PersonRepository {
     private List<PersonAdaptative> listPersonsAdaptativeSorted;
     // Logger
     private static Logger logger = LogManager.getLogger(PersonRepositoryImpl.class);
+    // File to read
+    File file = new File("D:\\workspace\\git\\apiForSNA\\src\\main\\resources\\data.json");
 
     /**
      * Read JSON file if it has not been read already and load it
@@ -230,8 +232,6 @@ public class PersonRepositoryImpl implements PersonRepository {
 		}
 		// Writer to write in Json
 		ObjectWriter writer = mapper.writer();
-		// Path file
-		File file = new File("D:\\workspace\\git\\apiForSNA\\src\\main\\resources\\data.json");
 		// read json file
 		JsonNode parsedJson = mapper.readTree(file);
 		// Get the array of persons
@@ -240,6 +240,7 @@ public class PersonRepositoryImpl implements PersonRepository {
 		personsArray.add(mapper.convertValue(newPerson, JsonNode.class));
 		// write in the file
 		writer.writeValue(file, parsedJson);
+		loadPersons(true);
 		return newPerson;
 	    } else {
 		throw new IllegalArgumentException("Un des champs est incorrect !");
@@ -265,5 +266,43 @@ public class PersonRepositoryImpl implements PersonRepository {
 	    return null;
 	}
 
+    }
+
+    /**
+     * Update person in the JSON File
+     * 
+     * @param person person to update
+     * @return updated person
+     */
+    @Override
+    public Person updatePerson(Person person) {
+	try {
+	    boolean update = false;
+	    JsonNode parsedJson = mapper.readTree(file);
+	    ArrayNode personsArray = (ArrayNode) parsedJson.get("persons");
+	    for (int prsn = 0; prsn < personsArray.size(); prsn++) {
+		if (personsArray.get(prsn).get("firstName").toString().equals("\"" + person.getFirstName() + "\"")
+			&& personsArray.get(prsn).get("lastName").toString()
+				.equals("\"" + person.getLastName() + "\"")) {
+		    person.setAddress(person.getAddress());
+		    person.setCity(person.getCity());
+		    person.setZip(person.getZip());
+		    person.setPhone(person.getPhone());
+		    person.setEmail(person.getEmail());
+		    update = true;
+		}
+	    }
+	    if (!update) {
+		throw new IllegalArgumentException("Il n'y a aucune personne avec ce nom et prénom dans la liste !");
+	    }
+	    return person;
+	} catch (IOException e) {
+	    logger.error("Le fichier n'a pas pu être lu");
+	    return null;
+	} catch (IllegalArgumentException e) {
+	    logger.error("La personne {} {} n'apparaît pas dans la liste.", person.getFirstName(),
+		    person.getLastName());
+	    return null;
+	}
     }
 }

@@ -159,6 +159,7 @@ public class FireStationRepositoryImpl implements FireStationRepository {
 		personsArray.add(mapper.convertValue(newFirestation, JsonNode.class));
 		// write in the file
 		writer.writeValue(file, parsedJson);
+		loadFireStations(true);
 		return newFirestation;
 	    } else {
 		throw new IllegalArgumentException("Un des champs est incorrect !");

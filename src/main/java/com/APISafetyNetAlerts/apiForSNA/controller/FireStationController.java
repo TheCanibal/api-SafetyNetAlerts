@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.APISafetyNetAlerts.apiForSNA.model.FireStation;
+import com.APISafetyNetAlerts.apiForSNA.model.ListFireStations;
 import com.APISafetyNetAlerts.apiForSNA.restModel.ListPersonAdaptative;
 import com.APISafetyNetAlerts.apiForSNA.restModel.PersonAdaptative;
 import com.APISafetyNetAlerts.apiForSNA.service.FireStationService;
@@ -51,6 +52,16 @@ public class FireStationController {
     private PersonService personService;
 
     private static Logger logger = LogManager.getLogger(FireStationController.class);
+
+    /**
+     * Read - Get all Firestations
+     * 
+     * @return all firestations
+     */
+    @GetMapping("/firestations")
+    public ListFireStations getAllFirestations() {
+	return firestationService.getAllFireStations();
+    }
 
     /**
      * Read - Get all persons that are covered by a station
@@ -257,7 +268,7 @@ public class FireStationController {
     }
 
     /**
-     * Add new firestation to the JSON File
+     * Create - Add new firestation to the JSON File
      * 
      * @param firestation firestation to add
      * @return created firestation

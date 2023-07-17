@@ -89,4 +89,14 @@ public class PersonService {
 	return personRepository.savePerson(person);
     }
 
+    /**
+     * Update person in the JSON File
+     * 
+     * @param person person to update
+     * @return updated person
+     */
+    public Person updatePerson(Person person) {
+	return personRepository.updatePerson(person);
+    }
+
 }

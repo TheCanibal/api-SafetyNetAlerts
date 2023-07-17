@@ -80,4 +80,12 @@ public interface PersonRepository {
      * @return a list of persons with last name AND first name
      */
     public ListPersonAdaptative findPersonsAdaptativeByFirstNameAndLastName(String firstName, String lastName);
+
+    /**
+     * Update person in the JSON File
+     * 
+     * @param person person to update
+     * @return updated person
+     */
+    public Person updatePerson(Person person);
 }

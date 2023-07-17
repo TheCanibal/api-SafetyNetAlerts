@@ -23,6 +23,12 @@ public class MedicalRecordUtil {
     @Autowired
     private MedicalRecordService medicalRecordService;
 
+    /**
+     * convert a String date into a LocalDate
+     * 
+     * @param date date to convert
+     * @return converted date
+     */
     public LocalDate convertStringIntoDate(String date) {
 	DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
 	LocalDate dateToSend = LocalDate.parse(date, formatter);
