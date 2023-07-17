@@ -43,4 +43,11 @@ public interface MedicalRecordsRepository {
      * @return updated medical record
      */
     public MedicalRecords updateMedicalRecord(MedicalRecords medicalRecord);
+
+    /**
+     * Delete medical record in the JSON file
+     * 
+     * @param medicalRecord medical record to delete
+     */
+    public void deleteMedicalRecord(MedicalRecords medicalRecord);
 }

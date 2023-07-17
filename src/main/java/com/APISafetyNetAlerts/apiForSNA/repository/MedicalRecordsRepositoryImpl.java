@@ -194,4 +194,47 @@ public class MedicalRecordsRepositoryImpl implements MedicalRecordsRepository {
 	}
     }
 
+    /**
+     * Delete medical record in the JSON file
+     * 
+     * @param medicalRecord medical record to delete
+     */
+    @Override
+    public void deleteMedicalRecord(MedicalRecords medicalRecord) {
+	try {
+	    // Verify if the update is done
+	    boolean delete = false;
+	    // JSON file
+	    JsonNode parsedJson = mapper.readTree(file);
+	    // Array to read in JSON file
+	    ArrayNode medicalRecordArray = (ArrayNode) parsedJson.get("medicalrecords");
+	    if (medicalRecord.getFirstName() != null && medicalRecord.getLastName() != null) {
+		// Browse the array
+		for (int medicRec = 0; medicRec < medicalRecordArray.size(); medicRec++) {
+		    // verify If the couple of First Name and Last Name is in the list
+		    if (medicalRecordArray.get(medicRec).get("firstName").toString()
+			    .equals("\"" + medicalRecord.getFirstName() + "\"")
+			    && medicalRecordArray.get(medicRec).get("lastName").toString()
+				    .equals("\"" + medicalRecord.getLastName() + "\"")) {
+			logger.debug("Personne à supprimer : {}", medicalRecordArray.get(medicRec).toString());
+			medicalRecordArray.remove(medicRec);
+			mapper.writeValue(file, parsedJson);
+			delete = true;
+		    }
+		}
+	    } else {
+		throw new NullPointerException("Aucune personne avec ce nom et prénom dans la liste !");
+	    }
+	    if (!delete) {
+		throw new IllegalArgumentException("Il faut un nom et un prénom !");
+	    }
+	} catch (IOException e) {
+	    logger.error("Le fichier n'a pas pu être lu");
+	} catch (IllegalArgumentException e) {
+	    logger.error("La personne {} {} n'apparaît pas dans la liste.", medicalRecord.getFirstName(),
+		    medicalRecord.getLastName());
+	} catch (NullPointerException e) {
+	    logger.error("Il faut un nom et un prénom pour pouvoir supprimer un objet !");
+	}
+    }
 }

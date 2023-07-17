@@ -373,17 +373,5 @@
     "birthdate" : "08/06/1945",
     "medications" : [ "tradoxidine:400mg" ],
     "allergies" : [ ]
-  }, {
-    "firstName" : "Kevin",
-    "lastName" : "Jovanovic",
-    "birthdate" : "12/06/1996",
-    "medications" : [ "doliprane", "xanax" ],
-    "allergies" : [ "" ]
-  }, {
-    "firstName" : "Kevin",
-    "lastName" : "Jovanovic",
-    "birthdate" : "12/06/1996",
-    "medications" : [ "doliprane", "xanax" ],
-    "allergies" : [ ]
   } ]
 }

@@ -1,6 +1,7 @@
 package com.APISafetyNetAlerts.apiForSNA.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -47,5 +48,15 @@ public class MedicalRecordController {
     @PutMapping("/medicalRecord")
     public MedicalRecords updateMedicalRecord(@RequestBody MedicalRecords medicalRecord) {
 	return medicalRecordService.updateMedicalRecord(medicalRecord);
+    }
+
+    /**
+     * Delete medical record in the JSON file
+     * 
+     * @param medicalRecord medical record to delete
+     */
+    @DeleteMapping("/medicalRecord")
+    public void deleteMedicalRecord(@RequestBody MedicalRecords medicalRecord) {
+	medicalRecordService.deleteMedicalRecord(medicalRecord);
     }
 }

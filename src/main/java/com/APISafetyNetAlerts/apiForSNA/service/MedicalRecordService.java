@@ -49,4 +49,12 @@ public class MedicalRecordService {
 	return medicalRecordRepository.updateMedicalRecord(medicalRecord);
     }
 
+    /**
+     * Delete medical record in the JSON file
+     * 
+     * @param medicalRecord medical record to delete
+     */
+    public void deleteMedicalRecord(MedicalRecords medicalRecord) {
+	medicalRecordRepository.deleteMedicalRecord(medicalRecord);
+    }
 }
