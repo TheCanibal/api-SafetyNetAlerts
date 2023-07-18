@@ -276,8 +276,8 @@ public class FireStationController {
      * @return created firestation
      */
     @PostMapping("/firestation")
-    public FireStation createFirestation(@RequestBody FireStation firestation) {
-	return firestationService.createFirestation(firestation);
+    public void createFirestation(@RequestBody FireStation firestation) {
+	firestationService.createFirestation(firestation);
     }
 
     /**
@@ -291,7 +291,7 @@ public class FireStationController {
     }
 
     /**
-     * Delete a firestation
+     * Delete - Delete a firestation with address, number or both
      * 
      * @param firestation firestation to delete
      */

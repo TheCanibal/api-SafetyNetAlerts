@@ -47,7 +47,7 @@ public class MedicalRecordUtil {
 	long ageDiff = 0;
 	int personnesMineures = 0;
 
-	List<MedicalRecords> listMedicalRecords = medicalRecordService.getMedicalRecords().getListMedicalrecords();
+	List<MedicalRecords> listMedicalRecords = medicalRecordService.getAllMedicalRecords().getListMedicalrecords();
 	for (PersonAdaptative p : listPersons) {
 	    for (MedicalRecords mr : listMedicalRecords) {
 		if (p.getFirstName().equals(mr.getFirstName()) && p.getLastName().equals(mr.getLastName())) {
@@ -75,7 +75,7 @@ public class MedicalRecordUtil {
 	long ageDiff = 0;
 	int personnesMajeures = 0;
 
-	List<MedicalRecords> listMedicalRecords = medicalRecordService.getMedicalRecords().getListMedicalrecords();
+	List<MedicalRecords> listMedicalRecords = medicalRecordService.getAllMedicalRecords().getListMedicalrecords();
 	for (PersonAdaptative p : listPersons) {
 	    for (MedicalRecords mr : listMedicalRecords) {
 		if (p.getFirstName().equals(mr.getFirstName()) && p.getLastName().equals(mr.getLastName())) {
@@ -102,7 +102,7 @@ public class MedicalRecordUtil {
 	long ageDiff = 0;
 	List<PersonAdaptative> minorsList = new ArrayList<PersonAdaptative>();
 
-	List<MedicalRecords> listMedicalRecords = medicalRecordService.getMedicalRecords().getListMedicalrecords();
+	List<MedicalRecords> listMedicalRecords = medicalRecordService.getAllMedicalRecords().getListMedicalrecords();
 	for (PersonAdaptative p : listPersons) {
 	    for (MedicalRecords mr : listMedicalRecords) {
 		if (mr.getFirstName().equals(p.getFirstName())) {
@@ -131,7 +131,7 @@ public class MedicalRecordUtil {
 	long ageDiff = 0;
 	List<PersonAdaptative> majorsList = new ArrayList<PersonAdaptative>();
 
-	List<MedicalRecords> listMedicalRecords = medicalRecordService.getMedicalRecords().getListMedicalrecords();
+	List<MedicalRecords> listMedicalRecords = medicalRecordService.getAllMedicalRecords().getListMedicalrecords();
 	for (PersonAdaptative p : listPersons) {
 	    for (MedicalRecords mr : listMedicalRecords) {
 		if (mr.getFirstName().equals(p.getFirstName())) {
@@ -161,7 +161,7 @@ public class MedicalRecordUtil {
 	long age = 0;
 	List<PersonAdaptative> ageList = new ArrayList<PersonAdaptative>();
 
-	List<MedicalRecords> listMedicalRecords = medicalRecordService.getMedicalRecords().getListMedicalrecords();
+	List<MedicalRecords> listMedicalRecords = medicalRecordService.getAllMedicalRecords().getListMedicalrecords();
 
 	for (PersonAdaptative p : listPersons) {
 	    for (MedicalRecords mr : listMedicalRecords) {
@@ -188,7 +188,7 @@ public class MedicalRecordUtil {
     public List<PersonAdaptative> getListPersonsWithTheirMedicalBackgrounds(List<PersonAdaptative> listPersons) {
 
 	List<PersonAdaptative> listToReturn = new ArrayList<PersonAdaptative>();
-	List<MedicalRecords> listMedicalRecord = medicalRecordService.getMedicalRecords().getListMedicalrecords();
+	List<MedicalRecords> listMedicalRecord = medicalRecordService.getAllMedicalRecords().getListMedicalrecords();
 
 	for (PersonAdaptative p : listPersons) {
 	    for (MedicalRecords mr : listMedicalRecord) {

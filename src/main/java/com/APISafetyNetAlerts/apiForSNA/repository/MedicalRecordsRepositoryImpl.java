@@ -78,7 +78,7 @@ public class MedicalRecordsRepositoryImpl implements MedicalRecordsRepository {
      * @return created medical record
      */
     @Override
-    public MedicalRecords saveMedicalRecord(MedicalRecords medicalRecord) {
+    public void saveMedicalRecord(MedicalRecords medicalRecord) {
 
 	MedicalRecords newMedicalRecord = new MedicalRecords(medicalRecord.getFirstName(), medicalRecord.getLastName(),
 		medicalRecord.getBirthdate(), medicalRecord.getMedications(), medicalRecord.getAllergies());
@@ -118,13 +118,11 @@ public class MedicalRecordsRepositoryImpl implements MedicalRecordsRepository {
 		// write in the file
 		writer.writeValue(file, parsedJson);
 		loadMedicalRecords(true);
-		return newMedicalRecord;
 	    } else {
 		throw new IllegalArgumentException("Un des champs est incorrect !");
 	    }
 	} catch (IOException e) {
 	    logger.error("file not found");
-	    return null;
 	} catch (IllegalArgumentException e) {
 	    if (medicalRecord.getFirstName() == null)
 		logger.error("Le champ firstName ne doit pas être vide !");
@@ -136,8 +134,6 @@ public class MedicalRecordsRepositoryImpl implements MedicalRecordsRepository {
 		logger.error("Le champ medications ne doit pas être vide !");
 	    if (medicalRecord.getAllergies() == null)
 		logger.error("Le champ allergies ne doit pas être vide !");
-
-	    return null;
 	}
 
     }
@@ -149,7 +145,7 @@ public class MedicalRecordsRepositoryImpl implements MedicalRecordsRepository {
      * @return updated medical record
      */
     @Override
-    public MedicalRecords updateMedicalRecord(MedicalRecords medicalRecord) {
+    public void updateMedicalRecord(MedicalRecords medicalRecord) {
 	try {
 	    // Verify if the update is done
 	    boolean update = false;
@@ -183,14 +179,11 @@ public class MedicalRecordsRepositoryImpl implements MedicalRecordsRepository {
 	    if (!update) {
 		throw new IllegalArgumentException("Il n'y a aucune personne avec ce nom et prénom dans la liste !");
 	    }
-	    return medicalRecord;
 	} catch (IOException e) {
 	    logger.error("Le fichier n'a pas pu être lu");
-	    return null;
 	} catch (IllegalArgumentException e) {
 	    logger.error("La personne {} {} n'apparaît pas dans la liste.", medicalRecord.getFirstName(),
 		    medicalRecord.getLastName());
-	    return null;
 	}
     }
 

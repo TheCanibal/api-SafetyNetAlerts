@@ -55,8 +55,8 @@ public class FireStationService {
      * @param firestation firestation to add
      * @return created firestation
      */
-    public FireStation createFirestation(FireStation firestation) {
-	return fireStationRepository.saveFirestation(firestation);
+    public void createFirestation(FireStation firestation) {
+	fireStationRepository.saveFirestation(firestation);
     }
 
     /**
@@ -69,7 +69,7 @@ public class FireStationService {
     }
 
     /**
-     * Delete a firestation
+     * Delete a firestation with address, number or both
      * 
      * @param firestation firestation to delete
      */

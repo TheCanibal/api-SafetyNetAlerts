@@ -25,7 +25,7 @@ public class MedicalRecordController {
      */
     @GetMapping("/medicalRecords")
     public ListMedicalRecords getAllMedicalRecord() {
-	return medicalRecordService.getMedicalRecords();
+	return medicalRecordService.getAllMedicalRecords();
     }
 
     /**
@@ -35,8 +35,8 @@ public class MedicalRecordController {
      * @return created medical record
      */
     @PostMapping("/medicalRecord")
-    public MedicalRecords createMedicalRecord(@RequestBody MedicalRecords medicalRecord) {
-	return medicalRecordService.createMedicalRecord(medicalRecord);
+    public void createMedicalRecord(@RequestBody MedicalRecords medicalRecord) {
+	medicalRecordService.createMedicalRecord(medicalRecord);
     }
 
     /**
@@ -46,8 +46,8 @@ public class MedicalRecordController {
      * @return updated medical record
      */
     @PutMapping("/medicalRecord")
-    public MedicalRecords updateMedicalRecord(@RequestBody MedicalRecords medicalRecord) {
-	return medicalRecordService.updateMedicalRecord(medicalRecord);
+    public void updateMedicalRecord(@RequestBody MedicalRecords medicalRecord) {
+	medicalRecordService.updateMedicalRecord(medicalRecord);
     }
 
     /**

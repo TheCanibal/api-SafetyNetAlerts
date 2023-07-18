@@ -34,7 +34,7 @@ public interface MedicalRecordsRepository {
      * @param medicalRecord medical record to add
      * @return created medical record
      */
-    public MedicalRecords saveMedicalRecord(MedicalRecords medicalRecord);
+    public void saveMedicalRecord(MedicalRecords medicalRecord);
 
     /**
      * Update medicalrecords in the JSON File
@@ -42,7 +42,7 @@ public interface MedicalRecordsRepository {
      * @param medicalRecord medical record to update
      * @return updated medical record
      */
-    public MedicalRecords updateMedicalRecord(MedicalRecords medicalRecord);
+    public void updateMedicalRecord(MedicalRecords medicalRecord);
 
     /**
      * Delete medical record in the JSON file

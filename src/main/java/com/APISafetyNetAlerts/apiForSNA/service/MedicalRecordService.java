@@ -25,7 +25,7 @@ public class MedicalRecordService {
      * 
      * @return a list of all medical records
      */
-    public ListMedicalRecords getMedicalRecords() {
+    public ListMedicalRecords getAllMedicalRecords() {
 	return medicalRecordRepository.findAllMedicalRecords();
     }
 
@@ -35,8 +35,8 @@ public class MedicalRecordService {
      * @param medicalRecord medical record to add
      * @return created medical record
      */
-    public MedicalRecords createMedicalRecord(MedicalRecords medicalRecord) {
-	return medicalRecordRepository.saveMedicalRecord(medicalRecord);
+    public void createMedicalRecord(MedicalRecords medicalRecord) {
+	medicalRecordRepository.saveMedicalRecord(medicalRecord);
     }
 
     /**
@@ -45,8 +45,8 @@ public class MedicalRecordService {
      * @param medicalRecord medical record to update
      * @return updated medical record
      */
-    public MedicalRecords updateMedicalRecord(MedicalRecords medicalRecord) {
-	return medicalRecordRepository.updateMedicalRecord(medicalRecord);
+    public void updateMedicalRecord(MedicalRecords medicalRecord) {
+	medicalRecordRepository.updateMedicalRecord(medicalRecord);
     }
 
     /**
