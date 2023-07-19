@@ -6,7 +6,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -24,18 +24,18 @@ public class PersonControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
-    Person personParam;
-    Person personNoParam;
-    Person personNullFirstName;
-    Person personNullLastName;
-    Person personNullAddress;
-    Person personNullCity;
-    Person personNullZip;
-    Person personNullPhone;
-    Person personNullMail;
-    Person personWrongFirstName;
-    Person personWrongLastName;
-    Person personAllNull;
+    private static Person personParam;
+    private static Person personNoParam;
+    private static Person personNullFirstName;
+    private static Person personNullLastName;
+    private static Person personNullAddress;
+    private static Person personNullCity;
+    private static Person personNullZip;
+    private static Person personNullPhone;
+    private static Person personNullMail;
+    private static Person personWrongFirstName;
+    private static Person personWrongLastName;
+    private static Person personAllNull;
 
     public static String asJsonString(final Object obj) {
 	try {
@@ -45,8 +45,8 @@ public class PersonControllerTest {
 	}
     }
 
-    @BeforeEach
-    public void setUp() {
+    @BeforeAll
+    public static void setUp() {
 	personParam = new Person("Kevin", "Jovanovic", "19 rue des Coquelicots", "Tronville-en-Barrois", 55310,
 		"0607080910", "test@gmail.com");
 	personNoParam = new Person();
