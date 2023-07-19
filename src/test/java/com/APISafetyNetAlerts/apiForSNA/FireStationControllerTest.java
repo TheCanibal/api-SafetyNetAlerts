@@ -6,7 +6,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -24,9 +24,11 @@ public class FireStationControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
-    FireStation firestationParam;
-    FireStation firestationNoParam;
-    FireStation firestationWrongParam;
+    public static FireStation firestationParam;
+    public static FireStation firestationNoParam;
+    public static FireStation firestationWrongAddress;
+    public static FireStation firestationWrongStation;
+    public static FireStation firestationNullAddress;
 
     public static String asJsonString(final Object obj) {
 	try {
@@ -36,11 +38,13 @@ public class FireStationControllerTest {
 	}
     }
 
-    @BeforeEach
-    public void setUp() {
+    @BeforeAll
+    public static void setUp() {
 	firestationParam = new FireStation("19 rue des Coquelicots", 2);
 	firestationNoParam = new FireStation();
-	firestationWrongParam = new FireStation("sdqfqsdgdfqsg", -1);
+	firestationWrongAddress = new FireStation("sdqfqsdgdfqsg", 2);
+	firestationWrongStation = new FireStation("19 rue des Coquelicots", 0);
+	firestationNullAddress = new FireStation(null, 2);
     }
 
     @Test
@@ -61,8 +65,26 @@ public class FireStationControllerTest {
     }
 
     @Test
+    public void testGetPersonsLiveAtAddressDeservedByStationWithWrongAddress() throws Exception {
+	mockMvc.perform(get("/fire").param("address", "gfdqghsdfh")).andExpect(status().isOk());
+
+    }
+
+    @Test
+    public void testGetPersonsLiveAtAddressDeservedByStationWithEmptyAddress() throws Exception {
+	mockMvc.perform(get("/fire").param("address", "")).andExpect(status().isOk());
+
+    }
+
+    @Test
     public void testAllPersonsCoveredByFirestations() throws Exception {
 	mockMvc.perform(get("/flood/stations").param("stations", "1,2")).andExpect(status().isOk());
+
+    }
+
+    @Test
+    public void testAllPersonsCoveredByFirestationsWithWrongStationNumber() throws Exception {
+	mockMvc.perform(get("/flood/stations").param("stations", "0,-10")).andExpect(status().isOk());
 
     }
 
@@ -79,8 +101,20 @@ public class FireStationControllerTest {
     }
 
     @Test
-    public void testAddWrongParamFirestation() throws Exception {
-	mockMvc.perform(post("/firestation").content(asJsonString(firestationWrongParam))
+    public void testAddWrongAddressFirestation() throws Exception {
+	mockMvc.perform(post("/firestation").content(asJsonString(firestationWrongAddress))
+		.contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON)).andExpect(status().isOk());
+    }
+
+    @Test
+    public void testAddWrongStationFirestation() throws Exception {
+	mockMvc.perform(post("/firestation").content(asJsonString(firestationWrongStation))
+		.contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON)).andExpect(status().isOk());
+    }
+
+    @Test
+    public void testAddNullAddressFirestation() throws Exception {
+	mockMvc.perform(post("/firestation").content(asJsonString(firestationNullAddress))
 		.contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON)).andExpect(status().isOk());
     }
 
@@ -103,15 +137,27 @@ public class FireStationControllerTest {
     }
 
     @Test
-    public void testUpdateNullFirestation() throws Exception {
-	mockMvc.perform(put("/firestation").content(asJsonString(null)).contentType(MediaType.APPLICATION_JSON)
-		.accept(MediaType.APPLICATION_JSON)).andExpect(status().isBadRequest());
+    public void testUpdateWrongAddressFirestation() throws Exception {
+	mockMvc.perform(put("/firestation").content(asJsonString(firestationWrongAddress))
+		.contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON)).andExpect(status().isOk());
     }
 
     @Test
-    public void testUpdateWrongParamFirestation() throws Exception {
-	mockMvc.perform(put("/firestation").content(asJsonString(firestationWrongParam))
+    public void testUpdateWrongStationFirestation() throws Exception {
+	mockMvc.perform(put("/firestation").content(asJsonString(firestationWrongStation))
 		.contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON)).andExpect(status().isOk());
+    }
+
+    @Test
+    public void testUpdateNullAddressFirestation() throws Exception {
+	mockMvc.perform(put("/firestation").content(asJsonString(firestationNullAddress))
+		.contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON)).andExpect(status().isOk());
+    }
+
+    @Test
+    public void testUpdateNullFirestation() throws Exception {
+	mockMvc.perform(put("/firestation").content(asJsonString(null)).contentType(MediaType.APPLICATION_JSON)
+		.accept(MediaType.APPLICATION_JSON)).andExpect(status().isBadRequest());
     }
 
     @Test
@@ -127,15 +173,27 @@ public class FireStationControllerTest {
     }
 
     @Test
-    public void testDeleteNullFirestation() throws Exception {
-	mockMvc.perform(delete("/firestation").content(asJsonString(null)).contentType(MediaType.APPLICATION_JSON)
-		.accept(MediaType.APPLICATION_JSON)).andExpect(status().isBadRequest());
+    public void testDeleteWrongAddressFirestation() throws Exception {
+	mockMvc.perform(delete("/firestation").content(asJsonString(firestationWrongAddress))
+		.contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON)).andExpect(status().isOk());
     }
 
     @Test
-    public void testDeleteWrongParamFirestation() throws Exception {
-	mockMvc.perform(delete("/firestation").content(asJsonString(firestationWrongParam))
+    public void testDeleteWrongStationFirestation() throws Exception {
+	mockMvc.perform(delete("/firestation").content(asJsonString(firestationWrongStation))
 		.contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON)).andExpect(status().isOk());
+    }
+
+    @Test
+    public void testDeleteNullAddressFirestation() throws Exception {
+	mockMvc.perform(delete("/firestation").content(asJsonString(firestationNullAddress))
+		.contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON)).andExpect(status().isOk());
+    }
+
+    @Test
+    public void testDeleteNullFirestation() throws Exception {
+	mockMvc.perform(delete("/firestation").content(asJsonString(null)).contentType(MediaType.APPLICATION_JSON)
+		.accept(MediaType.APPLICATION_JSON)).andExpect(status().isBadRequest());
     }
 
 }

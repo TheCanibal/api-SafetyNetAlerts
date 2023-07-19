@@ -42,44 +42,6 @@ public class PersonUtil {
     }
 
     /**
-     * Get all first name from persons
-     * 
-     * @param listPersons list of persons
-     * @return a list with all the first name
-     */
-    public List<String> getFirstNameFromListPersons() {
-	Set<String> allPersonsFirstNameSet = new HashSet<String>();
-	List<Person> listAllPersons = personService.getAllPersons().getListPersons();
-	List<String> allPersonsFirstNameList = new ArrayList<String>();
-	if (listAllPersons != null) {
-	    for (Person p : listAllPersons) {
-		allPersonsFirstNameSet.add(p.getFirstName());
-	    }
-	}
-	allPersonsFirstNameList.addAll(allPersonsFirstNameSet);
-	return allPersonsFirstNameList;
-    }
-
-    /**
-     * Get all last name from persons
-     * 
-     * @param listPersons list of persons
-     * @return a list with all the last name
-     */
-    public List<String> getLastNameFromListPersons() {
-	Set<String> allPersonsLastNameSet = new HashSet<String>();
-	List<Person> listAllPersons = personService.getAllPersons().getListPersons();
-	List<String> allPersonsLastNameList = new ArrayList<String>();
-	if (listAllPersons != null) {
-	    for (Person p : listAllPersons) {
-		allPersonsLastNameSet.add(p.getLastName());
-	    }
-	}
-	allPersonsLastNameList.addAll(allPersonsLastNameSet);
-	return allPersonsLastNameList;
-    }
-
-    /**
      * Get all cities from persons
      * 
      * @param listPersons list of persons

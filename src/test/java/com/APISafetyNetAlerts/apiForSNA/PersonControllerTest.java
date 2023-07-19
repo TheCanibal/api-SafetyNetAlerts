@@ -82,19 +82,58 @@ public class PersonControllerTest {
     }
 
     @Test
+    public void testGetChildByAddressWithWrongAddress() throws Exception {
+	mockMvc.perform(get("/childAlert").param("address", "fdsqzgdfhgdfgqrsg")).andExpect(status().isOk());
+    }
+
+    @Test
+    public void testGetChildByAddressWithEmptyAddress() throws Exception {
+	mockMvc.perform(get("/childAlert").param("address", "")).andExpect(status().isOk());
+    }
+
+    @Test
     public void testGetPhoneNumberDeservedByFirestations() throws Exception {
 	mockMvc.perform(get("/phoneAlert").param("firestation", "1")).andExpect(status().isOk());
     }
 
     @Test
-    public void testgetPersonInfoByFirstNameAndLastName() throws Exception {
+    public void testGetPersonInfoByFirstNameAndLastName() throws Exception {
 	mockMvc.perform(get("/personInfo").param("firstName", "John").param("lastName", "Boyd"))
 		.andExpect(status().isOk());
     }
 
     @Test
-    public void testgetPersonsMailByCity() throws Exception {
+    public void testGetPersonInfoByFirstNameAndLastNameWithWrongFirstName() throws Exception {
+	mockMvc.perform(get("/personInfo").param("firstName", "gdfgdfgdfsh").param("lastName", "Boyd"))
+		.andExpect(status().isOk());
+    }
+
+    @Test
+    public void testGetPersonInfoByFirstNameAndLastNameWithWrongLastName() throws Exception {
+	mockMvc.perform(get("/personInfo").param("firstName", "John").param("lastName", "whsdfghgsfdhdfqgyh"))
+		.andExpect(status().isOk());
+    }
+
+    @Test
+    public void testGetPersonInfoByFirstNameAndLastNameWithWrongFirstNameAndWrongLastName() throws Exception {
+	mockMvc.perform(
+		get("/personInfo").param("firstName", "whsdfghsehstdhcxvnb").param("lastName", "hdshsdfghsgdfhtrsh"))
+		.andExpect(status().isOk());
+    }
+
+    @Test
+    public void testGetPersonsMailByCity() throws Exception {
 	mockMvc.perform(get("/communityEmail").param("city", "Culver")).andExpect(status().isOk());
+    }
+
+    @Test
+    public void testGetPersonsMailByCityWithWrongCity() throws Exception {
+	mockMvc.perform(get("/communityEmail").param("city", "sdgdggetrhhdhb")).andExpect(status().isOk());
+    }
+
+    @Test
+    public void testGetPersonsMailByCityWithEmptyCity() throws Exception {
+	mockMvc.perform(get("/communityEmail").param("city", "")).andExpect(status().isOk());
     }
 
     @Test
