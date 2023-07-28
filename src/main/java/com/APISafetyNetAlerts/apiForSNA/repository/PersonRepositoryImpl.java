@@ -293,6 +293,7 @@ public class PersonRepositoryImpl implements PersonRepository {
 			object.put("email", person.getEmail());
 		    mapper.writeValue(file, parsedJson);
 		    logger.debug("Personne qui a été modifiée : {}", object.toString());
+		    loadPersons(true);
 		    update = true;
 		}
 	    }
@@ -313,6 +314,7 @@ public class PersonRepositoryImpl implements PersonRepository {
      * @param person person to delete
      * @return person deleted
      */
+    @Override
     public void deletePerson(Person person) {
 	try {
 	    // Verify if the update is done
@@ -331,6 +333,7 @@ public class PersonRepositoryImpl implements PersonRepository {
 			logger.debug("Personne à supprimer : {}", personsArray.get(prsn).toString());
 			personsArray.remove(prsn);
 			mapper.writeValue(file, parsedJson);
+			loadPersons(true);
 			delete = true;
 		    }
 		}

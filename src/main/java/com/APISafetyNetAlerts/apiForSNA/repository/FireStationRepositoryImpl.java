@@ -35,7 +35,7 @@ public class FireStationRepositoryImpl implements FireStationRepository {
     // List of firestations to send
     private ListFireStations listFirestationsToSend = new ListFireStations();
     // Logger
-    private static Logger logger = LogManager.getLogger(FireStationRepositoryImpl.class);
+public static Logger logger = LogManager.getLogger(FireStationRepositoryImpl.class);
     // File path
     File file = new File("D:\\workspace\\git\\apiForSNA\\src\\main\\resources\\data.json");
 
@@ -212,6 +212,7 @@ public class FireStationRepositoryImpl implements FireStationRepository {
 			    logger.debug("Station qui a été modifiée : {}", object.toString());
 			    // write the new value in JSON file
 			    mapper.writeValue(file, parsedJson);
+			    loadFireStations(true);
 			    updated = true;
 			} else {
 			    logger.info("Le numéro de station {} est le même que celui à modifier ou <= 0 !",
@@ -261,6 +262,7 @@ public class FireStationRepositoryImpl implements FireStationRepository {
 				.equals("\"" + fireStation.getAddress() + "\"")) {
 		    firestationsArray.remove(firestation);
 		    mapper.writeValue(file, parsedJson);
+		    loadFireStations(true);
 		    deleted = true;
 		}
 	    }

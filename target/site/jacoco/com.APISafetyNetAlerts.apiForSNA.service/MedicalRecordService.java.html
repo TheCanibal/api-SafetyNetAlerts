@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="fr"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>MedicalRecordService.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">api</a> &gt; <a href="index.source.html" class="el_package">com.APISafetyNetAlerts.apiForSNA.service</a> &gt; <span class="el_source">MedicalRecordService.java</span></div><h1>MedicalRecordService.java</h1><pre class="source lang-java linenums">package com.APISafetyNetAlerts.apiForSNA.service;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.APISafetyNetAlerts.apiForSNA.model.ListMedicalRecords;
+import com.APISafetyNetAlerts.apiForSNA.model.MedicalRecords;
+import com.APISafetyNetAlerts.apiForSNA.repository.MedicalRecordsRepository;
+
+/**
+ * 
+ * Service medicalrecord that take data from repository to send it to the
+ * controller
+ *
+ */
+
+@Service
+<span class="fc" id="L18">public class MedicalRecordService {</span>
+
+    @Autowired
+    private MedicalRecordsRepository medicalRecordRepository;
+
+    /**
+     * Get all the medical records
+     * 
+     * @return a list of all medical records
+     */
+    public ListMedicalRecords getAllMedicalRecords() {
+<span class="fc" id="L29">	return medicalRecordRepository.findAllMedicalRecords();</span>
+    }
+
+    /**
+     * Add new medical record to the JSON File
+     * 
+     * @param medicalRecord medical record to add
+     * @return created medical record
+     */
+    public void createMedicalRecord(MedicalRecords medicalRecord) {
+<span class="fc" id="L39">	medicalRecordRepository.saveMedicalRecord(medicalRecord);</span>
+<span class="fc" id="L40">    }</span>
+
+    /**
+     * Update medicalrecords in the JSON File
+     * 
+     * @param medicalRecord medical record to update
+     * @return updated medical record
+     */
+    public void updateMedicalRecord(MedicalRecords medicalRecord) {
+<span class="fc" id="L49">	medicalRecordRepository.updateMedicalRecord(medicalRecord);</span>
+<span class="fc" id="L50">    }</span>
+
+    /**
+     * Delete medical record in the JSON file
+     * 
+     * @param medicalRecord medical record to delete
+     */
+    public void deleteMedicalRecord(MedicalRecords medicalRecord) {
+<span class="fc" id="L58">	medicalRecordRepository.deleteMedicalRecord(medicalRecord);</span>
+<span class="fc" id="L59">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

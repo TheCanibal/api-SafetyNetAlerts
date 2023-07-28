@@ -1,0 +1,279 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="fr"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>FireStationRepositoryImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">api</a> &gt; <a href="index.source.html" class="el_package">com.APISafetyNetAlerts.apiForSNA.repository</a> &gt; <span class="el_source">FireStationRepositoryImpl.java</span></div><h1>FireStationRepositoryImpl.java</h1><pre class="source lang-java linenums">package com.APISafetyNetAlerts.apiForSNA.repository;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.springframework.stereotype.Repository;
+
+import com.APISafetyNetAlerts.apiForSNA.model.FireStation;
+import com.APISafetyNetAlerts.apiForSNA.model.ListFireStations;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
+import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+
+/**
+ * 
+ * Interaction with the object firestations in the data.json file
+ *
+ */
+
+@Repository
+<span class="fc" id="L28">public class FireStationRepositoryImpl implements FireStationRepository {</span>
+    // Object Mapper to be able to deserialize JSON
+<span class="fc" id="L30">    private ObjectMapper mapper = new ObjectMapper();</span>
+    // List of firestations to sort and to set
+    private List&lt;FireStation&gt; listFirestationsSorted;
+    // List of firestations to load
+    private ListFireStations loadListFirestations;
+    // List of firestations to send
+<span class="fc" id="L36">    private ListFireStations listFirestationsToSend = new ListFireStations();</span>
+    // Logger
+<span class="fc" id="L38">    private static Logger logger = LogManager.getLogger(FireStationRepositoryImpl.class);</span>
+    // File path
+<span class="fc" id="L40">    File file = new File(&quot;D:\\workspace\\git\\apiForSNA\\src\\main\\resources\\data.json&quot;);</span>
+
+    /**
+     * Read JSON file if it has not been read already and load it
+     * 
+     * @param force force to reload file
+     * @return a list of firestations from file
+     */
+    @Override
+    public ListFireStations loadFireStations(boolean force) {
+<span class="fc" id="L50">	mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);</span>
+<span class="fc bfc" id="L51" title="All 4 branches covered.">	if (loadListFirestations == null || force) {</span>
+	    try {
+<span class="fc" id="L53">		loadListFirestations = mapper.readValue(file, ListFireStations.class);</span>
+<span class="fc" id="L54">		logger.info(&quot;Le fichier est lu pour récupérer les Firestations!&quot;);</span>
+<span class="fc" id="L55">		return loadListFirestations;</span>
+<span class="nc" id="L56">	    } catch (IOException e) {</span>
+<span class="nc" id="L57">		logger.error(&quot;Fichier introuvable&quot;);</span>
+	    }
+	}
+<span class="fc" id="L60">	return loadListFirestations;</span>
+    }
+
+    /**
+     * Get all firestations
+     * 
+     * @return list of all firestations
+     */
+    @Override
+    public ListFireStations findAllFirestation() {
+	// Read the file and fill the list if it's not
+<span class="fc" id="L71">	loadListFirestations = loadFireStations(false);</span>
+<span class="fc" id="L72">	return loadListFirestations;</span>
+    }
+
+    /**
+     * Get firestations by number
+     * 
+     * @param station station number
+     * @return list of firestations with the number
+     */
+    @Override
+    public ListFireStations findFireStationByStationNumber(int station) {
+	// Read the file and fill the list if it's not
+<span class="fc" id="L84">	loadListFirestations = loadFireStations(false);</span>
+<span class="fc" id="L85">	listFirestationsSorted = new ArrayList&lt;FireStation&gt;();</span>
+<span class="fc bfc" id="L86" title="All 2 branches covered.">	for (FireStation fs : loadListFirestations.getListFirestation()) {</span>
+<span class="fc bfc" id="L87" title="All 2 branches covered.">	    if (fs.getStation() == station) {</span>
+<span class="fc" id="L88">		listFirestationsSorted.add(fs);</span>
+	    }
+	}
+<span class="fc" id="L91">	listFirestationsToSend.setListFirestation(listFirestationsSorted);</span>
+<span class="fc" id="L92">	return listFirestationsToSend;</span>
+
+    }
+
+    /**
+     * Get firestations by list of number
+     * 
+     * @param stations list of stations
+     * @return a list of firestations with the number
+     */
+    @Override
+    public ListFireStations findFireStationByListOfStationNumber(int[] stations) {
+	// Read the file and fill the list if it's not
+<span class="fc" id="L105">	loadListFirestations = loadFireStations(false);</span>
+<span class="fc" id="L106">	listFirestationsSorted = new ArrayList&lt;FireStation&gt;();</span>
+<span class="fc bfc" id="L107" title="All 2 branches covered.">	for (FireStation fs : loadListFirestations.getListFirestation()) {</span>
+<span class="fc bfc" id="L108" title="All 2 branches covered.">	    for (int i : stations) {</span>
+<span class="fc bfc" id="L109" title="All 2 branches covered.">		if (fs.getStation() == i) {</span>
+<span class="fc" id="L110">		    listFirestationsSorted.add(fs);</span>
+		}
+	    }
+	}
+<span class="fc" id="L114">	listFirestationsToSend.setListFirestation(listFirestationsSorted);</span>
+<span class="fc" id="L115">	return listFirestationsToSend;</span>
+    }
+
+    /**
+     * Add new firestation to the JSON File
+     * 
+     * @param firestation firestation to add
+     * @return created firestation
+     */
+    @Override
+    public void saveFirestation(FireStation firestation) {
+	// Station to add
+<span class="fc" id="L127">	FireStation newFirestation = new FireStation(firestation.getAddress(), firestation.getStation());</span>
+<span class="fc" id="L128">	logger.debug(&quot;La station à ajouter : {}&quot;, firestation.toString());</span>
+	try {
+	    // if address is not null and station number &gt; 0
+<span class="fc bfc" id="L131" title="All 4 branches covered.">	    if (firestation.getAddress() != null &amp;&amp; firestation.getStation() &gt; 0) {</span>
+<span class="fc" id="L132">		logger.info(&quot;L'address est {}&quot;, firestation.getAddress());</span>
+<span class="fc" id="L133">		logger.info(&quot;Le numéro de station est {}&quot;, firestation.getStation());</span>
+		// Log the result if debug mode is enabled
+<span class="fc bfc" id="L135" title="All 2 branches covered.">		if (logger.isDebugEnabled()) {</span>
+<span class="fc" id="L136">		    ObjectMapper objectMapper = new ObjectMapper();</span>
+		    try {
+<span class="fc" id="L138">			String json = objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(newFirestation);</span>
+<span class="fc" id="L139">			logger.debug(&quot;Station à ajouter : {}&quot;, json);</span>
+<span class="pc" id="L140">		    } catch (Exception e) {</span>
+<span class="nc" id="L141">			logger.error(&quot;Mapping error&quot;);</span>
+		    }
+		}
+		// Writer to write in Json
+<span class="fc" id="L145">		ObjectWriter writer = mapper.writer();</span>
+
+		// read json file
+<span class="fc" id="L148">		JsonNode parsedJson = mapper.readTree(file);</span>
+		// Get the array of persons
+<span class="fc" id="L150">		ArrayNode firestationsArray = (ArrayNode) parsedJson.get(&quot;firestations&quot;);</span>
+		// add person to the array
+<span class="fc" id="L152">		firestationsArray.add(mapper.convertValue(newFirestation, JsonNode.class));</span>
+		// write in the file
+<span class="fc" id="L154">		writer.writeValue(file, parsedJson);</span>
+<span class="fc" id="L155">		loadFireStations(true);</span>
+<span class="fc" id="L156">	    } else {</span>
+<span class="fc" id="L157">		throw new IllegalArgumentException(&quot;Un des champs est incorrect !&quot;);</span>
+	    }
+<span class="nc" id="L159">	} catch (IOException e) {</span>
+<span class="nc" id="L160">	    logger.error(&quot;file not found&quot;);</span>
+<span class="fc" id="L161">	} catch (IllegalArgumentException e) {</span>
+<span class="fc bfc" id="L162" title="All 2 branches covered.">	    if (firestation.getAddress() == null)</span>
+<span class="fc" id="L163">		logger.error(&quot;L'adresse {} est incorrecte !&quot;, firestation.getAddress());</span>
+<span class="fc bfc" id="L164" title="All 2 branches covered.">	    if (firestation.getStation() &lt;= 0)</span>
+<span class="fc" id="L165">		logger.error(&quot;Le numéro de caserne {} est incorrect !&quot;, firestation.getStation());</span>
+	}
+
+<span class="fc" id="L168">    }</span>
+
+    /**
+     * Update station number of a fireStation
+     * 
+     * @param fireStation fireStation to update
+     */
+    @Override
+    public void updateFirestation(FireStation fireStation) {
+	try {
+	    // Verify if the update is done
+<span class="fc" id="L179">	    boolean updated = false;</span>
+	    // JSON file
+<span class="fc" id="L181">	    JsonNode parsedJson = mapper.readTree(file);</span>
+	    // Array to read in JSON file
+<span class="fc" id="L183">	    ArrayNode firestationsArray = (ArrayNode) parsedJson.get(&quot;firestations&quot;);</span>
+	    // Object to get
+	    ObjectNode object;
+	    // if adress not null
+<span class="fc bfc" id="L187" title="All 2 branches covered.">	    if (fireStation.getAddress() != null) {</span>
+		// Browse the array
+<span class="fc bfc" id="L189" title="All 2 branches covered.">		for (int firestation = 0; firestation &lt; firestationsArray.size(); firestation++) {</span>
+		    // verify If the address in the file is equal to the address of the firestation
+		    // to modify
+<span class="fc" id="L192">		    if (firestationsArray.get(firestation).get(&quot;address&quot;).toString()</span>
+<span class="fc bfc" id="L193" title="All 2 branches covered.">			    .equals(&quot;\&quot;&quot; + fireStation.getAddress() + &quot;\&quot;&quot;)) {</span>
+			// get object to modify
+<span class="fc" id="L195">			object = (ObjectNode) firestationsArray.get(firestation);</span>
+			// Log the result if debug mode is enabled
+<span class="fc bfc" id="L197" title="All 2 branches covered.">			if (logger.isDebugEnabled()) {</span>
+<span class="fc" id="L198">			    ObjectMapper objectMapper = new ObjectMapper();</span>
+			    try {
+<span class="fc" id="L200">				String json = objectMapper.writerWithDefaultPrettyPrinter()</span>
+<span class="fc" id="L201">					.writeValueAsString(object.toString());</span>
+<span class="fc" id="L202">				logger.debug(&quot;Station à ajouter : {}&quot;, json);</span>
+<span class="pc" id="L203">			    } catch (Exception e) {</span>
+<span class="nc" id="L204">				logger.error(&quot;Mapping error&quot;);</span>
+			    }
+			}
+<span class="fc" id="L207">			logger.debug(&quot;Addresse : {}&quot;, fireStation.getAddress());</span>
+			// station number different compare to the object and &gt; 0
+<span class="pc bpc" id="L209" title="1 of 4 branches missed.">			if (fireStation.getStation() != object.get(&quot;station&quot;).asInt() &amp;&amp; fireStation.getStation() &gt; 0) {</span>
+			    // put the new station number
+<span class="nc" id="L211">			    object.put(&quot;station&quot;, fireStation.getStation());</span>
+<span class="nc" id="L212">			    logger.debug(&quot;Station qui a été modifiée : {}&quot;, object.toString());</span>
+			    // write the new value in JSON file
+<span class="nc" id="L214">			    mapper.writeValue(file, parsedJson);</span>
+<span class="nc" id="L215">			    updated = true;</span>
+<span class="nc" id="L216">			} else {</span>
+<span class="fc" id="L217">			    logger.info(&quot;Le numéro de station {} est le même que celui à modifier ou &lt;= 0 !&quot;,</span>
+<span class="fc" id="L218">				    fireStation.getStation());</span>
+<span class="fc" id="L219">			    updated = true;</span>
+			}
+
+		    }
+		}
+<span class="fc" id="L224">	    } else {</span>
+<span class="fc" id="L225">		throw new NullPointerException(&quot;Addresse vide !&quot;);</span>
+	    }
+<span class="fc bfc" id="L227" title="All 2 branches covered.">	    if (!updated) {</span>
+<span class="fc" id="L228">		throw new IllegalArgumentException(&quot;Il n'y a aucune station avec cette addresse dans la liste !&quot;);</span>
+	    }
+<span class="nc" id="L230">	} catch (IOException e) {</span>
+<span class="nc" id="L231">	    logger.error(&quot;Le fichier n'a pas pu être lu&quot;);</span>
+<span class="fc" id="L232">	} catch (IllegalArgumentException e) {</span>
+<span class="fc" id="L233">	    logger.error(&quot;L'addresse est erronée !&quot;);</span>
+<span class="fc" id="L234">	} catch (NullPointerException e) {</span>
+<span class="fc" id="L235">	    logger.error(&quot;L'addresse est vide !&quot;);</span>
+	}
+<span class="fc" id="L237">    }</span>
+
+    /**
+     * Delete a firestation with address, number or both
+     * 
+     * @param firestation firestation to delete
+     */
+    @Override
+    public void deleteFirestation(FireStation fireStation) {
+	try {
+	    // Verify if the update is done
+<span class="fc" id="L248">	    boolean deleted = false;</span>
+	    // JSON file
+<span class="fc" id="L250">	    JsonNode parsedJson = mapper.readTree(file);</span>
+	    // Array to read in JSON file
+<span class="fc" id="L252">	    ArrayNode firestationsArray = (ArrayNode) parsedJson.get(&quot;firestations&quot;);</span>
+	    // if adress not null
+<span class="fc bfc" id="L254" title="All 4 branches covered.">	    if (fireStation.getAddress() == null &amp;&amp; fireStation.getStation() &lt;= 0) {</span>
+<span class="fc" id="L255">		throw new NullPointerException(&quot;Addresse et numéro vide !&quot;);</span>
+	    }
+	    // Browse the array
+<span class="fc bfc" id="L258" title="All 2 branches covered.">	    for (int firestation = 0; firestation &lt; firestationsArray.size(); firestation++) {</span>
+<span class="fc bfc" id="L259" title="All 2 branches covered.">		if (fireStation.getStation() == firestationsArray.get(firestation).get(&quot;station&quot;).asInt()</span>
+<span class="fc" id="L260">			|| firestationsArray.get(firestation).get(&quot;address&quot;).toString()</span>
+<span class="fc bfc" id="L261" title="All 2 branches covered.">				.equals(&quot;\&quot;&quot; + fireStation.getAddress() + &quot;\&quot;&quot;)) {</span>
+<span class="fc" id="L262">		    firestationsArray.remove(firestation);</span>
+<span class="fc" id="L263">		    mapper.writeValue(file, parsedJson);</span>
+<span class="fc" id="L264">		    deleted = true;</span>
+		}
+	    }
+<span class="fc bfc" id="L267" title="All 2 branches covered.">	    if (!deleted) {</span>
+<span class="fc" id="L268">		throw new IllegalArgumentException(&quot;Il n'y a aucune station ou addresse mentionée dans cette liste !&quot;);</span>
+	    }
+<span class="nc" id="L270">	} catch (IOException e) {</span>
+<span class="nc" id="L271">	    logger.error(&quot;Le fichier n'a pas pu être lu&quot;);</span>
+<span class="fc" id="L272">	} catch (IllegalArgumentException e) {</span>
+<span class="fc" id="L273">	    logger.error(&quot;Le numéro et/ou l'addresse sont erronnées !&quot;);</span>
+<span class="fc" id="L274">	} catch (NullPointerException e) {</span>
+<span class="fc" id="L275">	    logger.error(&quot;L'adresse et le numéro sont vides !&quot;);</span>
+	}
+<span class="fc" id="L277">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

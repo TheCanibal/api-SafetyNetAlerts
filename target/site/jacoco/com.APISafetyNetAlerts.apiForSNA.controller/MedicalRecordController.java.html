@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="fr"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>MedicalRecordController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">api</a> &gt; <a href="index.source.html" class="el_package">com.APISafetyNetAlerts.apiForSNA.controller</a> &gt; <span class="el_source">MedicalRecordController.java</span></div><h1>MedicalRecordController.java</h1><pre class="source lang-java linenums">package com.APISafetyNetAlerts.apiForSNA.controller;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.APISafetyNetAlerts.apiForSNA.model.ListMedicalRecords;
+import com.APISafetyNetAlerts.apiForSNA.model.MedicalRecords;
+import com.APISafetyNetAlerts.apiForSNA.service.MedicalRecordService;
+
+@RestController
+<span class="fc" id="L16">public class MedicalRecordController {</span>
+
+    @Autowired
+    private MedicalRecordService medicalRecordService;
+
+    /**
+     * Read - Get all medical records
+     * 
+     * @return all medical records
+     */
+    @GetMapping(&quot;/medicalRecords&quot;)
+    public ListMedicalRecords getAllMedicalRecord() {
+<span class="fc" id="L28">	return medicalRecordService.getAllMedicalRecords();</span>
+    }
+
+    /**
+     * Create - Add new medical record to the JSON File
+     * 
+     * @param medicalRecord medical record to add
+     * @return created medical record
+     */
+    @PostMapping(&quot;/medicalRecord&quot;)
+    public void createMedicalRecord(@RequestBody MedicalRecords medicalRecord) {
+<span class="fc" id="L39">	medicalRecordService.createMedicalRecord(medicalRecord);</span>
+<span class="fc" id="L40">    }</span>
+
+    /**
+     * Update medicalrecords in the JSON File
+     * 
+     * @param medicalRecord medical record to update
+     * @return updated medical record
+     */
+    @PutMapping(&quot;/medicalRecord&quot;)
+    public void updateMedicalRecord(@RequestBody MedicalRecords medicalRecord) {
+<span class="fc" id="L50">	medicalRecordService.updateMedicalRecord(medicalRecord);</span>
+<span class="fc" id="L51">    }</span>
+
+    /**
+     * Delete medical record in the JSON file
+     * 
+     * @param medicalRecord medical record to delete
+     */
+    @DeleteMapping(&quot;/medicalRecord&quot;)
+    public void deleteMedicalRecord(@RequestBody MedicalRecords medicalRecord) {
+<span class="fc" id="L60">	medicalRecordService.deleteMedicalRecord(medicalRecord);</span>
+<span class="fc" id="L61">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

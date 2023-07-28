@@ -1,0 +1,348 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="fr"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>PersonController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">api</a> &gt; <a href="index.source.html" class="el_package">com.APISafetyNetAlerts.apiForSNA.controller</a> &gt; <span class="el_source">PersonController.java</span></div><h1>PersonController.java</h1><pre class="source lang-java linenums">package com.APISafetyNetAlerts.apiForSNA.controller;
+
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.converter.json.MappingJacksonValue;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.APISafetyNetAlerts.apiForSNA.model.Person;
+import com.APISafetyNetAlerts.apiForSNA.restModel.PersonAdaptative;
+import com.APISafetyNetAlerts.apiForSNA.service.PersonService;
+import com.APISafetyNetAlerts.apiForSNA.util.FirestationPersonUtil;
+import com.APISafetyNetAlerts.apiForSNA.util.FirestationUtil;
+import com.APISafetyNetAlerts.apiForSNA.util.MedicalRecordUtil;
+import com.APISafetyNetAlerts.apiForSNA.util.PersonUtil;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ser.FilterProvider;
+import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
+import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
+
+@RestController
+<span class="fc" id="L33">public class PersonController {</span>
+    @Autowired
+    private PersonService personService;
+
+    @Autowired
+    private MedicalRecordUtil medicalRecordUtil;
+
+    @Autowired
+    private FirestationPersonUtil firestationPersonUtil;
+
+    @Autowired
+    private FirestationUtil fireStationUtil;
+
+    @Autowired
+    private PersonUtil personUtil;
+
+<span class="fc" id="L49">    private static Logger logger = LogManager.getLogger(PersonController.class);</span>
+
+    /**
+     * Read - Get all persons in the JSON file
+     * 
+     * @return list of all persons
+     */
+    @GetMapping(&quot;/persons&quot;)
+    public List&lt;Person&gt; getAllPersons() {
+<span class="fc" id="L58">	List&lt;Person&gt; listAllPersons = personService.getAllPersons().getListPersons();</span>
+<span class="fc" id="L59">	return listAllPersons;</span>
+    }
+
+    /**
+     * Read - Get all child (under 18) who live at an address
+     * 
+     * @param address address where live child or children
+     * @return - A list of child with the other members of a house or an empty list
+     *         if no child
+     */
+    @GetMapping(&quot;/childAlert&quot;)
+    public MappingJacksonValue getChildByAddress(@RequestParam String address) {
+
+	// a list of persons to send
+<span class="fc" id="L73">	List&lt;PersonAdaptative&gt; listToSend = new ArrayList&lt;PersonAdaptative&gt;();</span>
+
+	// a list of persons who live at a certain address
+<span class="fc" id="L76">	List&lt;PersonAdaptative&gt; listPersonsByAddress = new ArrayList&lt;PersonAdaptative&gt;();</span>
+
+	// a list of minors persons (can be empty)
+<span class="fc" id="L79">	List&lt;PersonAdaptative&gt; minorsList = new ArrayList&lt;PersonAdaptative&gt;();</span>
+	// a list of majors persons (can be empty)
+<span class="fc" id="L81">	List&lt;PersonAdaptative&gt; majorsList = new ArrayList&lt;PersonAdaptative&gt;();</span>
+
+	// list of all addresses in file
+<span class="fc" id="L84">	List&lt;String&gt; allAddresses = personUtil.getAddressFromListPersons();</span>
+
+	// Filter rules to apply to the bean
+	SimpleBeanPropertyFilter monFiltre;
+	// This allow the filter to apply to all the beans with dynamic filters
+	FilterProvider filtres;
+	// To be able to set the filters concretely
+<span class="fc" id="L91">	MappingJacksonValue personFiltres = new MappingJacksonValue(listToSend);</span>
+	try {
+<span class="fc bfc" id="L93" title="All 4 branches covered.">	    if (address != &quot;&quot; &amp;&amp; allAddresses.contains(address)) {</span>
+<span class="fc" id="L94">		listPersonsByAddress = personService.getPersonsAdaptativeByAdress(address).getListPersons();</span>
+<span class="fc" id="L95">		minorsList = medicalRecordUtil.getListOfMinorsPersons(listPersonsByAddress);</span>
+<span class="fc" id="L96">		logger.debug(&quot;Il y a {} enfant(s) à cette addresse&quot;, minorsList.size());</span>
+<span class="pc bpc" id="L97" title="1 of 2 branches missed.">		if (!minorsList.isEmpty()) {</span>
+<span class="fc" id="L98">		    majorsList = medicalRecordUtil.getListOfMajorsPersons(listPersonsByAddress);</span>
+<span class="fc" id="L99">		    logger.debug(&quot;Il y a {} adulte(s) à cette addresse&quot;, majorsList.size());</span>
+		}
+<span class="fc" id="L101">		logger.info(&quot;L'adresse est {}&quot;, address);</span>
+		// for each minors, add to the list
+<span class="fc" id="L103">		listToSend.addAll(minorsList);</span>
+
+		// if there are minors, add other member of the house, else the list stay empty
+<span class="pc bpc" id="L106" title="1 of 2 branches missed.">		if (!listToSend.isEmpty()) {</span>
+<span class="fc" id="L107">		    listToSend.addAll(majorsList);</span>
+<span class="fc" id="L108">		    logger.info(&quot;Nombre de personnes dans la liste : {}&quot;, listToSend.size());</span>
+		}
+
+<span class="fc" id="L111">		monFiltre = SimpleBeanPropertyFilter.filterOutAllExcept(&quot;firstName&quot;, &quot;lastName&quot;, &quot;age&quot;);</span>
+<span class="fc" id="L112">		filtres = new SimpleFilterProvider().addFilter(&quot;filtreDynamiquePerson&quot;, monFiltre);</span>
+<span class="fc" id="L113">		personFiltres = new MappingJacksonValue(listToSend);</span>
+<span class="fc" id="L114">		personFiltres.setFilters(filtres);</span>
+		// Log the result if debug mode is enabled
+<span class="fc bfc" id="L116" title="All 2 branches covered.">		if (logger.isDebugEnabled()) {</span>
+<span class="fc" id="L117">		    ObjectMapper objectMapper = new ObjectMapper();</span>
+		    try {
+<span class="fc" id="L119">			String json = objectMapper.setFilterProvider(filtres).writerWithDefaultPrettyPrinter()</span>
+<span class="fc" id="L120">				.writeValueAsString(listToSend);</span>
+<span class="fc" id="L121">			logger.debug(&quot;La liste de personnes qui est renvoyée : {}&quot;, json);</span>
+<span class="pc" id="L122">		    } catch (Exception e) {</span>
+<span class="nc" id="L123">			logger.error(&quot;Mapping error&quot;);</span>
+		    }
+		}
+<span class="fc" id="L126">		return personFiltres;</span>
+	    } else {
+<span class="fc" id="L128">		throw new IllegalArgumentException(&quot;L'addresse est erronée !&quot;);</span>
+	    }
+<span class="fc" id="L130">	} catch (IllegalArgumentException e) {</span>
+<span class="fc" id="L131">	    logger.error(&quot;L'addresse {} ne fait pas partie de la liste d'adresses !&quot;, address);</span>
+<span class="fc" id="L132">	    return personFiltres;</span>
+	}
+
+    }
+
+    /**
+     * Read - Get all phone numbers of persons who are deserved by a firestation
+     * 
+     * @param firestation Firestation number
+     * @return - A list of phone number
+     */
+    @GetMapping(&quot;/phoneAlert&quot;)
+    public MappingJacksonValue getPhoneNumberDeservedByFirestations(@RequestParam int firestation) {
+
+	// list of persons covered by a firestation
+<span class="fc" id="L147">	List&lt;Person&gt; listPersonsCoveredByStation = new ArrayList&lt;Person&gt;();</span>
+
+	// list of phone number without duplicates
+<span class="fc" id="L150">	Set&lt;String&gt; setPhoneNumber = new HashSet&lt;String&gt;();</span>
+
+	// list of station numbers
+<span class="fc" id="L153">	List&lt;Integer&gt; stationNumbers = fireStationUtil.getAllStationNumber();</span>
+
+	// Filter rules to apply to the bean
+	SimpleBeanPropertyFilter monFiltre;
+	// This allow the filter to apply to all the beans with dynamic filters
+	FilterProvider filtres;
+	// To be able to set the filters concretely
+<span class="fc" id="L160">	MappingJacksonValue personFiltres = new MappingJacksonValue(setPhoneNumber);</span>
+
+	try {
+<span class="fc bfc" id="L163" title="All 2 branches covered.">	    if (stationNumbers.contains(firestation)) {</span>
+<span class="fc" id="L164">		listPersonsCoveredByStation = firestationPersonUtil.getPersonsByFireStationNumber(firestation);</span>
+<span class="fc" id="L165">		logger.info(&quot;Le numéro de station est {}&quot;, firestation);</span>
+		// for each person in the list, add the phone number in Set to remove duplicates
+<span class="fc bfc" id="L167" title="All 2 branches covered.">		for (Person p : listPersonsCoveredByStation) {</span>
+<span class="fc" id="L168">		    setPhoneNumber.add(p.getPhone());</span>
+		}
+<span class="fc" id="L170">		logger.info(&quot;Nombre de numéros de téléphone dans la liste : {}&quot;, setPhoneNumber.size());</span>
+<span class="fc" id="L171">		monFiltre = SimpleBeanPropertyFilter.filterOutAllExcept(&quot;phone&quot;);</span>
+<span class="fc" id="L172">		filtres = new SimpleFilterProvider().addFilter(&quot;filtreDynamiquePerson&quot;, monFiltre);</span>
+<span class="fc" id="L173">		personFiltres = new MappingJacksonValue(setPhoneNumber);</span>
+<span class="fc" id="L174">		personFiltres.setFilters(filtres);</span>
+		// Log the result if debug mode is enabled
+<span class="fc bfc" id="L176" title="All 2 branches covered.">		if (logger.isDebugEnabled()) {</span>
+<span class="fc" id="L177">		    ObjectMapper objectMapper = new ObjectMapper();</span>
+		    try {
+<span class="fc" id="L179">			String json = objectMapper.setFilterProvider(filtres).writerWithDefaultPrettyPrinter()</span>
+<span class="fc" id="L180">				.writeValueAsString(setPhoneNumber);</span>
+<span class="fc" id="L181">			logger.debug(&quot;La liste de numéro de téléphone qui est renvoyée : {}&quot;, json);</span>
+<span class="pc" id="L182">		    } catch (Exception e) {</span>
+<span class="nc" id="L183">			logger.error(&quot;Mapping error&quot;);</span>
+		    }
+		}
+<span class="fc" id="L186">		return personFiltres;</span>
+	    } else {
+<span class="fc" id="L188">		throw new IllegalArgumentException(&quot;Numéro de station erroné !&quot;);</span>
+	    }
+<span class="fc" id="L190">	} catch (IllegalArgumentException e) {</span>
+<span class="fc" id="L191">	    logger.error(&quot;La station numéro {} n'existe pas !&quot;, firestation);</span>
+<span class="fc" id="L192">	    return personFiltres;</span>
+	}
+    }
+
+    /**
+     * Read - Get all persons info with first name and last name
+     *
+     * 
+     * @param firstName first name of person
+     * @param lastName  last name of person
+     * @return - A list of persons
+     */
+    @GetMapping(&quot;/personInfo&quot;)
+    public MappingJacksonValue getPersonInfoByFirstNameAndLastName(@RequestParam String firstName,
+	    @RequestParam String lastName) {
+	// List to return
+<span class="fc" id="L208">	List&lt;PersonAdaptative&gt; listToSend = new ArrayList&lt;PersonAdaptative&gt;();</span>
+
+	// Filter rules to apply to the bean
+	SimpleBeanPropertyFilter monFiltre;
+	// This allow the filter to apply to all the beans with dynamic filters
+	FilterProvider filtres;
+	// To be able to set the filters concretely
+<span class="fc" id="L215">	MappingJacksonValue personFiltres = new MappingJacksonValue(listToSend);</span>
+	try {
+	    // Fill the list with the person with first name and last name and all others
+	    // persons with the same last name
+<span class="fc" id="L219">	    listToSend = personUtil.getPersonWithFirstNameAndLastNameAndOthersPersonsWithSameLastName(firstName,</span>
+<span class="fc" id="L220">		    lastName);</span>
+<span class="fc bfc" id="L221" title="All 2 branches covered.">	    if (!listToSend.isEmpty()) {</span>
+		// Add the age of all persons in the list
+<span class="fc" id="L223">		listToSend = medicalRecordUtil.getListOfPersonsWithAge(listToSend);</span>
+		// Add the medical backgrounds of all persons in the list
+<span class="fc" id="L225">		listToSend = medicalRecordUtil.getListPersonsWithTheirMedicalBackgrounds(listToSend);</span>
+<span class="fc" id="L226">		logger.info(&quot;Nombre de personnes dans la liste : {}&quot;, listToSend.size());</span>
+<span class="fc" id="L227">		monFiltre = SimpleBeanPropertyFilter.filterOutAllExcept(&quot;lastName&quot;, &quot;address&quot;, &quot;age&quot;, &quot;mail&quot;,</span>
+<span class="fc" id="L228">			&quot;medications&quot;, &quot;allergies&quot;);</span>
+<span class="fc" id="L229">		filtres = new SimpleFilterProvider().addFilter(&quot;filtreDynamiquePerson&quot;, monFiltre);</span>
+<span class="fc" id="L230">		personFiltres = new MappingJacksonValue(listToSend);</span>
+<span class="fc" id="L231">		personFiltres.setFilters(filtres);</span>
+		// Log the result if debug mode is enabled
+<span class="fc bfc" id="L233" title="All 2 branches covered.">		if (logger.isDebugEnabled()) {</span>
+<span class="fc" id="L234">		    ObjectMapper objectMapper = new ObjectMapper();</span>
+		    try {
+<span class="fc" id="L236">			String json = objectMapper.setFilterProvider(filtres).writerWithDefaultPrettyPrinter()</span>
+<span class="fc" id="L237">				.writeValueAsString(listToSend);</span>
+<span class="fc" id="L238">			logger.debug(&quot;La liste de personne qui est renvoyée : {}&quot;, json);</span>
+<span class="pc" id="L239">		    } catch (Exception e) {</span>
+<span class="nc" id="L240">			logger.error(&quot;Mapping error&quot;);</span>
+		    }
+		}
+<span class="fc" id="L243">		return personFiltres;</span>
+	    } else {
+
+<span class="fc" id="L246">		throw new IllegalArgumentException(&quot;La combinaison de nom et prénom est erronée !&quot;);</span>
+	    }
+<span class="fc" id="L248">	} catch (IllegalArgumentException e) {</span>
+<span class="fc" id="L249">	    logger.error(&quot;Aucune personne ne s'appelle {} {} dans la liste !&quot;, firstName, lastName);</span>
+<span class="fc" id="L250">	    return personFiltres;</span>
+	}
+    }
+
+    /**
+     * Read - Get all email by city
+     * 
+     * 
+     * @param city city
+     * @return - A list of email
+     */
+    @GetMapping(&quot;/communityEmail&quot;)
+    public MappingJacksonValue getPersonsMailByCity(@RequestParam String city) {
+
+	// list to return
+<span class="fc" id="L265">	List&lt;String&gt; listToSend = new ArrayList&lt;String&gt;();</span>
+	// list of persons from city
+<span class="fc" id="L267">	List&lt;Person&gt; listPersonsByCity = new ArrayList&lt;Person&gt;();</span>
+	// List of all cities
+<span class="fc" id="L269">	List&lt;String&gt; listCities = personUtil.getCityFromListPersons();</span>
+<span class="fc" id="L270">	logger.info(&quot;Liste des villes : {}&quot;, listCities.toString());</span>
+	// Filter rules to apply to the bean
+	SimpleBeanPropertyFilter monFiltre;
+	// This allow the filter to apply to all the beans with dynamic filters
+	FilterProvider filtres;
+	// To be able to set the filters concretely
+<span class="fc" id="L276">	MappingJacksonValue personFiltres = new MappingJacksonValue(listToSend);</span>
+	try {
+<span class="fc bfc" id="L278" title="All 2 branches covered.">	    if (listCities.contains(city)) {</span>
+<span class="fc" id="L279">		listPersonsByCity = personService.getPersonsByCity(city).getListPersons();</span>
+		// for each person from city add it to the list
+<span class="fc bfc" id="L281" title="All 2 branches covered.">		for (Person p : listPersonsByCity) {</span>
+<span class="pc bpc" id="L282" title="1 of 2 branches missed.">		    if (p.getCity().equals(city)) {</span>
+<span class="fc" id="L283">			listToSend.add(p.getEmail());</span>
+		    }
+		}
+<span class="fc" id="L286">		logger.info(&quot;Nombre de mail dans la liste : {}&quot;, listToSend.size());</span>
+
+<span class="fc" id="L288">		monFiltre = SimpleBeanPropertyFilter.filterOutAllExcept(&quot;email&quot;);</span>
+<span class="fc" id="L289">		filtres = new SimpleFilterProvider().addFilter(&quot;filtreDynamiquePerson&quot;, monFiltre);</span>
+<span class="fc" id="L290">		personFiltres = new MappingJacksonValue(listToSend);</span>
+<span class="fc" id="L291">		personFiltres.setFilters(filtres);</span>
+		// Log the result if debug mode is enabled
+<span class="fc bfc" id="L293" title="All 2 branches covered.">		if (logger.isDebugEnabled()) {</span>
+<span class="fc" id="L294">		    ObjectMapper objectMapper = new ObjectMapper();</span>
+		    try {
+<span class="fc" id="L296">			String json = objectMapper.setFilterProvider(filtres).writerWithDefaultPrettyPrinter()</span>
+<span class="fc" id="L297">				.writeValueAsString(listToSend);</span>
+<span class="fc" id="L298">			logger.debug(&quot;La liste de mail qui est renvoyée : {}&quot;, json);</span>
+<span class="pc" id="L299">		    } catch (Exception e) {</span>
+<span class="nc" id="L300">			logger.error(&quot;Mapping error&quot;);</span>
+		    }
+		}
+<span class="fc" id="L303">		return personFiltres;</span>
+	    } else {
+<span class="fc" id="L305">		throw new IllegalArgumentException(&quot;La ville est erronée !&quot;);</span>
+	    }
+<span class="fc" id="L307">	} catch (IllegalArgumentException e) {</span>
+<span class="fc" id="L308">	    logger.error(&quot;La ville {} ne fait pas partie de la liste !&quot;, city);</span>
+<span class="fc" id="L309">	    return personFiltres;</span>
+
+	}
+    }
+
+    /**
+     * Create - Add new person to the JSON File
+     * 
+     * @param person person to add
+     * @return created person
+     */
+    @PostMapping(&quot;/person&quot;)
+    public void addPerson(@RequestBody Person person) {
+<span class="fc" id="L322">	personService.createPerson(person);</span>
+<span class="fc" id="L323">    }</span>
+
+    /**
+     * Update - Update person in the JSON File
+     * 
+     * @param person person to update
+     * @return updated person
+     */
+    @PutMapping(&quot;/person&quot;)
+    public void updatePerson(@RequestBody Person person) {
+<span class="fc" id="L333">	personService.updatePerson(person);</span>
+<span class="fc" id="L334">    }</span>
+
+    /**
+     * Delete - Delete person in the JSON file
+     * 
+     * @param person person to delete
+     * @return person deleted
+     */
+    @DeleteMapping(&quot;/person&quot;)
+    public void deletePerson(@RequestBody Person person) {
+<span class="fc" id="L344">	personService.deletePerson(person);</span>
+<span class="fc" id="L345">    }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

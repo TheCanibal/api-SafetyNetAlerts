@@ -1,0 +1,310 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report-3.0.xsd" version="3.0" name="com.APISafetyNetAlerts.apiForSNA.PersonControllerTest" time="0.208" tests="40" errors="0" skipped="0" failures="0">
+  <properties>
+    <property name="java.specification.version" value="17"/>
+    <property name="sun.cpu.isalist" value="amd64"/>
+    <property name="sun.jnu.encoding" value="UTF-8"/>
+    <property name="java.class.path" value="D:\workspace\git\apiForSNA\target\test-classes;D:\workspace\git\apiForSNA\target\classes;C:\Users\zirya\.m2\repository\org\springframework\boot\spring-boot-starter-actuator\3.1.0\spring-boot-starter-actuator-3.1.0.jar;C:\Users\zirya\.m2\repository\org\springframework\boot\spring-boot-actuator-autoconfigure\3.1.0\spring-boot-actuator-autoconfigure-3.1.0.jar;C:\Users\zirya\.m2\repository\org\springframework\boot\spring-boot-actuator\3.1.0\spring-boot-actuator-3.1.0.jar;C:\Users\zirya\.m2\repository\io\micrometer\micrometer-observation\1.11.0\micrometer-observation-1.11.0.jar;C:\Users\zirya\.m2\repository\io\micrometer\micrometer-commons\1.11.0\micrometer-commons-1.11.0.jar;C:\Users\zirya\.m2\repository\io\micrometer\micrometer-core\1.11.0\micrometer-core-1.11.0.jar;C:\Users\zirya\.m2\repository\org\hdrhistogram\HdrHistogram\2.1.12\HdrHistogram-2.1.12.jar;C:\Users\zirya\.m2\repository\org\latencyutils\LatencyUtils\2.0.3\LatencyUtils-2.0.3.jar;C:\Users\zirya\.m2\repository\org\junit\jupiter\junit-jupiter\5.9.3\junit-jupiter-5.9.3.jar;C:\Users\zirya\.m2\repository\org\junit\jupiter\junit-jupiter-api\5.9.3\junit-jupiter-api-5.9.3.jar;C:\Users\zirya\.m2\repository\org\opentest4j\opentest4j\1.2.0\opentest4j-1.2.0.jar;C:\Users\zirya\.m2\repository\org\junit\platform\junit-platform-commons\1.9.3\junit-platform-commons-1.9.3.jar;C:\Users\zirya\.m2\repository\org\apiguardian\apiguardian-api\1.1.2\apiguardian-api-1.1.2.jar;C:\Users\zirya\.m2\repository\org\junit\jupiter\junit-jupiter-params\5.9.3\junit-jupiter-params-5.9.3.jar;C:\Users\zirya\.m2\repository\org\junit\jupiter\junit-jupiter-engine\5.9.3\junit-jupiter-engine-5.9.3.jar;C:\Users\zirya\.m2\repository\org\junit\platform\junit-platform-engine\1.9.3\junit-platform-engine-1.9.3.jar;C:\Users\zirya\.m2\repository\org\springframework\boot\spring-boot-starter-web\3.1.0\spring-boot-starter-web-3.1.0.jar;C:\Users\zirya\.m2\repository\org\springframework\boot\spring-boot-starter-tomcat\3.1.0\spring-boot-starter-tomcat-3.1.0.jar;C:\Users\zirya\.m2\repository\org\apache\tomcat\embed\tomcat-embed-core\10.1.8\tomcat-embed-core-10.1.8.jar;C:\Users\zirya\.m2\repository\org\apache\tomcat\embed\tomcat-embed-el\10.1.8\tomcat-embed-el-10.1.8.jar;C:\Users\zirya\.m2\repository\org\apache\tomcat\embed\tomcat-embed-websocket\10.1.8\tomcat-embed-websocket-10.1.8.jar;C:\Users\zirya\.m2\repository\org\springframework\spring-web\6.0.9\spring-web-6.0.9.jar;C:\Users\zirya\.m2\repository\org\springframework\spring-beans\6.0.9\spring-beans-6.0.9.jar;C:\Users\zirya\.m2\repository\org\springframework\spring-webmvc\6.0.9\spring-webmvc-6.0.9.jar;C:\Users\zirya\.m2\repository\org\springframework\spring-aop\6.0.9\spring-aop-6.0.9.jar;C:\Users\zirya\.m2\repository\org\springframework\spring-context\6.0.9\spring-context-6.0.9.jar;C:\Users\zirya\.m2\repository\org\springframework\spring-expression\6.0.9\spring-expression-6.0.9.jar;C:\Users\zirya\.m2\repository\org\springframework\boot\spring-boot-starter-test\3.1.0\spring-boot-starter-test-3.1.0.jar;C:\Users\zirya\.m2\repository\org\springframework\boot\spring-boot-test\3.1.0\spring-boot-test-3.1.0.jar;C:\Users\zirya\.m2\repository\org\springframework\boot\spring-boot-test-autoconfigure\3.1.0\spring-boot-test-autoconfigure-3.1.0.jar;C:\Users\zirya\.m2\repository\com\jayway\jsonpath\json-path\2.8.0\json-path-2.8.0.jar;C:\Users\zirya\.m2\repository\org\slf4j\slf4j-api\2.0.7\slf4j-api-2.0.7.jar;C:\Users\zirya\.m2\repository\jakarta\xml\bind\jakarta.xml.bind-api\4.0.0\jakarta.xml.bind-api-4.0.0.jar;C:\Users\zirya\.m2\repository\jakarta\activation\jakarta.activation-api\2.1.2\jakarta.activation-api-2.1.2.jar;C:\Users\zirya\.m2\repository\net\minidev\json-smart\2.4.10\json-smart-2.4.10.jar;C:\Users\zirya\.m2\repository\net\minidev\accessors-smart\2.4.9\accessors-smart-2.4.9.jar;C:\Users\zirya\.m2\repository\org\assertj\assertj-core\3.24.2\assertj-core-3.24.2.jar;C:\Users\zirya\.m2\repository\net\bytebuddy\byte-buddy\1.14.4\byte-buddy-1.14.4.jar;C:\Users\zirya\.m2\repository\org\hamcrest\hamcrest\2.2\hamcrest-2.2.jar;C:\Users\zirya\.m2\repository\org\mockito\mockito-core\5.3.1\mockito-core-5.3.1.jar;C:\Users\zirya\.m2\repository\net\bytebuddy\byte-buddy-agent\1.14.4\byte-buddy-agent-1.14.4.jar;C:\Users\zirya\.m2\repository\org\objenesis\objenesis\3.3\objenesis-3.3.jar;C:\Users\zirya\.m2\repository\org\mockito\mockito-junit-jupiter\5.3.1\mockito-junit-jupiter-5.3.1.jar;C:\Users\zirya\.m2\repository\org\skyscreamer\jsonassert\1.5.1\jsonassert-1.5.1.jar;C:\Users\zirya\.m2\repository\com\vaadin\external\google\android-json\0.0.20131108.vaadin1\android-json-0.0.20131108.vaadin1.jar;C:\Users\zirya\.m2\repository\org\springframework\spring-core\6.0.9\spring-core-6.0.9.jar;C:\Users\zirya\.m2\repository\org\springframework\spring-jcl\6.0.9\spring-jcl-6.0.9.jar;C:\Users\zirya\.m2\repository\org\springframework\spring-test\6.0.9\spring-test-6.0.9.jar;C:\Users\zirya\.m2\repository\org\xmlunit\xmlunit-core\2.9.1\xmlunit-core-2.9.1.jar;C:\Users\zirya\.m2\repository\com\fasterxml\jackson\core\jackson-core\2.15.0\jackson-core-2.15.0.jar;C:\Users\zirya\.m2\repository\com\fasterxml\jackson\core\jackson-databind\2.15.0\jackson-databind-2.15.0.jar;C:\Users\zirya\.m2\repository\com\fasterxml\jackson\core\jackson-annotations\2.15.0\jackson-annotations-2.15.0.jar;C:\Users\zirya\.m2\repository\org\springframework\boot\spring-boot-starter-json\3.1.0\spring-boot-starter-json-3.1.0.jar;C:\Users\zirya\.m2\repository\com\fasterxml\jackson\datatype\jackson-datatype-jdk8\2.15.0\jackson-datatype-jdk8-2.15.0.jar;C:\Users\zirya\.m2\repository\com\fasterxml\jackson\module\jackson-module-parameter-names\2.15.0\jackson-module-parameter-names-2.15.0.jar;C:\Users\zirya\.m2\repository\com\fasterxml\jackson\datatype\jackson-datatype-jsr310\2.15.0\jackson-datatype-jsr310-2.15.0.jar;C:\Users\zirya\.m2\repository\org\jacoco\jacoco-maven-plugin\0.8.7\jacoco-maven-plugin-0.8.7.jar;C:\Users\zirya\.m2\repository\org\apache\maven\maven-plugin-api\3.0\maven-plugin-api-3.0.jar;C:\Users\zirya\.m2\repository\org\sonatype\sisu\sisu-inject-plexus\1.4.2\sisu-inject-plexus-1.4.2.jar;C:\Users\zirya\.m2\repository\org\sonatype\sisu\sisu-inject-bean\1.4.2\sisu-inject-bean-1.4.2.jar;C:\Users\zirya\.m2\repository\org\sonatype\sisu\sisu-guice\2.1.7\sisu-guice-2.1.7-noaop.jar;C:\Users\zirya\.m2\repository\org\apache\maven\maven-core\3.0\maven-core-3.0.jar;C:\Users\zirya\.m2\repository\org\apache\maven\maven-settings\3.0\maven-settings-3.0.jar;C:\Users\zirya\.m2\repository\org\apache\maven\maven-settings-builder\3.0\maven-settings-builder-3.0.jar;C:\Users\zirya\.m2\repository\org\apache\maven\maven-repository-metadata\3.0\maven-repository-metadata-3.0.jar;C:\Users\zirya\.m2\repository\org\apache\maven\maven-model-builder\3.0\maven-model-builder-3.0.jar;C:\Users\zirya\.m2\repository\org\apache\maven\maven-aether-provider\3.0\maven-aether-provider-3.0.jar;C:\Users\zirya\.m2\repository\org\sonatype\aether\aether-impl\1.7\aether-impl-1.7.jar;C:\Users\zirya\.m2\repository\org\sonatype\aether\aether-spi\1.7\aether-spi-1.7.jar;C:\Users\zirya\.m2\repository\org\sonatype\aether\aether-api\1.7\aether-api-1.7.jar;C:\Users\zirya\.m2\repository\org\sonatype\aether\aether-util\1.7\aether-util-1.7.jar;C:\Users\zirya\.m2\repository\org\codehaus\plexus\plexus-classworlds\2.2.3\plexus-classworlds-2.2.3.jar;C:\Users\zirya\.m2\repository\org\codehaus\plexus\plexus-component-annotations\1.5.5\plexus-component-annotations-1.5.5.jar;C:\Users\zirya\.m2\repository\org\sonatype\plexus\plexus-sec-dispatcher\1.3\plexus-sec-dispatcher-1.3.jar;C:\Users\zirya\.m2\repository\org\sonatype\plexus\plexus-cipher\1.4\plexus-cipher-1.4.jar;C:\Users\zirya\.m2\repository\org\codehaus\plexus\plexus-utils\3.0.22\plexus-utils-3.0.22.jar;C:\Users\zirya\.m2\repository\org\apache\maven\shared\file-management\1.2.1\file-management-1.2.1.jar;C:\Users\zirya\.m2\repository\org\codehaus\plexus\plexus-container-default\1.0-alpha-9\plexus-container-default-1.0-alpha-9.jar;C:\Users\zirya\.m2\repository\junit\junit\4.13.2\junit-4.13.2.jar;C:\Users\zirya\.m2\repository\org\hamcrest\hamcrest-core\2.2\hamcrest-core-2.2.jar;C:\Users\zirya\.m2\repository\classworlds\classworlds\1.1-alpha-2\classworlds-1.1-alpha-2.jar;C:\Users\zirya\.m2\repository\org\apache\maven\reporting\maven-reporting-api\3.0\maven-reporting-api-3.0.jar;C:\Users\zirya\.m2\repository\org\apache\maven\doxia\doxia-sink-api\1.0\doxia-sink-api-1.0.jar;C:\Users\zirya\.m2\repository\org\jacoco\org.jacoco.agent\0.8.7\org.jacoco.agent-0.8.7-runtime.jar;C:\Users\zirya\.m2\repository\org\jacoco\org.jacoco.core\0.8.7\org.jacoco.core-0.8.7.jar;C:\Users\zirya\.m2\repository\org\ow2\asm\asm\9.1\asm-9.1.jar;C:\Users\zirya\.m2\repository\org\ow2\asm\asm-commons\9.1\asm-commons-9.1.jar;C:\Users\zirya\.m2\repository\org\ow2\asm\asm-analysis\9.1\asm-analysis-9.1.jar;C:\Users\zirya\.m2\repository\org\ow2\asm\asm-tree\9.1\asm-tree-9.1.jar;C:\Users\zirya\.m2\repository\org\jacoco\org.jacoco.report\0.8.7\org.jacoco.report-0.8.7.jar;C:\Users\zirya\.m2\repository\org\apache\maven\plugins\maven-assembly-plugin\3.3.0\maven-assembly-plugin-3.3.0.jar;C:\Users\zirya\.m2\repository\org\apache\maven\maven-artifact\3.0\maven-artifact-3.0.jar;C:\Users\zirya\.m2\repository\org\apache\maven\maven-model\3.0\maven-model-3.0.jar;C:\Users\zirya\.m2\repository\org\apache\maven\shared\maven-common-artifact-filters\3.1.0\maven-common-artifact-filters-3.1.0.jar;C:\Users\zirya\.m2\repository\org\apache\maven\shared\maven-shared-utils\3.1.0\maven-shared-utils-3.1.0.jar;C:\Users\zirya\.m2\repository\org\apache\maven\shared\maven-artifact-transfer\0.11.0\maven-artifact-transfer-0.11.0.jar;C:\Users\zirya\.m2\repository\org\codehaus\plexus\plexus-interpolation\1.25\plexus-interpolation-1.25.jar;C:\Users\zirya\.m2\repository\org\codehaus\plexus\plexus-archiver\4.2.1\plexus-archiver-4.2.1.jar;C:\Users\zirya\.m2\repository\org\apache\commons\commons-compress\1.19\commons-compress-1.19.jar;C:\Users\zirya\.m2\repository\org\iq80\snappy\snappy\0.4\snappy-0.4.jar;C:\Users\zirya\.m2\repository\org\tukaani\xz\1.8\xz-1.8.jar;C:\Users\zirya\.m2\repository\org\apache\maven\shared\maven-shared-io\3.0.0\maven-shared-io-3.0.0.jar;C:\Users\zirya\.m2\repository\org\apache\maven\maven-compat\3.0\maven-compat-3.0.jar;C:\Users\zirya\.m2\repository\org\apache\maven\wagon\wagon-provider-api\2.10\wagon-provider-api-2.10.jar;C:\Users\zirya\.m2\repository\commons-io\commons-io\2.5\commons-io-2.5.jar;C:\Users\zirya\.m2\repository\org\apache\maven\shared\maven-filtering\3.1.1\maven-filtering-3.1.1.jar;C:\Users\zirya\.m2\repository\org\sonatype\plexus\plexus-build-api\0.0.7\plexus-build-api-0.0.7.jar;C:\Users\zirya\.m2\repository\org\codehaus\plexus\plexus-io\3.2.0\plexus-io-3.2.0.jar;C:\Users\zirya\.m2\repository\org\apache\maven\maven-archiver\3.5.0\maven-archiver-3.5.0.jar;C:\Users\zirya\.m2\repository\commons-codec\commons-codec\1.15\commons-codec-1.15.jar;C:\Users\zirya\.m2\repository\org\springframework\boot\spring-boot-starter\3.1.0\spring-boot-starter-3.1.0.jar;C:\Users\zirya\.m2\repository\org\springframework\boot\spring-boot\3.1.0\spring-boot-3.1.0.jar;C:\Users\zirya\.m2\repository\org\springframework\boot\spring-boot-autoconfigure\3.1.0\spring-boot-autoconfigure-3.1.0.jar;C:\Users\zirya\.m2\repository\jakarta\annotation\jakarta.annotation-api\2.1.1\jakarta.annotation-api-2.1.1.jar;C:\Users\zirya\.m2\repository\org\yaml\snakeyaml\1.33\snakeyaml-1.33.jar;C:\Users\zirya\.m2\repository\org\springframework\boot\spring-boot-starter-log4j2\3.1.0\spring-boot-starter-log4j2-3.1.0.jar;C:\Users\zirya\.m2\repository\org\apache\logging\log4j\log4j-slf4j2-impl\2.20.0\log4j-slf4j2-impl-2.20.0.jar;C:\Users\zirya\.m2\repository\org\apache\logging\log4j\log4j-api\2.20.0\log4j-api-2.20.0.jar;C:\Users\zirya\.m2\repository\org\apache\logging\log4j\log4j-core\2.20.0\log4j-core-2.20.0.jar;C:\Users\zirya\.m2\repository\org\apache\logging\log4j\log4j-jul\2.20.0\log4j-jul-2.20.0.jar;"/>
+    <property name="java.vm.vendor" value="Eclipse Adoptium"/>
+    <property name="sun.arch.data.model" value="64"/>
+    <property name="user.variant" value=""/>
+    <property name="java.vendor.url" value="https://adoptium.net/"/>
+    <property name="user.timezone" value="Europe/Paris"/>
+    <property name="os.name" value="Windows 11"/>
+    <property name="java.vm.specification.version" value="17"/>
+    <property name="sun.java.launcher" value="SUN_STANDARD"/>
+    <property name="user.country" value="FR"/>
+    <property name="sun.boot.library.path" value="C:\Program Files\Eclipse Adoptium\jdk-17.0.6.10-hotspot\bin"/>
+    <property name="sun.java.command" value="C:\Users\zirya\AppData\Local\Temp\surefire3284595048130248218\surefirebooter-20230719143733102_3.jar C:\Users\zirya\AppData\Local\Temp\surefire3284595048130248218 2023-07-19T14-37-32_984-jvmRun1 surefire-20230719143733102_1tmp surefire_0-20230719143733102_2tmp"/>
+    <property name="jdk.debug" value="release"/>
+    <property name="surefire.test.class.path" value="D:\workspace\git\apiForSNA\target\test-classes;D:\workspace\git\apiForSNA\target\classes;C:\Users\zirya\.m2\repository\org\springframework\boot\spring-boot-starter-actuator\3.1.0\spring-boot-starter-actuator-3.1.0.jar;C:\Users\zirya\.m2\repository\org\springframework\boot\spring-boot-actuator-autoconfigure\3.1.0\spring-boot-actuator-autoconfigure-3.1.0.jar;C:\Users\zirya\.m2\repository\org\springframework\boot\spring-boot-actuator\3.1.0\spring-boot-actuator-3.1.0.jar;C:\Users\zirya\.m2\repository\io\micrometer\micrometer-observation\1.11.0\micrometer-observation-1.11.0.jar;C:\Users\zirya\.m2\repository\io\micrometer\micrometer-commons\1.11.0\micrometer-commons-1.11.0.jar;C:\Users\zirya\.m2\repository\io\micrometer\micrometer-core\1.11.0\micrometer-core-1.11.0.jar;C:\Users\zirya\.m2\repository\org\hdrhistogram\HdrHistogram\2.1.12\HdrHistogram-2.1.12.jar;C:\Users\zirya\.m2\repository\org\latencyutils\LatencyUtils\2.0.3\LatencyUtils-2.0.3.jar;C:\Users\zirya\.m2\repository\org\junit\jupiter\junit-jupiter\5.9.3\junit-jupiter-5.9.3.jar;C:\Users\zirya\.m2\repository\org\junit\jupiter\junit-jupiter-api\5.9.3\junit-jupiter-api-5.9.3.jar;C:\Users\zirya\.m2\repository\org\opentest4j\opentest4j\1.2.0\opentest4j-1.2.0.jar;C:\Users\zirya\.m2\repository\org\junit\platform\junit-platform-commons\1.9.3\junit-platform-commons-1.9.3.jar;C:\Users\zirya\.m2\repository\org\apiguardian\apiguardian-api\1.1.2\apiguardian-api-1.1.2.jar;C:\Users\zirya\.m2\repository\org\junit\jupiter\junit-jupiter-params\5.9.3\junit-jupiter-params-5.9.3.jar;C:\Users\zirya\.m2\repository\org\junit\jupiter\junit-jupiter-engine\5.9.3\junit-jupiter-engine-5.9.3.jar;C:\Users\zirya\.m2\repository\org\junit\platform\junit-platform-engine\1.9.3\junit-platform-engine-1.9.3.jar;C:\Users\zirya\.m2\repository\org\springframework\boot\spring-boot-starter-web\3.1.0\spring-boot-starter-web-3.1.0.jar;C:\Users\zirya\.m2\repository\org\springframework\boot\spring-boot-starter-tomcat\3.1.0\spring-boot-starter-tomcat-3.1.0.jar;C:\Users\zirya\.m2\repository\org\apache\tomcat\embed\tomcat-embed-core\10.1.8\tomcat-embed-core-10.1.8.jar;C:\Users\zirya\.m2\repository\org\apache\tomcat\embed\tomcat-embed-el\10.1.8\tomcat-embed-el-10.1.8.jar;C:\Users\zirya\.m2\repository\org\apache\tomcat\embed\tomcat-embed-websocket\10.1.8\tomcat-embed-websocket-10.1.8.jar;C:\Users\zirya\.m2\repository\org\springframework\spring-web\6.0.9\spring-web-6.0.9.jar;C:\Users\zirya\.m2\repository\org\springframework\spring-beans\6.0.9\spring-beans-6.0.9.jar;C:\Users\zirya\.m2\repository\org\springframework\spring-webmvc\6.0.9\spring-webmvc-6.0.9.jar;C:\Users\zirya\.m2\repository\org\springframework\spring-aop\6.0.9\spring-aop-6.0.9.jar;C:\Users\zirya\.m2\repository\org\springframework\spring-context\6.0.9\spring-context-6.0.9.jar;C:\Users\zirya\.m2\repository\org\springframework\spring-expression\6.0.9\spring-expression-6.0.9.jar;C:\Users\zirya\.m2\repository\org\springframework\boot\spring-boot-starter-test\3.1.0\spring-boot-starter-test-3.1.0.jar;C:\Users\zirya\.m2\repository\org\springframework\boot\spring-boot-test\3.1.0\spring-boot-test-3.1.0.jar;C:\Users\zirya\.m2\repository\org\springframework\boot\spring-boot-test-autoconfigure\3.1.0\spring-boot-test-autoconfigure-3.1.0.jar;C:\Users\zirya\.m2\repository\com\jayway\jsonpath\json-path\2.8.0\json-path-2.8.0.jar;C:\Users\zirya\.m2\repository\org\slf4j\slf4j-api\2.0.7\slf4j-api-2.0.7.jar;C:\Users\zirya\.m2\repository\jakarta\xml\bind\jakarta.xml.bind-api\4.0.0\jakarta.xml.bind-api-4.0.0.jar;C:\Users\zirya\.m2\repository\jakarta\activation\jakarta.activation-api\2.1.2\jakarta.activation-api-2.1.2.jar;C:\Users\zirya\.m2\repository\net\minidev\json-smart\2.4.10\json-smart-2.4.10.jar;C:\Users\zirya\.m2\repository\net\minidev\accessors-smart\2.4.9\accessors-smart-2.4.9.jar;C:\Users\zirya\.m2\repository\org\assertj\assertj-core\3.24.2\assertj-core-3.24.2.jar;C:\Users\zirya\.m2\repository\net\bytebuddy\byte-buddy\1.14.4\byte-buddy-1.14.4.jar;C:\Users\zirya\.m2\repository\org\hamcrest\hamcrest\2.2\hamcrest-2.2.jar;C:\Users\zirya\.m2\repository\org\mockito\mockito-core\5.3.1\mockito-core-5.3.1.jar;C:\Users\zirya\.m2\repository\net\bytebuddy\byte-buddy-agent\1.14.4\byte-buddy-agent-1.14.4.jar;C:\Users\zirya\.m2\repository\org\objenesis\objenesis\3.3\objenesis-3.3.jar;C:\Users\zirya\.m2\repository\org\mockito\mockito-junit-jupiter\5.3.1\mockito-junit-jupiter-5.3.1.jar;C:\Users\zirya\.m2\repository\org\skyscreamer\jsonassert\1.5.1\jsonassert-1.5.1.jar;C:\Users\zirya\.m2\repository\com\vaadin\external\google\android-json\0.0.20131108.vaadin1\android-json-0.0.20131108.vaadin1.jar;C:\Users\zirya\.m2\repository\org\springframework\spring-core\6.0.9\spring-core-6.0.9.jar;C:\Users\zirya\.m2\repository\org\springframework\spring-jcl\6.0.9\spring-jcl-6.0.9.jar;C:\Users\zirya\.m2\repository\org\springframework\spring-test\6.0.9\spring-test-6.0.9.jar;C:\Users\zirya\.m2\repository\org\xmlunit\xmlunit-core\2.9.1\xmlunit-core-2.9.1.jar;C:\Users\zirya\.m2\repository\com\fasterxml\jackson\core\jackson-core\2.15.0\jackson-core-2.15.0.jar;C:\Users\zirya\.m2\repository\com\fasterxml\jackson\core\jackson-databind\2.15.0\jackson-databind-2.15.0.jar;C:\Users\zirya\.m2\repository\com\fasterxml\jackson\core\jackson-annotations\2.15.0\jackson-annotations-2.15.0.jar;C:\Users\zirya\.m2\repository\org\springframework\boot\spring-boot-starter-json\3.1.0\spring-boot-starter-json-3.1.0.jar;C:\Users\zirya\.m2\repository\com\fasterxml\jackson\datatype\jackson-datatype-jdk8\2.15.0\jackson-datatype-jdk8-2.15.0.jar;C:\Users\zirya\.m2\repository\com\fasterxml\jackson\module\jackson-module-parameter-names\2.15.0\jackson-module-parameter-names-2.15.0.jar;C:\Users\zirya\.m2\repository\com\fasterxml\jackson\datatype\jackson-datatype-jsr310\2.15.0\jackson-datatype-jsr310-2.15.0.jar;C:\Users\zirya\.m2\repository\org\jacoco\jacoco-maven-plugin\0.8.7\jacoco-maven-plugin-0.8.7.jar;C:\Users\zirya\.m2\repository\org\apache\maven\maven-plugin-api\3.0\maven-plugin-api-3.0.jar;C:\Users\zirya\.m2\repository\org\sonatype\sisu\sisu-inject-plexus\1.4.2\sisu-inject-plexus-1.4.2.jar;C:\Users\zirya\.m2\repository\org\sonatype\sisu\sisu-inject-bean\1.4.2\sisu-inject-bean-1.4.2.jar;C:\Users\zirya\.m2\repository\org\sonatype\sisu\sisu-guice\2.1.7\sisu-guice-2.1.7-noaop.jar;C:\Users\zirya\.m2\repository\org\apache\maven\maven-core\3.0\maven-core-3.0.jar;C:\Users\zirya\.m2\repository\org\apache\maven\maven-settings\3.0\maven-settings-3.0.jar;C:\Users\zirya\.m2\repository\org\apache\maven\maven-settings-builder\3.0\maven-settings-builder-3.0.jar;C:\Users\zirya\.m2\repository\org\apache\maven\maven-repository-metadata\3.0\maven-repository-metadata-3.0.jar;C:\Users\zirya\.m2\repository\org\apache\maven\maven-model-builder\3.0\maven-model-builder-3.0.jar;C:\Users\zirya\.m2\repository\org\apache\maven\maven-aether-provider\3.0\maven-aether-provider-3.0.jar;C:\Users\zirya\.m2\repository\org\sonatype\aether\aether-impl\1.7\aether-impl-1.7.jar;C:\Users\zirya\.m2\repository\org\sonatype\aether\aether-spi\1.7\aether-spi-1.7.jar;C:\Users\zirya\.m2\repository\org\sonatype\aether\aether-api\1.7\aether-api-1.7.jar;C:\Users\zirya\.m2\repository\org\sonatype\aether\aether-util\1.7\aether-util-1.7.jar;C:\Users\zirya\.m2\repository\org\codehaus\plexus\plexus-classworlds\2.2.3\plexus-classworlds-2.2.3.jar;C:\Users\zirya\.m2\repository\org\codehaus\plexus\plexus-component-annotations\1.5.5\plexus-component-annotations-1.5.5.jar;C:\Users\zirya\.m2\repository\org\sonatype\plexus\plexus-sec-dispatcher\1.3\plexus-sec-dispatcher-1.3.jar;C:\Users\zirya\.m2\repository\org\sonatype\plexus\plexus-cipher\1.4\plexus-cipher-1.4.jar;C:\Users\zirya\.m2\repository\org\codehaus\plexus\plexus-utils\3.0.22\plexus-utils-3.0.22.jar;C:\Users\zirya\.m2\repository\org\apache\maven\shared\file-management\1.2.1\file-management-1.2.1.jar;C:\Users\zirya\.m2\repository\org\codehaus\plexus\plexus-container-default\1.0-alpha-9\plexus-container-default-1.0-alpha-9.jar;C:\Users\zirya\.m2\repository\junit\junit\4.13.2\junit-4.13.2.jar;C:\Users\zirya\.m2\repository\org\hamcrest\hamcrest-core\2.2\hamcrest-core-2.2.jar;C:\Users\zirya\.m2\repository\classworlds\classworlds\1.1-alpha-2\classworlds-1.1-alpha-2.jar;C:\Users\zirya\.m2\repository\org\apache\maven\reporting\maven-reporting-api\3.0\maven-reporting-api-3.0.jar;C:\Users\zirya\.m2\repository\org\apache\maven\doxia\doxia-sink-api\1.0\doxia-sink-api-1.0.jar;C:\Users\zirya\.m2\repository\org\jacoco\org.jacoco.agent\0.8.7\org.jacoco.agent-0.8.7-runtime.jar;C:\Users\zirya\.m2\repository\org\jacoco\org.jacoco.core\0.8.7\org.jacoco.core-0.8.7.jar;C:\Users\zirya\.m2\repository\org\ow2\asm\asm\9.1\asm-9.1.jar;C:\Users\zirya\.m2\repository\org\ow2\asm\asm-commons\9.1\asm-commons-9.1.jar;C:\Users\zirya\.m2\repository\org\ow2\asm\asm-analysis\9.1\asm-analysis-9.1.jar;C:\Users\zirya\.m2\repository\org\ow2\asm\asm-tree\9.1\asm-tree-9.1.jar;C:\Users\zirya\.m2\repository\org\jacoco\org.jacoco.report\0.8.7\org.jacoco.report-0.8.7.jar;C:\Users\zirya\.m2\repository\org\apache\maven\plugins\maven-assembly-plugin\3.3.0\maven-assembly-plugin-3.3.0.jar;C:\Users\zirya\.m2\repository\org\apache\maven\maven-artifact\3.0\maven-artifact-3.0.jar;C:\Users\zirya\.m2\repository\org\apache\maven\maven-model\3.0\maven-model-3.0.jar;C:\Users\zirya\.m2\repository\org\apache\maven\shared\maven-common-artifact-filters\3.1.0\maven-common-artifact-filters-3.1.0.jar;C:\Users\zirya\.m2\repository\org\apache\maven\shared\maven-shared-utils\3.1.0\maven-shared-utils-3.1.0.jar;C:\Users\zirya\.m2\repository\org\apache\maven\shared\maven-artifact-transfer\0.11.0\maven-artifact-transfer-0.11.0.jar;C:\Users\zirya\.m2\repository\org\codehaus\plexus\plexus-interpolation\1.25\plexus-interpolation-1.25.jar;C:\Users\zirya\.m2\repository\org\codehaus\plexus\plexus-archiver\4.2.1\plexus-archiver-4.2.1.jar;C:\Users\zirya\.m2\repository\org\apache\commons\commons-compress\1.19\commons-compress-1.19.jar;C:\Users\zirya\.m2\repository\org\iq80\snappy\snappy\0.4\snappy-0.4.jar;C:\Users\zirya\.m2\repository\org\tukaani\xz\1.8\xz-1.8.jar;C:\Users\zirya\.m2\repository\org\apache\maven\shared\maven-shared-io\3.0.0\maven-shared-io-3.0.0.jar;C:\Users\zirya\.m2\repository\org\apache\maven\maven-compat\3.0\maven-compat-3.0.jar;C:\Users\zirya\.m2\repository\org\apache\maven\wagon\wagon-provider-api\2.10\wagon-provider-api-2.10.jar;C:\Users\zirya\.m2\repository\commons-io\commons-io\2.5\commons-io-2.5.jar;C:\Users\zirya\.m2\repository\org\apache\maven\shared\maven-filtering\3.1.1\maven-filtering-3.1.1.jar;C:\Users\zirya\.m2\repository\org\sonatype\plexus\plexus-build-api\0.0.7\plexus-build-api-0.0.7.jar;C:\Users\zirya\.m2\repository\org\codehaus\plexus\plexus-io\3.2.0\plexus-io-3.2.0.jar;C:\Users\zirya\.m2\repository\org\apache\maven\maven-archiver\3.5.0\maven-archiver-3.5.0.jar;C:\Users\zirya\.m2\repository\commons-codec\commons-codec\1.15\commons-codec-1.15.jar;C:\Users\zirya\.m2\repository\org\springframework\boot\spring-boot-starter\3.1.0\spring-boot-starter-3.1.0.jar;C:\Users\zirya\.m2\repository\org\springframework\boot\spring-boot\3.1.0\spring-boot-3.1.0.jar;C:\Users\zirya\.m2\repository\org\springframework\boot\spring-boot-autoconfigure\3.1.0\spring-boot-autoconfigure-3.1.0.jar;C:\Users\zirya\.m2\repository\jakarta\annotation\jakarta.annotation-api\2.1.1\jakarta.annotation-api-2.1.1.jar;C:\Users\zirya\.m2\repository\org\yaml\snakeyaml\1.33\snakeyaml-1.33.jar;C:\Users\zirya\.m2\repository\org\springframework\boot\spring-boot-starter-log4j2\3.1.0\spring-boot-starter-log4j2-3.1.0.jar;C:\Users\zirya\.m2\repository\org\apache\logging\log4j\log4j-slf4j2-impl\2.20.0\log4j-slf4j2-impl-2.20.0.jar;C:\Users\zirya\.m2\repository\org\apache\logging\log4j\log4j-api\2.20.0\log4j-api-2.20.0.jar;C:\Users\zirya\.m2\repository\org\apache\logging\log4j\log4j-core\2.20.0\log4j-core-2.20.0.jar;C:\Users\zirya\.m2\repository\org\apache\logging\log4j\log4j-jul\2.20.0\log4j-jul-2.20.0.jar;"/>
+    <property name="sun.cpu.endian" value="little"/>
+    <property name="user.home" value="C:\Users\zirya"/>
+    <property name="user.language" value="fr"/>
+    <property name="java.specification.vendor" value="Oracle Corporation"/>
+    <property name="java.version.date" value="2023-01-17"/>
+    <property name="java.home" value="C:\Program Files\Eclipse Adoptium\jdk-17.0.6.10-hotspot"/>
+    <property name="file.separator" value="\"/>
+    <property name="basedir" value="D:\workspace\git\apiForSNA"/>
+    <property name="java.vm.compressedOopsMode" value="Zero based"/>
+    <property name="line.separator" value="&#10;"/>
+    <property name="java.vm.specification.vendor" value="Oracle Corporation"/>
+    <property name="java.specification.name" value="Java Platform API Specification"/>
+    <property name="FILE_LOG_CHARSET" value="UTF-8"/>
+    <property name="java.awt.headless" value="true"/>
+    <property name="surefire.real.class.path" value="C:\Users\zirya\AppData\Local\Temp\surefire3284595048130248218\surefirebooter-20230719143733102_3.jar"/>
+    <property name="user.script" value=""/>
+    <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers"/>
+    <property name="java.runtime.version" value="17.0.6+10"/>
+    <property name="user.name" value="zirya"/>
+    <property name="path.separator" value=";"/>
+    <property name="os.version" value="10.0"/>
+    <property name="java.runtime.name" value="OpenJDK Runtime Environment"/>
+    <property name="file.encoding" value="UTF-8"/>
+    <property name="java.vm.name" value="OpenJDK 64-Bit Server VM"/>
+    <property name="java.vendor.version" value="Temurin-17.0.6+10"/>
+    <property name="localRepository" value="C:\Users\zirya\.m2\repository"/>
+    <property name="java.vendor.url.bug" value="https://github.com/adoptium/adoptium-support/issues"/>
+    <property name="java.io.tmpdir" value="C:\Users\zirya\AppData\Local\Temp\"/>
+    <property name="java.version" value="17.0.6"/>
+    <property name="user.dir" value="D:\workspace\git\apiForSNA"/>
+    <property name="os.arch" value="amd64"/>
+    <property name="java.vm.specification.name" value="Java Virtual Machine Specification"/>
+    <property name="PID" value="21376"/>
+    <property name="sun.os.patch.level" value=""/>
+    <property name="CONSOLE_LOG_CHARSET" value="UTF-8"/>
+    <property name="native.encoding" value="UTF-8"/>
+    <property name="java.library.path" value="C:\Program Files\Eclipse Adoptium\jdk-17.0.6.10-hotspot\bin;C:\WINDOWS\Sun\Java\bin;C:\WINDOWS\system32;C:\WINDOWS;C:\Users\zirya\bin;D:\Formation\Git\mingw64\bin;D:\Formation\Git\usr\local\bin;D:\Formation\Git\usr\bin;D:\Formation\Git\usr\bin;D:\Formation\Git\mingw64\bin;D:\Formation\Git\usr\bin;C:\Users\zirya\bin;C:\Program Files\Eclipse Adoptium\jdk-17.0.6.10-hotspot\bin;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0;C:\Windows\System32\OpenSSH;C:\Program Files (x86)\NVIDIA Corporation\PhysX\Common;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0;C:\WINDOWS\System32\OpenSSH;C:\Program Files\NVIDIA Corporation\NVIDIA NvDLISR;C:\Windows\System32;C:\Users\zirya\apache-maven-3.9.2-bin\bin;E:\iracing\d3dgear;D:\Git\cmd;C:\Users\zirya\AppData\Local\Programs\Python\Python311\Scripts;C:\Users\zirya\AppData\Local\Programs\Python\Python311;C:\Users\zirya\AppData\Local\Microsoft\WindowsApps;C:\Users\zirya\AppData\Local\Programs\Microsoft VS Code\bin;C:\Windows\System32;C:\Users\zirya\apache-maven-3.9.2-bin\bin;D:\Formation\Git\usr\bin\vendor_perl;D:\Formation\Git\usr\bin\core_perl;."/>
+    <property name="java.vm.info" value="mixed mode, sharing"/>
+    <property name="java.vendor" value="Eclipse Adoptium"/>
+    <property name="java.vm.version" value="17.0.6+10"/>
+    <property name="sun.io.unicode.encoding" value="UnicodeLittle"/>
+    <property name="java.class.version" value="61.0"/>
+  </properties>
+  <testcase name="testAddWrongPhoneParamPerson" classname="com.APISafetyNetAlerts.apiForSNA.PersonControllerTest" time="0.007">
+    <system-out><![CDATA[2023-07-19T14:37:39.356+0200 DEBUG La personne à ajouter : com.APISafetyNetAlerts.apiForSNA.model.Person@1285b1f8
+2023-07-19T14:37:39.357+0200 ERROR Le champ numéro de téléphone ne doit pas être vide !
+]]></system-out>
+  </testcase>
+  <testcase name="testGetAllPersons" classname="com.APISafetyNetAlerts.apiForSNA.PersonControllerTest" time="0.006"/>
+  <testcase name="testGetPersonsMailByCityWithWrongCity" classname="com.APISafetyNetAlerts.apiForSNA.PersonControllerTest" time="0.004">
+    <system-out><![CDATA[2023-07-19T14:37:39.368+0200 INFO Liste des villes : [Culver, Tronville-en-Barrois]
+2023-07-19T14:37:39.369+0200 ERROR La ville sdgdggetrhhdhb ne fait pas partie de la liste !
+]]></system-out>
+  </testcase>
+  <testcase name="testUpdateWrongPhoneParamPerson" classname="com.APISafetyNetAlerts.apiForSNA.PersonControllerTest" time="0.006">
+    <system-out><![CDATA[2023-07-19T14:37:39.375+0200 ERROR La personne Kévin Jovanovic n'apparaît pas dans la liste.
+]]></system-out>
+  </testcase>
+  <testcase name="testUpdateWrongAddressParamPerson" classname="com.APISafetyNetAlerts.apiForSNA.PersonControllerTest" time="0.005">
+    <system-out><![CDATA[2023-07-19T14:37:39.381+0200 ERROR La personne Kévin Jovanovic n'apparaît pas dans la liste.
+]]></system-out>
+  </testcase>
+  <testcase name="testDeleteAllNullParamPerson" classname="com.APISafetyNetAlerts.apiForSNA.PersonControllerTest" time="0.004">
+    <system-out><![CDATA[2023-07-19T14:37:39.386+0200 ERROR La personne null null n'apparaît pas dans la liste.
+]]></system-out>
+  </testcase>
+  <testcase name="testGetPersonInfoByFirstNameAndLastNameWithWrongFirstNameAndWrongLastName" classname="com.APISafetyNetAlerts.apiForSNA.PersonControllerTest" time="0.004">
+    <system-out><![CDATA[2023-07-19T14:37:39.390+0200 ERROR Aucune personne ne s'appelle whsdfghsehstdhcxvnb hdshsdfghsgdfhtrsh dans la liste !
+]]></system-out>
+  </testcase>
+  <testcase name="testAddAllNullParamPerson" classname="com.APISafetyNetAlerts.apiForSNA.PersonControllerTest" time="0.005">
+    <system-out><![CDATA[2023-07-19T14:37:39.395+0200 DEBUG La personne à ajouter : com.APISafetyNetAlerts.apiForSNA.model.Person@7808fb63
+2023-07-19T14:37:39.395+0200 ERROR Le champ prénom ne doit pas être vide !
+2023-07-19T14:37:39.395+0200 ERROR Le champ nom ne doit pas être vide !
+2023-07-19T14:37:39.395+0200 ERROR Le champ addresse ne doit pas être vide !
+2023-07-19T14:37:39.395+0200 ERROR Le champ ville ne doit pas être vide !
+2023-07-19T14:37:39.395+0200 ERROR Le champ code postal ne doit pas être vide !
+2023-07-19T14:37:39.395+0200 ERROR Le champ numéro de téléphone ne doit pas être vide !
+2023-07-19T14:37:39.395+0200 ERROR Le champ email ne doit pas être vide !
+]]></system-out>
+  </testcase>
+  <testcase name="testAddWrongEmailParamPerson" classname="com.APISafetyNetAlerts.apiForSNA.PersonControllerTest" time="0.004">
+    <system-out><![CDATA[2023-07-19T14:37:39.401+0200 DEBUG La personne à ajouter : com.APISafetyNetAlerts.apiForSNA.model.Person@7b29d791
+2023-07-19T14:37:39.401+0200 ERROR Le champ email ne doit pas être vide !
+]]></system-out>
+  </testcase>
+  <testcase name="testUpdateWrongLastNameParamPerson" classname="com.APISafetyNetAlerts.apiForSNA.PersonControllerTest" time="0.006">
+    <system-out><![CDATA[2023-07-19T14:37:39.406+0200 ERROR La personne Kévin null n'apparaît pas dans la liste.
+]]></system-out>
+  </testcase>
+  <testcase name="testDeleteNullPerson" classname="com.APISafetyNetAlerts.apiForSNA.PersonControllerTest" time="0.003"/>
+  <testcase name="testUpdateWrongEmailParamPerson" classname="com.APISafetyNetAlerts.apiForSNA.PersonControllerTest" time="0.004">
+    <system-out><![CDATA[2023-07-19T14:37:39.416+0200 ERROR La personne Kévin Jovanovic n'apparaît pas dans la liste.
+]]></system-out>
+  </testcase>
+  <testcase name="testAddNullPerson" classname="com.APISafetyNetAlerts.apiForSNA.PersonControllerTest" time="0.002"/>
+  <testcase name="testDeleteWrongFirstNameParamPerson" classname="com.APISafetyNetAlerts.apiForSNA.PersonControllerTest" time="0.005">
+    <system-out><![CDATA[2023-07-19T14:37:39.424+0200 ERROR Il faut un nom et un prénom pour pouvoir supprimer un objet !
+]]></system-out>
+  </testcase>
+  <testcase name="testUpdateNullPerson" classname="com.APISafetyNetAlerts.apiForSNA.PersonControllerTest" time="0.003"/>
+  <testcase name="testDeleteNoParamPerson" classname="com.APISafetyNetAlerts.apiForSNA.PersonControllerTest" time="0.004">
+    <system-out><![CDATA[2023-07-19T14:37:39.432+0200 ERROR La personne null null n'apparaît pas dans la liste.
+]]></system-out>
+  </testcase>
+  <testcase name="testGetChildByAddressWithWrongAddress" classname="com.APISafetyNetAlerts.apiForSNA.PersonControllerTest" time="0.004">
+    <system-out><![CDATA[2023-07-19T14:37:39.436+0200 ERROR L'addresse fdsqzgdfhgdfgqrsg ne fait pas partie de la liste d'adresses !
+]]></system-out>
+  </testcase>
+  <testcase name="testAddWrongCityParamPerson" classname="com.APISafetyNetAlerts.apiForSNA.PersonControllerTest" time="0.004">
+    <system-out><![CDATA[2023-07-19T14:37:39.440+0200 DEBUG La personne à ajouter : com.APISafetyNetAlerts.apiForSNA.model.Person@56fe2233
+2023-07-19T14:37:39.441+0200 ERROR Le champ ville ne doit pas être vide !
+]]></system-out>
+  </testcase>
+  <testcase name="testUpdateNoParamPerson" classname="com.APISafetyNetAlerts.apiForSNA.PersonControllerTest" time="0.005">
+    <system-out><![CDATA[2023-07-19T14:37:39.446+0200 ERROR La personne null null n'apparaît pas dans la liste.
+]]></system-out>
+  </testcase>
+  <testcase name="testAddWrongAddressParamPerson" classname="com.APISafetyNetAlerts.apiForSNA.PersonControllerTest" time="0.004">
+    <system-out><![CDATA[2023-07-19T14:37:39.450+0200 DEBUG La personne à ajouter : com.APISafetyNetAlerts.apiForSNA.model.Person@6e879a78
+2023-07-19T14:37:39.451+0200 ERROR Le champ addresse ne doit pas être vide !
+]]></system-out>
+  </testcase>
+  <testcase name="testUpdatePerson" classname="com.APISafetyNetAlerts.apiForSNA.PersonControllerTest" time="0.005">
+    <system-out><![CDATA[2023-07-19T14:37:39.455+0200 DEBUG Personne à modifier : {"firstName":"Kevin","lastName":"Jovanovic","address":"19 rue des Coquelicots","city":"Tronville-en-Barrois","zip":55310,"phone":"0607080910","email":"test@gmail.com"}
+2023-07-19T14:37:39.456+0200 DEBUG Personne qui a été modifiée : {"firstName":"Kevin","lastName":"Jovanovic","address":"19 rue des Coquelicots","city":"Tronville-en-Barrois","zip":55310,"phone":"0607080910","email":"test@gmail.com"}
+]]></system-out>
+  </testcase>
+  <testcase name="testAddWrongZipParamPerson" classname="com.APISafetyNetAlerts.apiForSNA.PersonControllerTest" time="0.005">
+    <system-out><![CDATA[2023-07-19T14:37:39.461+0200 DEBUG La personne à ajouter : com.APISafetyNetAlerts.apiForSNA.model.Person@882364e
+2023-07-19T14:37:39.461+0200 ERROR Le champ code postal ne doit pas être vide !
+]]></system-out>
+  </testcase>
+  <testcase name="testGetPersonInfoByFirstNameAndLastNameWithWrongLastName" classname="com.APISafetyNetAlerts.apiForSNA.PersonControllerTest" time="0.003">
+    <system-out><![CDATA[2023-07-19T14:37:39.464+0200 ERROR Aucune personne ne s'appelle John whsdfghgsfdhdfqgyh dans la liste !
+]]></system-out>
+  </testcase>
+  <testcase name="testDeletePerson" classname="com.APISafetyNetAlerts.apiForSNA.PersonControllerTest" time="0.005">
+    <system-out><![CDATA[2023-07-19T14:37:39.469+0200 DEBUG Personne à supprimer : {"firstName":"Kevin","lastName":"Jovanovic","address":"19 rue des Coquelicots","city":"Tronville-en-Barrois","zip":55310,"phone":"0607080910","email":"test@gmail.com"}
+]]></system-out>
+  </testcase>
+  <testcase name="testAddWrongLastNameParamPerson" classname="com.APISafetyNetAlerts.apiForSNA.PersonControllerTest" time="0.003">
+    <system-out><![CDATA[2023-07-19T14:37:39.473+0200 DEBUG La personne à ajouter : com.APISafetyNetAlerts.apiForSNA.model.Person@5db7419c
+2023-07-19T14:37:39.474+0200 ERROR Le champ nom ne doit pas être vide !
+]]></system-out>
+  </testcase>
+  <testcase name="testUpdateWrongCityParamPerson" classname="com.APISafetyNetAlerts.apiForSNA.PersonControllerTest" time="0.005">
+    <system-out><![CDATA[2023-07-19T14:37:39.479+0200 ERROR La personne Kévin Jovanovic n'apparaît pas dans la liste.
+]]></system-out>
+  </testcase>
+  <testcase name="testGetPhoneNumberDeservedByFirestations" classname="com.APISafetyNetAlerts.apiForSNA.PersonControllerTest" time="0.005">
+    <system-out><![CDATA[2023-07-19T14:37:39.483+0200 INFO Le numéro de station est 1
+2023-07-19T14:37:39.483+0200 INFO Nombre de numéros de téléphone dans la liste : 4
+2023-07-19T14:37:39.484+0200 DEBUG La liste de numéro de téléphone qui est renvoyée : [ "841-874-7784", "841-874-7462", "841-874-6512", "841-874-8547" ]
+]]></system-out>
+  </testcase>
+  <testcase name="testAddNoParamPerson" classname="com.APISafetyNetAlerts.apiForSNA.PersonControllerTest" time="0.005">
+    <system-out><![CDATA[2023-07-19T14:37:39.488+0200 DEBUG La personne à ajouter : com.APISafetyNetAlerts.apiForSNA.model.Person@31d07dd9
+2023-07-19T14:37:39.489+0200 ERROR Le champ prénom ne doit pas être vide !
+2023-07-19T14:37:39.489+0200 ERROR Le champ nom ne doit pas être vide !
+2023-07-19T14:37:39.489+0200 ERROR Le champ addresse ne doit pas être vide !
+2023-07-19T14:37:39.489+0200 ERROR Le champ ville ne doit pas être vide !
+2023-07-19T14:37:39.489+0200 ERROR Le champ code postal ne doit pas être vide !
+2023-07-19T14:37:39.489+0200 ERROR Le champ numéro de téléphone ne doit pas être vide !
+2023-07-19T14:37:39.489+0200 ERROR Le champ email ne doit pas être vide !
+]]></system-out>
+  </testcase>
+  <testcase name="testAddPerson" classname="com.APISafetyNetAlerts.apiForSNA.PersonControllerTest" time="0.006">
+    <system-out><![CDATA[2023-07-19T14:37:39.495+0200 DEBUG La personne à ajouter : com.APISafetyNetAlerts.apiForSNA.model.Person@568c71de
+2023-07-19T14:37:39.496+0200 DEBUG Personne à ajouter : {
+  "firstName" : "Kevin",
+  "lastName" : "Jovanovic",
+  "address" : "19 rue des Coquelicots",
+  "city" : "Tronville-en-Barrois",
+  "zip" : 55310,
+  "phone" : "0607080910",
+  "email" : "test@gmail.com"
+}
+]]></system-out>
+  </testcase>
+  <testcase name="testUpdateWrongZipParamPerson" classname="com.APISafetyNetAlerts.apiForSNA.PersonControllerTest" time="0.004">
+    <system-out><![CDATA[2023-07-19T14:37:39.502+0200 ERROR La personne Kévin Jovanovic n'apparaît pas dans la liste.
+]]></system-out>
+  </testcase>
+  <testcase name="testUpdateAllNullParamPerson" classname="com.APISafetyNetAlerts.apiForSNA.PersonControllerTest" time="0.003">
+    <system-out><![CDATA[2023-07-19T14:37:39.507+0200 ERROR La personne null null n'apparaît pas dans la liste.
+]]></system-out>
+  </testcase>
+  <testcase name="testAddWrongFirstNameParamPerson" classname="com.APISafetyNetAlerts.apiForSNA.PersonControllerTest" time="0.004">
+    <system-out><![CDATA[2023-07-19T14:37:39.511+0200 DEBUG La personne à ajouter : com.APISafetyNetAlerts.apiForSNA.model.Person@548c7eab
+2023-07-19T14:37:39.511+0200 ERROR Le champ prénom ne doit pas être vide !
+]]></system-out>
+  </testcase>
+  <testcase name="testGetChildByAddressWithEmptyAddress" classname="com.APISafetyNetAlerts.apiForSNA.PersonControllerTest" time="0.008">
+    <system-out><![CDATA[2023-07-19T14:37:39.519+0200 ERROR L'addresse  ne fait pas partie de la liste d'adresses !
+]]></system-out>
+  </testcase>
+  <testcase name="testUpdateWrongFirstNameParamPerson" classname="com.APISafetyNetAlerts.apiForSNA.PersonControllerTest" time="0.005">
+    <system-out><![CDATA[2023-07-19T14:37:39.524+0200 ERROR La personne null Jovanovic n'apparaît pas dans la liste.
+]]></system-out>
+  </testcase>
+  <testcase name="testGetPersonsMailByCityWithEmptyCity" classname="com.APISafetyNetAlerts.apiForSNA.PersonControllerTest" time="0.004">
+    <system-out><![CDATA[2023-07-19T14:37:39.528+0200 INFO Liste des villes : [Culver, Tronville-en-Barrois]
+2023-07-19T14:37:39.528+0200 ERROR La ville  ne fait pas partie de la liste !
+]]></system-out>
+  </testcase>
+  <testcase name="testDeleteWrongLastNameParamPerson" classname="com.APISafetyNetAlerts.apiForSNA.PersonControllerTest" time="0.004">
+    <system-out><![CDATA[2023-07-19T14:37:39.532+0200 ERROR Il faut un nom et un prénom pour pouvoir supprimer un objet !
+]]></system-out>
+  </testcase>
+  <testcase name="testGetPersonsMailByCity" classname="com.APISafetyNetAlerts.apiForSNA.PersonControllerTest" time="0.004">
+    <system-out><![CDATA[2023-07-19T14:37:39.535+0200 INFO Liste des villes : [Culver, Tronville-en-Barrois]
+2023-07-19T14:37:39.535+0200 INFO Nombre de mail dans la liste : 23
+2023-07-19T14:37:39.536+0200 DEBUG La liste de mail qui est renvoyée : [ "jaboyd@email.com", "drk@email.com", "tenz@email.com", "jaboyd@email.com", "jaboyd@email.com", "drk@email.com", "tenz@email.com", "jaboyd@email.com", "jaboyd@email.com", "tcoop@ymail.com", "lily@email.com", "soph@email.com", "ward@email.com", "zarc@email.com", "reg@email.com", "jpeter@email.com", "jpeter@email.com", "aly@imail.com", "bstel@email.com", "ssanw@email.com", "bstel@email.com", "clivfd@ymail.com", "gramps@email.com" ]
+]]></system-out>
+  </testcase>
+  <testcase name="testGetPersonInfoByFirstNameAndLastNameWithWrongFirstName" classname="com.APISafetyNetAlerts.apiForSNA.PersonControllerTest" time="0.003">
+    <system-out><![CDATA[2023-07-19T14:37:39.540+0200 ERROR Aucune personne ne s'appelle gdfgdfgdfsh Boyd dans la liste !
+]]></system-out>
+  </testcase>
+  <testcase name="testGetPersonInfoByFirstNameAndLastName" classname="com.APISafetyNetAlerts.apiForSNA.PersonControllerTest" time="0.006">
+    <system-out><![CDATA[2023-07-19T14:37:39.546+0200 INFO Nombre de personnes dans la liste : 6
+2023-07-19T14:37:39.547+0200 DEBUG La liste de personne qui est renvoyée : [ {
+  "lastName" : "Boyd",
+  "address" : "1509 Culver St",
+  "age" : 39,
+  "medications" : [ "aznol:350mg", "hydrapermazol:100mg" ],
+  "allergies" : [ "nillacilan" ]
+}, {
+  "lastName" : "Boyd",
+  "address" : "1509 Culver St",
+  "age" : 34,
+  "medications" : [ "pharmacol:5000mg", "terazine:10mg", "noznazol:250mg" ],
+  "allergies" : [ ]
+}, {
+  "lastName" : "Boyd",
+  "address" : "1509 Culver St",
+  "age" : 11,
+  "medications" : [ ],
+  "allergies" : [ "peanut" ]
+}, {
+  "lastName" : "Boyd",
+  "address" : "1509 Culver St",
+  "age" : 5,
+  "medications" : [ ],
+  "allergies" : [ ]
+}, {
+  "lastName" : "Boyd",
+  "address" : "1509 Culver St",
+  "age" : 37,
+  "medications" : [ "tetracyclaz:650mg" ],
+  "allergies" : [ "xilliathal" ]
+}, {
+  "lastName" : "Boyd",
+  "address" : "112 Steppes Pl",
+  "age" : 58,
+  "medications" : [ "aznol:200mg" ],
+  "allergies" : [ "nillacilan" ]
+} ]
+]]></system-out>
+  </testcase>
+  <testcase name="testGetChildByAddress" classname="com.APISafetyNetAlerts.apiForSNA.PersonControllerTest" time="0.007">
+    <system-out><![CDATA[2023-07-19T14:37:39.551+0200 DEBUG Il y a 2 enfant(s) à cette addresse
+2023-07-19T14:37:39.552+0200 DEBUG Il y a 3 adulte(s) à cette addresse
+2023-07-19T14:37:39.552+0200 INFO L'adresse est 1509 Culver St
+2023-07-19T14:37:39.552+0200 INFO Nombre de personnes dans la liste : 5
+2023-07-19T14:37:39.553+0200 DEBUG La liste de personnes qui est renvoyée : [ {
+  "firstName" : "Tenley",
+  "lastName" : "Boyd",
+  "age" : 11
+}, {
+  "firstName" : "Roger",
+  "lastName" : "Boyd",
+  "age" : 5
+}, {
+  "firstName" : "John",
+  "lastName" : "Boyd",
+  "age" : 39
+}, {
+  "firstName" : "Jacob",
+  "lastName" : "Boyd",
+  "age" : 34
+}, {
+  "firstName" : "Felicia",
+  "lastName" : "Boyd",
+  "age" : 37
+} ]
+]]></system-out>
+  </testcase>
+</testsuite>

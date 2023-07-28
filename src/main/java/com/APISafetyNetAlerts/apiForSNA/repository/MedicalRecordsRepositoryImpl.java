@@ -173,6 +173,7 @@ public class MedicalRecordsRepositoryImpl implements MedicalRecordsRepository {
 			object.putPOJO("allergies", medicalRecord.getAllergies());
 		    mapper.writeValue(file, parsedJson);
 		    logger.debug("Personne qui a été modifiée : {}", object.toString());
+		    loadMedicalRecords(true);
 		    update = true;
 		}
 	    }
@@ -212,6 +213,7 @@ public class MedicalRecordsRepositoryImpl implements MedicalRecordsRepository {
 			logger.debug("Personne à supprimer : {}", medicalRecordArray.get(medicRec).toString());
 			medicalRecordArray.remove(medicRec);
 			mapper.writeValue(file, parsedJson);
+			loadMedicalRecords(true);
 			delete = true;
 		    }
 		}
