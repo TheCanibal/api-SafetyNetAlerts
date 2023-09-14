@@ -61,7 +61,7 @@ public class MedicalRecordControllerTest {
     }
 
     @Test
-    public void testGetAllFirestations() throws Exception {
+    public void testGetAllMedicalRecords() throws Exception {
 	mockMvc.perform(get("/medicalRecords")).andExpect(status().isOk());
     }
 
