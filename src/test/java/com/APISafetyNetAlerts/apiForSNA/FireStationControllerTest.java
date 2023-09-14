@@ -64,18 +64,6 @@ public class FireStationControllerTest {
 
     @Test
     public void testGetPersonsCoveredByFireStation() throws Exception {
-
-	ObjectMapper objectMapper = new ObjectMapper();
-
-	// Je récupère mon objet en l'appelant avec le contrôleur
-	mappingJacksonValue = fireStationController.getPersonsCoveredByFireStation(1);
-
-	// Je transforme mon objet MappingJacksonValue en String pour pouvoir le
-	// comparer à l'objet que je veux tester
-	String expect = objectMapper.setFilterProvider(mappingJacksonValue.getFilters())
-		.writeValueAsString(mappingJacksonValue.getValue());
-
-	// L'objet que je veux comparer à celui attendu
 	String object = "{\"personnesMajeures\":5,\"personnesMineures\":1,\"persons\":[{\"firstName\":\"Peter\",\"lastName\":\"Duncan\",\"address\":\"644 Gershwin Cir\",\"phone\":\"841-874-6512\"},{\"firstName\":\"Reginold\",\"lastName\":\"Walker\",\"address\":\"908 73rd St\",\"phone\":\"841-874-8547\"},{\"firstName\":\"Jamie\",\"lastName\":\"Peters\",\"address\":\"908 73rd St\",\"phone\":\"841-874-7462\"},{\"firstName\":\"Brian\",\"lastName\":\"Stelzer\",\"address\":\"947 E. Rose Dr\",\"phone\":\"841-874-7784\"},{\"firstName\":\"Shawna\",\"lastName\":\"Stelzer\",\"address\":\"947 E. Rose Dr\",\"phone\":\"841-874-7784\"},{\"firstName\":\"Kendrik\",\"lastName\":\"Stelzer\",\"address\":\"947 E. Rose Dr\",\"phone\":\"841-874-7784\"}]}";
 
 	mockMvc.perform(get("/firestation").param("stationNumber", "1")).andExpect(status().isOk())
@@ -85,17 +73,6 @@ public class FireStationControllerTest {
 
     @Test
     public void testGetPersonsLiveAtAddressDeservedByStation() throws Exception {
-
-	ObjectMapper objectMapper = new ObjectMapper();
-
-	// Je récupère mon objet en l'appelant avec le contrôleur
-	mappingJacksonValue = fireStationController.getPersonsLiveAtAddressDeservedByStation("1509 Culver St");
-
-	// Je transforme mon objet MappingJacksonValue en String pour pouvoir le
-	// comparer à l'objet que je veux tester
-	String expect = objectMapper.setFilterProvider(mappingJacksonValue.getFilters())
-		.writeValueAsString(mappingJacksonValue.getValue());
-
 	// L'objet que je veux comparer à celui attendu
 	String object = "[{\"lastName\":\"Boyd\",\"phone\":\"841-874-6512\",\"age\":39,\"firestationNumber\":3,\"medications\":[\"aznol:350mg\",\"hydrapermazol:100mg\"],\"allergies\":[\"nillacilan\"]},{\"lastName\":\"Boyd\",\"phone\":\"841-874-6513\",\"age\":34,\"firestationNumber\":3,\"medications\":[\"pharmacol:5000mg\",\"terazine:10mg\",\"noznazol:250mg\"],\"allergies\":[]},{\"lastName\":\"Boyd\",\"phone\":\"841-874-6512\",\"age\":11,\"firestationNumber\":3,\"medications\":[],\"allergies\":[\"peanut\"]},{\"lastName\":\"Boyd\",\"phone\":\"841-874-6512\",\"age\":6,\"firestationNumber\":3,\"medications\":[],\"allergies\":[]},{\"lastName\":\"Boyd\",\"phone\":\"841-874-6544\",\"age\":37,\"firestationNumber\":3,\"medications\":[\"tetracyclaz:650mg\"],\"allergies\":[\"xilliathal\"]}]";
 	mockMvc.perform(get("/fire").param("address", "1509 Culver St")).andExpect(status().isOk())
